@@ -15,12 +15,39 @@ Three roles: **WORKER**, **EMPLOYER**, **ADMIN**.
 ## Running it
 
 ```bash
-cp .env.example .env      # already present in this checkout
 npm install
+cp .env.example .env      # then set JWT_SECRET to any long random string
 npm run db:migrate        # creates dev.db and applies the schema
 npm run db:seed           # demo users, jobs, attendance, payments, disputes
 npm run dev               # http://localhost:3000
 ```
+
+`.env` is gitignored, so a fresh clone will not have one. Generate a secret with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### Sharing a running instance
+
+`next start` binds to localhost. To reach it from a phone on the same Wi-Fi,
+bind to all interfaces:
+
+```bash
+npm run build
+npx next start -H 0.0.0.0
+```
+
+To expose it publicly through a tunnel or reverse proxy, Next also has to be
+told the public hostname is trusted, or every Server Action is rejected as
+cross-origin and login silently fails:
+
+```bash
+ALLOWED_ORIGINS="*.trycloudflare.com" npx next start -H 0.0.0.0
+cloudflared tunnel --url http://localhost:3000
+```
+
+See `next.config.ts` for how `ALLOWED_ORIGINS` is wired.
 
 ### Demo accounts
 
