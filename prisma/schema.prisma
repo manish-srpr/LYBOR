@@ -1,0 +1,771 @@
+// STRIVER - Blue-collar workforce trust platform
+// Datasource is SQLite for zero-setup, offline-reliable demos.
+// The schema is written to be PostgreSQL-portable: no SQLite-specific native
+// types, money stored as integer paise, and every enum maps cleanly to a
+// Postgres enum. See README "Switching to PostgreSQL".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------------------------------------------------------------------------
+// ENUMS
+// ---------------------------------------------------------------------------
+
+enum Role {
+  WORKER
+  EMPLOYER
+  ADMIN
+}
+
+enum Language {
+  en
+  hi
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+  UNAVAILABLE
+}
+
+enum Proficiency {
+  BEGINNER
+  INTERMEDIATE
+  EXPERT
+}
+
+enum WageType {
+  HOURLY
+  DAILY
+  SHIFT
+}
+
+enum JobStatus {
+  DRAFT
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  SHORTLISTED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum AssignmentStatus {
+  ASSIGNED
+  ACTIVE
+  COMPLETED
+  TERMINATED
+}
+
+enum AttendanceVerification {
+  PENDING
+  VERIFIED
+  FLAGGED
+  REJECTED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum LocationSource {
+  GPS
+  DEMO
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  PAID
+  DISPUTED
+}
+
+enum LedgerEntryType {
+  ACCRUAL
+  APPROVAL
+  PAYOUT
+  REVERSAL
+  ADJUSTMENT
+}
+
+enum LedgerEntryStatus {
+  RECORDED
+  SETTLED
+  FAILED
+}
+
+enum DisputeCategory {
+  WAGE
+  HOURS
+  ATTENDANCE
+  PAYMENT_DELAY
+  SAFETY
+  BEHAVIOUR
+  OTHER
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+enum KycStatus {
+  NOT_SUBMITTED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum KycDocType {
+  AADHAAR
+  PAN
+  DRIVING_LICENSE
+  VOTER_ID
+  LABOUR_CARD
+}
+
+enum NotificationType {
+  APPLICATION_SUBMITTED
+  APPLICATION_ACCEPTED
+  APPLICATION_REJECTED
+  WORKER_ASSIGNED
+  JOB_STARTING
+  CHECK_IN_SUCCESS
+  CHECK_OUT_SUCCESS
+  ATTENDANCE_FLAGGED
+  ATTENDANCE_APPROVED
+  ATTENDANCE_REJECTED
+  PAYMENT_APPROVED
+  PAYMENT_PAID
+  DISPUTE_CREATED
+  DISPUTE_RESOLVED
+  KYC_VERIFIED
+  KYC_REJECTED
+  SYSTEM
+}
+
+enum NotificationChannel {
+  IN_APP
+  SMS
+  WHATSAPP
+}
+
+enum DeliveryStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+}
+
+enum FraudAlertStatus {
+  OPEN
+  REVIEWING
+  CONFIRMED
+  DISMISSED
+}
+
+enum FraudSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum CompletionStatus {
+  COMPLETED
+  TERMINATED_EARLY
+}
+
+// ---------------------------------------------------------------------------
+// IDENTITY
+// ---------------------------------------------------------------------------
+
+model User {
+  id                String    @id @default(cuid())
+  phone             String    @unique
+  email             String?   @unique
+  passwordHash      String
+  role              Role
+  fullName          String
+  preferredLanguage Language  @default(en)
+  isActive          Boolean   @default(true)
+  lastLoginAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  workerProfile   WorkerProfile?
+  employerProfile EmployerProfile?
+  kycRecords      KYCRecord[]
+  notifications   Notification[]
+  disputesRaised  Dispute[]        @relation("DisputeRaisedBy")
+  disputesClosed  Dispute[]        @relation("DisputeResolvedBy")
+  kycReviewed     KYCRecord[]      @relation("KycReviewedBy")
+  fraudReviewed   FraudAlert[]     @relation("FraudReviewedBy")
+
+  @@index([role])
+  @@index([isActive])
+}
+
+model WorkerProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  dateOfBirth DateTime?
+  gender      String?
+  bio         String?
+  photoUrl    String?
+
+  addressLine String
+  city        String
+  state       String
+  pincode     String
+  latitude    Float
+  longitude   Float
+  // How far the worker is willing to travel for work.
+  travelRadiusKm Float @default(15)
+
+  availability    AvailabilityStatus @default(AVAILABLE)
+  availableFrom   DateTime?
+  experienceYears Int                @default(0)
+
+  // Wage preference used by the matching engine. Stored in paise.
+  preferredWageType     WageType?
+  preferredWageMinPaise Int?
+
+  kycStatus KycStatus @default(NOT_SUBMITTED)
+
+  // Cached, recomputed by the reliability service. Used for ranking and
+  // display only - never as an input to a money decision.
+  reliabilityScore     Float     @default(0)
+  reliabilityUpdatedAt DateTime?
+
+  totalJobsCompleted Int   @default(0)
+  totalMinutesWorked Int   @default(0)
+  totalEarningsPaise Int   @default(0)
+  averageRating      Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  skills       WorkerSkill[]
+  applications JobApplication[]
+  assignments  JobAssignment[]
+  workHistory  WorkHistory[]
+  fraudAlerts  FraudAlert[]
+
+  @@index([city])
+  @@index([availability])
+  @@index([kycStatus])
+  @@index([reliabilityScore])
+}
+
+model EmployerProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  companyName   String
+  companyType   String
+  contactPerson String
+  about         String?
+  logoUrl       String?
+  gstNumber     String?
+
+  addressLine String
+  city        String
+  state       String
+  pincode     String
+  latitude    Float
+  longitude   Float
+
+  kycStatus  KycStatus @default(NOT_SUBMITTED)
+  isVerified Boolean   @default(false)
+
+  totalJobsPosted   Int   @default(0)
+  totalWorkersHired Int   @default(0)
+  totalPaidPaise    Int   @default(0)
+  averageRating     Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobs        Job[]
+  workHistory WorkHistory[]
+  fraudAlerts FraudAlert[]
+
+  @@index([city])
+  @@index([kycStatus])
+}
+
+// ---------------------------------------------------------------------------
+// SKILLS
+// ---------------------------------------------------------------------------
+
+model Skill {
+  id       String  @id @default(cuid())
+  code     String  @unique
+  nameEn   String
+  nameHi   String
+  category String
+  icon     String?
+
+  workers WorkerSkill[]
+  jobs    JobSkill[]
+
+  @@index([category])
+}
+
+model WorkerSkill {
+  id              String        @id @default(cuid())
+  workerProfileId String
+  worker          WorkerProfile @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+  skillId         String
+  skill           Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  proficiency     Proficiency @default(INTERMEDIATE)
+  yearsExperience Int         @default(0)
+  createdAt       DateTime    @default(now())
+
+  @@unique([workerProfileId, skillId])
+  @@index([skillId])
+}
+
+// ---------------------------------------------------------------------------
+// JOBS
+// ---------------------------------------------------------------------------
+
+model Job {
+  id                String          @id @default(cuid())
+  employerProfileId String
+  employer          EmployerProfile @relation(fields: [employerProfileId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String
+  category    String
+
+  addressLine String
+  city        String
+  state       String
+  pincode     String
+  latitude    Float
+  longitude   Float
+  // Geofence radius used by the GPS attendance verifier.
+  checkInRadiusMeters Int @default(250)
+
+  wageType      WageType
+  wageRatePaise Int
+
+  startDate           DateTime
+  endDate             DateTime
+  shiftStart          String // "09:00", 24h local
+  shiftEnd            String // "18:00"
+  expectedHoursPerDay Float  @default(8)
+
+  workersRequired Int       @default(1)
+  workersAssigned Int       @default(0)
+  status          JobStatus @default(OPEN)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requiredSkills JobSkill[]
+  applications   JobApplication[]
+  assignments    JobAssignment[]
+  workHistory    WorkHistory[]
+  disputes       Dispute[]
+  fraudAlerts    FraudAlert[]
+
+  @@index([status])
+  @@index([category])
+  @@index([city])
+  @@index([employerProfileId])
+  @@index([startDate])
+}
+
+model JobSkill {
+  id      String @id @default(cuid())
+  jobId   String
+  job     Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  isMandatory Boolean @default(true)
+
+  @@unique([jobId, skillId])
+  @@index([skillId])
+}
+
+// ---------------------------------------------------------------------------
+// APPLICATION -> ASSIGNMENT (deliberately two separate entities)
+// ---------------------------------------------------------------------------
+
+model JobApplication {
+  id              String        @id @default(cuid())
+  jobId           String
+  job             Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  workerProfileId String
+  worker          WorkerProfile @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+
+  status    ApplicationStatus @default(PENDING)
+  coverNote String?
+
+  // Snapshot of the explainable match score at the moment of applying, so the
+  // employer sees exactly the number the worker saw.
+  matchScore   Float?
+  matchFactors String? // JSON: MatchFactor[]
+
+  appliedAt   DateTime  @default(now())
+  respondedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  assignment JobAssignment?
+
+  @@unique([jobId, workerProfileId])
+  @@index([status])
+  @@index([workerProfileId])
+}
+
+model JobAssignment {
+  id              String          @id @default(cuid())
+  jobId           String
+  job             Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  workerProfileId String
+  worker          WorkerProfile   @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+  applicationId   String?         @unique
+  application     JobApplication? @relation(fields: [applicationId], references: [id])
+
+  status AssignmentStatus @default(ASSIGNED)
+
+  // Wage terms are frozen onto the assignment. Editing the job later must
+  // never silently change what an already-assigned worker is owed.
+  agreedWageType      WageType
+  agreedWageRatePaise Int
+  expectedHoursPerDay Float    @default(8)
+
+  assignedAt  DateTime  @default(now())
+  startDate   DateTime
+  endDate     DateTime
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  attendances Attendance[]
+  payments    Payment[]
+  disputes    Dispute[]
+  workHistory WorkHistory?
+
+  @@unique([jobId, workerProfileId])
+  @@index([status])
+  @@index([workerProfileId])
+}
+
+// ---------------------------------------------------------------------------
+// GPS ATTENDANCE
+// ---------------------------------------------------------------------------
+
+model Attendance {
+  id           String        @id @default(cuid())
+  assignmentId String
+  assignment   JobAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  // Calendar date of the shift, anchored to midnight UTC.
+  workDate DateTime
+
+  checkInTime         DateTime
+  checkInLatitude     Float
+  checkInLongitude    Float
+  checkInAccuracyM    Float?
+  checkInDistanceM    Float
+  checkInWithinRadius Boolean
+  checkInSource       LocationSource @default(GPS)
+
+  checkOutTime         DateTime?
+  checkOutLatitude     Float?
+  checkOutLongitude    Float?
+  checkOutAccuracyM    Float?
+  checkOutDistanceM    Float?
+  checkOutWithinRadius Boolean?
+  checkOutSource       LocationSource?
+
+  workingMinutes Int?
+
+  verificationStatus AttendanceVerification @default(PENDING)
+  // Output of the rule-based risk engine. Explainable, never a black box.
+  riskScore Float   @default(0)
+  riskFlags String? // JSON: RiskFlag[]
+
+  approvalStatus   ApprovalStatus @default(PENDING)
+  approvedAt       DateTime?
+  approvedByUserId String?
+  rejectionReason  String?
+
+  workerNote String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payment     Payment?
+  disputes    Dispute[]
+  fraudAlerts FraudAlert[]
+
+  @@unique([assignmentId, workDate])
+  @@index([verificationStatus])
+  @@index([approvalStatus])
+  @@index([workDate])
+}
+
+// ---------------------------------------------------------------------------
+// WAGES + PAYMENTS
+// ---------------------------------------------------------------------------
+
+model Payment {
+  id           String        @id @default(cuid())
+  assignmentId String
+  assignment   JobAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  attendanceId String?       @unique
+  attendance   Attendance?   @relation(fields: [attendanceId], references: [id])
+
+  // Frozen inputs to the wage calculation, so the amount can always be
+  // re-audited and reproduced.
+  wageType         WageType
+  rateAppliedPaise Int
+  verifiedMinutes  Int
+  billableUnits    Float
+  unitLabel        String // "hours" | "days" | "shifts"
+
+  grossAmountPaise Int
+  deductionsPaise  Int @default(0)
+  netAmountPaise   Int
+
+  // Human-readable, machine-checkable breakdown from the wage engine.
+  calculationBreakdown String // JSON: WageBreakdown
+
+  status PaymentStatus @default(PENDING)
+
+  approvedAt       DateTime?
+  paidAt           DateTime?
+  paymentMethod    String? // LEDGER_MOCK | UPI | BANK_TRANSFER | CASH
+  paymentReference String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ledgerEntries PaymentLedgerEntry[]
+  disputes      Dispute[]
+
+  @@index([status])
+  @@index([assignmentId])
+}
+
+// Provider-agnostic ledger. A real UPI/escrow integration appends here rather
+// than mutating Payment directly, keeping money movement append-only.
+model PaymentLedgerEntry {
+  id        String  @id @default(cuid())
+  paymentId String
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  entryType   LedgerEntryType
+  amountPaise Int
+  fromParty   String // EMPLOYER | ESCROW | PLATFORM
+  toParty     String // ESCROW | WORKER | PLATFORM
+
+  provider    String            @default("MOCK_LEDGER")
+  providerRef String?
+  status      LedgerEntryStatus @default(RECORDED)
+  metadata    String? // JSON
+
+  createdAt DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([entryType])
+}
+
+// ---------------------------------------------------------------------------
+// DISPUTES
+// ---------------------------------------------------------------------------
+
+model Dispute {
+  id String @id @default(cuid())
+
+  jobId        String?
+  job          Job?           @relation(fields: [jobId], references: [id])
+  assignmentId String?
+  assignment   JobAssignment? @relation(fields: [assignmentId], references: [id])
+  attendanceId String?
+  attendance   Attendance?    @relation(fields: [attendanceId], references: [id])
+  paymentId    String?
+  payment      Payment?       @relation(fields: [paymentId], references: [id])
+
+  raisedByUserId String
+  raisedBy       User   @relation("DisputeRaisedBy", fields: [raisedByUserId], references: [id])
+  raisedByRole   Role
+
+  category      DisputeCategory
+  reason        String
+  description   String
+  evidenceNotes String?
+
+  status DisputeStatus @default(OPEN)
+
+  adminResolution  String?
+  resolvedByUserId String?
+  resolvedBy       User?     @relation("DisputeResolvedBy", fields: [resolvedByUserId], references: [id])
+  resolvedAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([raisedByUserId])
+  @@index([category])
+}
+
+// ---------------------------------------------------------------------------
+// KYC
+// ---------------------------------------------------------------------------
+
+model KYCRecord {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  docType    KycDocType
+  holderName String
+  // Never store a raw government ID. Display uses the mask; uniqueness and
+  // duplicate detection use the hash.
+  docNumberMasked String
+  docNumberHash   String
+  documentUrl     String?
+
+  status           KycStatus @default(PENDING)
+  submittedAt      DateTime  @default(now())
+  reviewedByUserId String?
+  reviewedBy       User?     @relation("KycReviewedBy", fields: [reviewedByUserId], references: [id])
+  reviewedAt       DateTime?
+  rejectionReason  String?
+
+  @@index([status])
+  @@index([userId])
+  @@index([docNumberHash])
+}
+
+// ---------------------------------------------------------------------------
+// VERIFIED WORK HISTORY
+// ---------------------------------------------------------------------------
+
+model WorkHistory {
+  id                String          @id @default(cuid())
+  workerProfileId   String
+  worker            WorkerProfile   @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+  jobId             String
+  job               Job             @relation(fields: [jobId], references: [id])
+  assignmentId      String          @unique
+  assignment        JobAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  employerProfileId String
+  employer          EmployerProfile @relation(fields: [employerProfileId], references: [id])
+
+  // Immutable snapshot: a work record must stay truthful even if the job or
+  // employer profile is edited later.
+  jobTitle     String
+  category     String
+  employerName String
+  skillsUsed   String // JSON: string[]
+
+  startDate DateTime
+  endDate   DateTime
+
+  totalVerifiedMinutes Int
+  totalDaysWorked      Int
+  totalEarningsPaise   Int
+
+  employerRating Int?
+  employerReview String?
+  workerRating   Int?
+
+  completionStatus CompletionStatus @default(COMPLETED)
+  isVerified       Boolean          @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([workerProfileId])
+  @@index([employerProfileId])
+  @@index([category])
+}
+
+// ---------------------------------------------------------------------------
+// NOTIFICATIONS
+// ---------------------------------------------------------------------------
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type NotificationType
+  // i18n key + params so the same notification renders in EN or HI.
+  titleKey String
+  bodyKey  String
+  params   String? // JSON
+  linkUrl  String?
+
+  channel        NotificationChannel @default(IN_APP)
+  deliveryStatus DeliveryStatus      @default(DELIVERED)
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// FRAUD / RISK
+// ---------------------------------------------------------------------------
+
+model FraudAlert {
+  id String @id @default(cuid())
+
+  ruleCode String // e.g. GPS_OUT_OF_RADIUS, IMPOSSIBLE_TRAVEL
+  severity FraudSeverity    @default(MEDIUM)
+  status   FraudAlertStatus @default(OPEN)
+
+  workerProfileId   String?
+  worker            WorkerProfile?   @relation(fields: [workerProfileId], references: [id])
+  employerProfileId String?
+  employer          EmployerProfile? @relation(fields: [employerProfileId], references: [id])
+  attendanceId      String?
+  attendance        Attendance?      @relation(fields: [attendanceId], references: [id])
+  jobId             String?
+  job               Job?             @relation(fields: [jobId], references: [id])
+
+  title       String
+  description String
+  evidence    String? // JSON
+
+  reviewedByUserId String?
+  reviewedBy       User?     @relation("FraudReviewedBy", fields: [reviewedByUserId], references: [id])
+  reviewedAt       DateTime?
+  reviewNotes      String?
+
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([severity])
+  @@index([ruleCode])
+}
