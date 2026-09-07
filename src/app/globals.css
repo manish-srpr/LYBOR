@@ -92,7 +92,90 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Hindi renders taller than Latin; give it a little more room to breathe. */
-:lang(hi) {
+/*
+ * Script coverage for the twelve Indian languages.
+ *
+ * Browsers do per-glyph font fallback, so one stack covers every script: a
+ * Devanagari codepoint skips Geist and lands on the first family that has it.
+ * These are all fonts already shipped by Windows, Android, macOS and iOS, so
+ * nothing is downloaded and the public gateway stays fast - which matters more
+ * to a worker on a cheap handset than a webfont would.
+ *
+ * If a device lacks a script's font the OS substitutes its own; that is a
+ * missing-font problem on that handset, not a broken layout here.
+ */
+:root {
+  --font-indic:
+    /* Devanagari - Hindi, Marathi */
+    "Noto Sans Devanagari", "Nirmala UI", "Mangal", "Kohinoor Devanagari",
+    /* Gurmukhi - Punjabi */
+    "Noto Sans Gurmukhi", "Raavi", "Gurmukhi MN",
+    /* Bengali/Assamese */
+    "Noto Sans Bengali", "Vrinda", "Bangla Sangam MN",
+    /* Gujarati */
+    "Noto Sans Gujarati", "Shruti", "Gujarati Sangam MN",
+    /* Odia */
+    "Noto Sans Oriya", "Kalinga", "Oriya Sangam MN",
+    /* Tamil */
+    "Noto Sans Tamil", "Latha", "Tamil Sangam MN",
+    /* Telugu */
+    "Noto Sans Telugu", "Gautami", "Telugu Sangam MN",
+    /* Kannada */
+    "Noto Sans Kannada", "Tunga", "Kannada Sangam MN",
+    /* Malayalam */
+    "Noto Sans Malayalam", "Kartika", "Malayalam Sangam MN",
+    /* Urdu - Arabic script */
+    "Noto Nastaliq Urdu", "Noto Naskh Arabic", "Jameel Noori Nastaleeq",
+    "Urdu Typesetting", "Geeza Pro";
+}
+
+body {
+  font-family: var(--font-geist-sans), var(--font-indic), system-ui, sans-serif;
+}
+
+/*
+ * Indic and Nastaliq scripts carry taller ascenders and deeper descenders than
+ * Latin, so tight Latin leading clips them. Applied by script rather than
+ * globally so English keeps its intended density.
+ */
+:lang(hi),
+:lang(mr),
+:lang(pa),
+:lang(bn),
+:lang(as),
+:lang(gu),
+:lang(or),
+:lang(ta),
+:lang(te),
+:lang(kn),
+:lang(ml) {
   line-height: 1.7;
+}
+
+/* Nastaliq needs the most vertical room of any script here. */
+:lang(ur) {
+  line-height: 2;
+}
+
+/*
+ * Right-to-left.
+ *
+ * Layout direction is handled by logical CSS properties and Tailwind's logical
+ * utilities (ms/me, ps/pe, start/end), so the flow mirrors on its own. Only two
+ * things need an explicit rule: glyphs that point somewhere, and the numeric
+ * columns that must stay left-to-right even in an RTL page.
+ */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/*
+ * Money, dates, distances and percentages stay LTR inside RTL text. Without
+ * this, "₹950" and "8.0 hrs" reorder and become unreadable - a correctness
+ * problem, not a cosmetic one, when the number is somebody's wage.
+ */
+[dir="rtl"] .tabular-nums,
+[dir="rtl"] .font-mono {
+  direction: ltr;
+  unicode-bidi: embed;
 }

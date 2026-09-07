@@ -106,12 +106,8 @@ export default async function WorkerDashboard() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title={isHi ? `नमस्ते, ${profile.user.fullName}` : `Hello, ${profile.user.fullName}`}
-        description={
-          isHi
-            ? "आपका काम, आपके घंटे और आपकी कमाई एक जगह।"
-            : "Your work, your verified hours and your earnings in one place."
-        }
+        title={t("dash.greeting", { name: profile.user.fullName })}
+        description={t("dash.workerIntro")}
       />
 
       {/* Today: the single most important thing a worker needs on opening the app. */}
@@ -146,7 +142,7 @@ export default async function WorkerDashboard() {
                   <div>
                     <dt className="flex items-center gap-1 text-xs text-[var(--muted-foreground)]">
                       <MapPin className="size-3.5" aria-hidden />
-                      {isHi ? "कहाँ जाना है" : "Where to go"}
+                      {t("att.whereToGo")}
                     </dt>
                     <dd className="mt-0.5 text-sm font-medium">
                       {assignment.job.addressLine}, {assignment.job.city}
@@ -155,7 +151,7 @@ export default async function WorkerDashboard() {
                   <div>
                     <dt className="flex items-center gap-1 text-xs text-[var(--muted-foreground)]">
                       <Clock className="size-3.5" aria-hidden />
-                      {isHi ? "शिफ्ट" : "Shift"}
+                      {t("job.shift")}
                     </dt>
                     <dd className="mt-0.5 text-sm font-medium tabular-nums">
                       {assignment.job.shiftStart}–{assignment.job.shiftEnd}
@@ -163,7 +159,7 @@ export default async function WorkerDashboard() {
                   </div>
                   <div>
                     <dt className="text-xs text-[var(--muted-foreground)]">
-                      {isHi ? "आप कितना कमाएँगे" : "What you earn"}
+                      {t("att.whatYouEarn")}
                     </dt>
                     <dd className="mt-0.5 text-sm font-semibold text-[var(--primary)]">
                       {wageLabel(
@@ -182,12 +178,12 @@ export default async function WorkerDashboard() {
                       className={buttonVariants({ size: "lg", block: true })}
                     >
                       <LogIn aria-hidden />
-                      {isHi ? "जीपीएस से चेक इन करें" : "Check in with GPS"}
+                      {t("att.checkInGps")}
                     </Link>
                   ) : state === "WORKING" ? (
                     <div className="space-y-2">
                       <p className="text-center text-sm text-[var(--muted-foreground)]">
-                        {isHi ? "चेक-इन समय " : "Checked in at "}
+                        {t("att.checkedInAt")}{" "}
                         <strong className="text-[var(--foreground)]">
                           {formatTime(attendance.checkInTime, lang)}
                         </strong>
@@ -201,7 +197,7 @@ export default async function WorkerDashboard() {
                         })}
                       >
                         <LogOut aria-hidden />
-                        {isHi ? "जीपीएस से चेक आउट करें" : "Check out with GPS"}
+                        {t("att.checkOutGps")}
                       </Link>
                     </div>
                   ) : (
@@ -210,7 +206,7 @@ export default async function WorkerDashboard() {
                       className={buttonVariants({ size: "lg", block: true, variant: "outline" })}
                     >
                       {formatMinutes(attendance.workingMinutes ?? 0)}{" "}
-                      {isHi ? "सत्यापित · विवरण देखें" : "verified · view details"}
+                      {t("wage.verifiedShort")} · {t("common.viewDetails")}
                     </Link>
                   )}
                 </div>
@@ -220,12 +216,8 @@ export default async function WorkerDashboard() {
         </section>
       ) : (
         <EmptyState
-          title={isHi ? "अभी कोई सक्रिय काम नहीं" : "No active work right now"}
-          description={
-            isHi
-              ? "नीचे दी गई सिफ़ारिशों में से अपने लिए सही काम चुनें।"
-              : "Pick one of the recommendations below to get started."
-          }
+          title={t("dash.noActiveWork")}
+          description={t("dash.noActiveWorkBody")}
           action={
             <Link href="/worker/jobs" className={buttonVariants({ size: "sm" })}>
               {t("nav.jobs")}
@@ -235,10 +227,8 @@ export default async function WorkerDashboard() {
       )}
 
       {profile.kycStatus !== "VERIFIED" ? (
-        <Alert tone="warning" title={isHi ? "पहचान सत्यापित करें" : "Verify your identity"}>
-          {isHi
-            ? "सत्यापित पहचान वाले श्रमिकों को नियोक्ता पहले चुनते हैं।"
-            : "Employers pick verified workers first."}{" "}
+        <Alert tone="warning" title={t("kyc.verifyPrompt")}>
+          {t("kyc.verifyBody")}{" "}
           <Link href="/worker/kyc" className="font-medium text-[var(--primary)] underline">
             {t("kyc.submit")}
           </Link>
@@ -249,24 +239,24 @@ export default async function WorkerDashboard() {
         <Stat
           label={t("pay.totalEarned")}
           value={formatPaise(paid, { compact: true })}
-          hint={isHi ? "भुगतान हो चुका" : "released to you"}
+          hint={t("pay.releasedToYou")}
           tone="success"
         />
         <Stat
           label={t("pay.awaiting")}
           value={formatPaise(awaitingApproval, { compact: true })}
-          hint={isHi ? "स्वीकृति बाकी" : "employer to approve"}
+          hint={t("pay.employerToApprove")}
           tone="warning"
         />
         <Stat
           label={t("pay.readyToPay")}
           value={formatPaise(readyToPay, { compact: true })}
-          hint={isHi ? "भुगतान बाकी" : "approved, unpaid"}
+          hint={t("pay.approvedUnpaid")}
         />
         <Stat
           label={t("att.verifiedHours")}
           value={formatMinutes(verifiedMinutes)}
-          hint={isHi ? "जीपीएस सत्यापित" : "GPS verified"}
+          hint={t("att.gpsVerified")}
         />
       </div>
 
@@ -275,10 +265,10 @@ export default async function WorkerDashboard() {
           <div className="flex items-center justify-between gap-2">
             <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
               <Sparkles className="size-4 text-[var(--primary)]" aria-hidden />
-              {isHi ? "आपके लिए सुझाए गए काम" : "Recommended for you"}
+              {t("dash.recommended")}
             </h2>
             <Link href="/worker/jobs" className="text-sm font-medium text-[var(--primary)]">
-              {isHi ? "सभी देखें" : "See all"}
+              {t("common.viewAll")}
             </Link>
           </div>
           <div className="grid gap-3">
@@ -315,7 +305,7 @@ export default async function WorkerDashboard() {
       <ReliabilityPanel breakdown={reliability} lang={lang} />
 
       {pendingApplications > 0 ? (
-        <Alert title={isHi ? "आवेदन लंबित" : "Applications in progress"}>
+        <Alert title={t("nav.applications")}>
           {isHi
             ? `${pendingApplications} आवेदन नियोक्ता के उत्तर की प्रतीक्षा में हैं।`
             : `${pendingApplications} application(s) waiting on an employer response.`}{" "}
@@ -328,10 +318,8 @@ export default async function WorkerDashboard() {
         </Alert>
       ) : (
         <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
-          <Badge variant="outline">{isHi ? "सुझाव" : "Tip"}</Badge>
-          {isHi
-            ? "हर काम पर मिलान स्कोर और उसका कारण देखें।"
-            : "Every job shows a match score and the reasoning behind it."}
+          <Badge variant="outline">{t("common.tip")}</Badge>
+          {t("job.findWorkIntro")}
           <ArrowRight className="size-3.5" aria-hidden />
         </p>
       )}

@@ -46,7 +46,7 @@ export function AppShell({
             <span className="hidden sm:inline">{t("app.name")}</span>
           </Link>
 
-          <span className="ml-auto hidden text-sm text-[var(--muted-foreground)] sm:inline">
+          <span className="ms-auto hidden text-sm text-[var(--muted-foreground)] sm:inline">
             {userName}
           </span>
 
@@ -57,7 +57,7 @@ export function AppShell({
           >
             <Bell className="size-4" aria-hidden />
             {unreadCount > 0 ? (
-              <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-[var(--destructive)] px-1 text-[10px] font-semibold text-[var(--destructive-foreground)]">
+              <span className="absolute -end-1 -top-1 grid min-w-5 place-items-center rounded-full bg-[var(--destructive)] px-1 text-[10px] font-semibold text-[var(--destructive-foreground)]">
                 {unreadCount > 9 ? "9+" : unreadCount}
               </span>
             ) : null}

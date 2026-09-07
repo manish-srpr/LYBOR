@@ -1,6 +1,12 @@
 import type { Proficiency, WageType } from "@prisma/client";
 import { distanceKm } from "./geo";
 import { formatPaise } from "./money";
+import {
+  translate,
+  type Locale,
+  type MessageKey,
+  type TranslateParams,
+} from "./i18n";
 
 /**
  * Explainable job <-> worker matching.
@@ -21,14 +27,21 @@ export type MatchFactorKey =
 
 export type MatchFactor = {
   key: MatchFactorKey;
-  label: string;
-  labelHi: string;
   /** 0..1 before weighting. */
   score: number;
   weight: number;
-  /** Plain-language justification, shown verbatim in the UI. */
-  reason: string;
-  reasonHi: string;
+  /** Catalog key for the justification, plus the values behind it. */
+  reasonKey?: MessageKey;
+  reasonParams?: Record<string, string | number>;
+  /**
+   * Legacy rendered prose. Applications submitted before localisation carry
+   * these and no keys, so the renderers fall back to them rather than showing
+   * an employer a raw key on an old application.
+   */
+  label?: string;
+  labelHi?: string;
+  reason?: string;
+  reasonHi?: string;
 };
 
 export type MatchResult = {
@@ -36,8 +49,6 @@ export type MatchResult = {
   score: number;
   factors: MatchFactor[];
   verdict: "STRONG" | "GOOD" | "FAIR" | "WEAK";
-  summary: string;
-  summaryHi: string;
   distanceKm: number;
 };
 
@@ -125,24 +136,21 @@ export function computeMatch(worker: MatchWorker, job: MatchJob): MatchResult {
   const mandatoryMissing = mandatory.filter((s) => !workerSkillIds.has(s.skillId));
   factors.push({
     key: "skills",
-    label: "Skills match",
-    labelHi: "कौशल मिलान",
     score: skillScore,
     weight: MATCH_WEIGHTS.skills,
-    reason:
-      required.length === 0
-        ? "This job lists no specific skill requirement."
-        : mandatoryMissing.length > 0
-          ? `Missing required skill: ${mandatoryMissing.map((s) => s.nameEn).join(", ")}.`
-          : `Has ${matchedNames.length} of ${required.length} listed skills${
-              missingNames.length ? `; missing ${missingNames.join(", ")}` : ""
-            }.`,
-    reasonHi:
-      required.length === 0
-        ? "इस काम के लिए कोई विशेष कौशल आवश्यक नहीं है।"
-        : mandatoryMissing.length > 0
-          ? `आवश्यक कौशल नहीं है: ${mandatoryMissing.map((s) => s.nameEn).join(", ")}।`
-          : `${required.length} में से ${matchedNames.length} कौशल मौजूद हैं।`,
+    ...(required.length === 0
+      ? { reasonKey: "match.reasonNoSkillsRequired" as MessageKey }
+      : mandatoryMissing.length > 0
+        ? {
+            reasonKey: "match.reasonMissingSkill" as MessageKey,
+            reasonParams: {
+              skills: mandatoryMissing.map((s) => s.nameEn).join(", "),
+            },
+          }
+        : {
+            reasonKey: "match.reasonSkillsHeld" as MessageKey,
+            reasonParams: { matched: matchedNames.length, total: required.length },
+          }),
   });
 
   // --- Distance -----------------------------------------------------------
@@ -152,45 +160,36 @@ export function computeMatch(worker: MatchWorker, job: MatchJob): MatchResult {
   const distanceScore = clamp01(1 - Math.max(0, km - radius / 3) / (radius * 1.5));
   factors.push({
     key: "distance",
-    label: "Distance",
-    labelHi: "दूरी",
     score: distanceScore,
     weight: MATCH_WEIGHTS.distance,
-    reason:
-      km <= radius
-        ? `${km} km away, inside the ${radius} km travel radius.`
-        : `${km} km away, beyond the ${radius} km travel radius.`,
-    reasonHi:
-      km <= radius
-        ? `${km} किमी दूर, ${radius} किमी की सीमा के भीतर।`
-        : `${km} किमी दूर, ${radius} किमी की सीमा से बाहर।`,
+    reasonKey: (km <= radius
+      ? "match.reasonDistanceInside"
+      : "match.reasonDistanceOutside") as MessageKey,
+    reasonParams: { km, radius },
   });
 
   // --- Wage ---------------------------------------------------------------
   const jobHourly = perHourPaise(job);
   let wageScore = 0.75;
-  let wageReason = "No wage preference set, so pay is treated as acceptable.";
-  let wageReasonHi = "कोई वेतन प्राथमिकता निर्धारित नहीं है।";
+  let wageReasonKey: MessageKey = "match.reasonNoWagePreference";
+  let wageReasonParams: Record<string, string | number> | undefined;
   if (worker.preferredWageMinPaise && worker.preferredWageMinPaise > 0) {
     const ratio = jobHourly / worker.preferredWageMinPaise;
     wageScore = clamp01((ratio - 0.6) / 0.6);
-    wageReason =
-      ratio >= 1
-        ? `Pays ${formatPaise(jobHourly)}/h, at or above the ${formatPaise(worker.preferredWageMinPaise)}/h minimum.`
-        : `Pays ${formatPaise(jobHourly)}/h, below the ${formatPaise(worker.preferredWageMinPaise)}/h minimum.`;
-    wageReasonHi =
-      ratio >= 1
-        ? `${formatPaise(jobHourly)}/घंटा, अपेक्षित न्यूनतम से अधिक।`
-        : `${formatPaise(jobHourly)}/घंटा, अपेक्षित न्यूनतम से कम।`;
+    wageReasonKey = (ratio >= 1
+      ? "match.reasonWageAtOrAbove"
+      : "match.reasonWageBelow") as MessageKey;
+    wageReasonParams = {
+      hourly: formatPaise(jobHourly),
+      minimum: formatPaise(worker.preferredWageMinPaise),
+    };
   }
   factors.push({
     key: "wage",
-    label: "Wage fit",
-    labelHi: "वेतन उपयुक्तता",
     score: wageScore,
     weight: MATCH_WEIGHTS.wage,
-    reason: wageReason,
-    reasonHi: wageReasonHi,
+    reasonKey: wageReasonKey,
+    reasonParams: wageReasonParams,
   });
 
   // --- Availability -------------------------------------------------------
@@ -198,54 +197,37 @@ export function computeMatch(worker: MatchWorker, job: MatchJob): MatchResult {
     worker.availability === "AVAILABLE" ? 1 : worker.availability === "BUSY" ? 0.35 : 0;
   factors.push({
     key: "availability",
-    label: "Availability",
-    labelHi: "उपलब्धता",
     score: availabilityScore,
     weight: MATCH_WEIGHTS.availability,
-    reason:
-      worker.availability === "AVAILABLE"
-        ? "Marked available for work."
-        : worker.availability === "BUSY"
-          ? "Currently on another assignment."
-          : "Marked unavailable.",
-    reasonHi:
-      worker.availability === "AVAILABLE"
-        ? "काम के लिए उपलब्ध।"
-        : worker.availability === "BUSY"
-          ? "फिलहाल दूसरे काम पर।"
-          : "उपलब्ध नहीं।",
+    reasonKey: (worker.availability === "AVAILABLE"
+      ? "match.reasonAvailable"
+      : worker.availability === "BUSY"
+        ? "match.reasonBusy"
+        : "match.reasonUnavailable") as MessageKey,
   });
 
   // --- Experience ---------------------------------------------------------
   const experienceScore = clamp01(worker.experienceYears / 5);
   factors.push({
     key: "experience",
-    label: "Experience",
-    labelHi: "अनुभव",
     score: experienceScore,
     weight: MATCH_WEIGHTS.experience,
-    reason: `${worker.experienceYears} ${
-      worker.experienceYears === 1 ? "year" : "years"
-    } of recorded experience.`,
-    reasonHi: `${worker.experienceYears} वर्ष का अनुभव।`,
+    reasonKey: "match.reasonExperience",
+    reasonParams: { years: worker.experienceYears },
   });
 
   // --- Reliability --------------------------------------------------------
   const reliabilityScore = clamp01(worker.reliabilityScore / 100);
   factors.push({
     key: "reliability",
-    label: "Reliability",
-    labelHi: "विश्वसनीयता",
     score: reliabilityScore,
     weight: MATCH_WEIGHTS.reliability,
-    reason:
-      worker.reliabilityScore > 0
-        ? `Reliability score ${Math.round(worker.reliabilityScore)}/100 from verified attendance history.`
-        : "No verified history yet, so reliability is unproven.",
-    reasonHi:
-      worker.reliabilityScore > 0
-        ? `सत्यापित उपस्थिति के आधार पर विश्वसनीयता ${Math.round(worker.reliabilityScore)}/100।`
-        : "अभी तक कोई सत्यापित इतिहास नहीं है।",
+    ...(worker.reliabilityScore > 0
+      ? {
+          reasonKey: "match.reasonReliabilityScore" as MessageKey,
+          reasonParams: { score: Math.round(worker.reliabilityScore) },
+        }
+      : { reasonKey: "match.reasonNoHistory" as MessageKey }),
   });
 
   let total = factors.reduce((sum, f) => sum + f.score * f.weight, 0) * 100;
@@ -259,18 +241,45 @@ export function computeMatch(worker: MatchWorker, job: MatchJob): MatchResult {
   const verdict: MatchResult["verdict"] =
     score >= 80 ? "STRONG" : score >= 65 ? "GOOD" : score >= 45 ? "FAIR" : "WEAK";
 
-  const ranked = [...factors].sort((a, b) => b.score * b.weight - a.score * a.weight);
-  const top = ranked[0];
-  const worst = ranked[ranked.length - 1];
-
   return {
     score,
     factors,
     verdict,
     distanceKm: km,
-    summary: `${score}% match. Strongest factor: ${top.label.toLowerCase()}. Weakest: ${worst.label.toLowerCase()}.`,
-    summaryHi: `${score}% मिलान। सबसे मजबूत: ${top.labelHi}। सबसे कमजोर: ${worst.labelHi}।`,
   };
+}
+
+const FACTOR_LABEL_KEY: Record<MatchFactorKey, MessageKey> = {
+  skills: "match.factorSkills",
+  distance: "match.factorDistance",
+  wage: "match.factorWage",
+  availability: "match.factorAvailability",
+  experience: "match.factorExperience",
+  reliability: "match.factorReliability",
+};
+
+export function renderMatchFactorLabel(factor: MatchFactor, locale: Locale): string {
+  const key = FACTOR_LABEL_KEY[factor.key];
+  if (key) return translate(locale, key);
+  return (locale === "hi" ? factor.labelHi : factor.label) ?? factor.label ?? factor.key;
+}
+
+export function renderMatchFactorReason(factor: MatchFactor, locale: Locale): string {
+  if (factor.reasonKey) {
+    return translate(locale, factor.reasonKey, factor.reasonParams as TranslateParams);
+  }
+  return (locale === "hi" ? factor.reasonHi : factor.reason) ?? factor.reason ?? "";
+}
+
+/** The strongest and weakest contributors, named in the reader's language. */
+export function renderMatchSummary(result: MatchResult, locale: Locale): string {
+  const ranked = [...result.factors].sort(
+    (a, b) => b.score * b.weight - a.score * a.weight,
+  );
+  const top = ranked[0];
+  const worst = ranked[ranked.length - 1];
+  if (!top || !worst) return "";
+  return `${renderMatchFactorLabel(top, locale)} / ${renderMatchFactorLabel(worst, locale)}`;
 }
 
 export function parseFactors(json: string | null): MatchFactor[] {

@@ -1,10 +1,22 @@
 import { prisma } from "./db";
+import {
+  translate,
+  type Locale,
+  type MessageKey,
+  type TranslateParams,
+} from "./i18n";
 
 /**
  * Reliability is a derived, recomputed number - never edited by hand and never
  * an input to a money decision. It only affects ranking and display, so a low
  * score can cost a worker visibility but can never cost them earned wages.
  */
+export type ReliabilityReason = {
+  labelKey: MessageKey;
+  detailKey: MessageKey;
+  params?: Record<string, string | number>;
+};
+
 export type ReliabilityBreakdown = {
   score: number;
   attendanceRate: number;
@@ -12,8 +24,15 @@ export type ReliabilityBreakdown = {
   cleanRate: number;
   completedJobs: number;
   totalDays: number;
-  reasons: { label: string; labelHi: string; detail: string }[];
+  reasons: ReliabilityReason[];
 };
+
+export function renderReliabilityDetail(
+  reason: ReliabilityReason,
+  locale: Locale,
+): string {
+  return translate(locale, reason.detailKey, reason.params as TranslateParams);
+}
 
 export async function computeReliability(
   workerProfileId: string,
@@ -48,9 +67,8 @@ export async function computeReliability(
       totalDays: 0,
       reasons: [
         {
-          label: "No verified shifts yet",
-          labelHi: "अभी तक कोई सत्यापित शिफ्ट नहीं",
-          detail: "New workers start at a neutral 50 until they build a record.",
+          labelKey: "reliability.noShifts",
+          detailKey: "reliability.noShiftsDetail",
         },
       ],
     };
@@ -74,26 +92,24 @@ export async function computeReliability(
     totalDays,
     reasons: [
       {
-        label: "Completed shifts",
-        labelHi: "पूरी की गई शिफ्ट",
-        detail: `${withCheckOut} of ${totalDays} shifts were checked out properly.`,
+        labelKey: "reliability.shiftsCompleted",
+        detailKey: "reliability.detailShifts",
+        params: { done: withCheckOut, total: totalDays },
       },
       {
-        label: "Employer approvals",
-        labelHi: "नियोक्ता स्वीकृतियाँ",
-        detail: `${approved} of ${totalDays} attendance days were approved.`,
+        labelKey: "reliability.employerApprovals",
+        detailKey: "reliability.detailApprovals",
+        params: { done: approved, total: totalDays },
       },
       {
-        label: "Clean GPS record",
-        labelHi: "स्वच्छ जीपीएस रिकॉर्ड",
-        detail: `${clean} of ${totalDays} days passed every risk check.`,
+        labelKey: "reliability.cleanGps",
+        detailKey: "reliability.detailClean",
+        params: { done: clean, total: totalDays },
       },
       {
-        label: "Jobs completed",
-        labelHi: "पूरे किए गए काम",
-        detail: `${completedJobs} ${
-          completedJobs === 1 ? "job" : "jobs"
-        } finished end to end.`,
+        labelKey: "reliability.jobsCompleted",
+        detailKey: "reliability.detailJobs",
+        params: { count: completedJobs },
       },
     ],
   };

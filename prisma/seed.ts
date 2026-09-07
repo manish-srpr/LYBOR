@@ -12,7 +12,7 @@ import {
 } from "@prisma/client";
 import { hashSync } from "bcryptjs";
 import { distanceMeters, offsetBy } from "../src/lib/geo";
-import { assessAttendanceRisk } from "../src/lib/risk";
+import { assessAttendanceRisk, renderRiskDetail, renderRiskTitle } from "../src/lib/risk";
 import { calculateWage } from "../src/lib/wages";
 import { computeMatch, type MatchJob } from "../src/lib/matching";
 import { rupeesToPaise } from "../src/lib/money";
@@ -747,8 +747,8 @@ async function main() {
             workerProfileId: worker.profile.id,
             attendanceId: attendance.id,
             jobId: job.id,
-            title: flag.title,
-            description: flag.detail,
+            title: renderRiskTitle(flag, "en"),
+            description: renderRiskDetail(flag, "en"),
             evidence: JSON.stringify({ attendanceId: attendance.id, rule: flag.code }),
           },
         });

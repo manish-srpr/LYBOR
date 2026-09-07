@@ -11,7 +11,12 @@ import { wageLabel } from "@/components/app/job-card";
 import { prisma } from "@/lib/db";
 import { requireWorkerProfile } from "@/lib/auth";
 import { getTranslator } from "@/lib/lang";
-import { computeMatch, perHourPaise, type MatchWorker } from "@/lib/matching";
+import {
+  computeMatch,
+  perHourPaise,
+  renderMatchSummary,
+  type MatchWorker,
+} from "@/lib/matching";
 import { formatDateRange, plural } from "@/lib/format";
 import { formatPaise } from "@/lib/money";
 import { applyToJobAction } from "@/server/actions/jobs";
@@ -103,7 +108,7 @@ export default async function WorkerJobDetail(props: PageProps<"/worker/jobs/[id
         score={match.score}
         factors={match.factors}
         lang={lang}
-        summary={isHi ? match.summaryHi : match.summary}
+        summary={renderMatchSummary(match, lang)}
       />
 
       <Card>

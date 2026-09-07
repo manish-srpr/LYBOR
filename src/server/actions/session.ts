@@ -5,14 +5,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import {
-  createSession,
-  dashboardPathFor,
-  destroySession,
-  hashPassword,
-  verifyPassword,
-} from "@/lib/auth";
-import { LANG_COOKIE, normaliseLang } from "@/lib/i18n";
+import { createSession, dashboardPathFor, destroySession, getSession, hashPassword, verifyPassword } from "@/lib/auth";
+import { LANG_COOKIE, isSupportedLocale, normaliseLang } from "@/lib/i18n";
 
 export type FormState = { error?: string; ok?: boolean };
 
@@ -55,8 +49,18 @@ export async function loginAction(
   });
   await createSession({ userId: user.id, role: user.role, fullName: user.fullName });
 
+  // Signing in must not change the language the visitor picked on the gateway.
+  // Their choice covers all thirteen locales; `preferredLanguage` is a
+  // two-value enum, so overwriting from it would silently reset a Punjabi or
+  // Tamil speaker to English at the exact moment they authenticate. The column
+  // is only used to seed a locale when no choice has been made yet.
   const store = await cookies();
-  store.set(LANG_COOKIE, user.preferredLanguage, { path: "/", maxAge: 60 * 60 * 24 * 365 });
+  if (!isSupportedLocale(store.get(LANG_COOKIE)?.value)) {
+    store.set(LANG_COOKIE, user.preferredLanguage, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
 
   redirect(dashboardPathFor(user.role));
 }
@@ -159,8 +163,12 @@ export async function registerAction(
   });
 
   await createSession({ userId: user.id, role: user.role, fullName: user.fullName });
+
+  // Same rule as sign-in: an existing choice wins over the enum default.
   const store = await cookies();
-  store.set(LANG_COOKIE, data.language, { path: "/", maxAge: 60 * 60 * 24 * 365 });
+  if (!isSupportedLocale(store.get(LANG_COOKIE)?.value)) {
+    store.set(LANG_COOKIE, data.language, { path: "/", maxAge: 60 * 60 * 24 * 365 });
+  }
 
   redirect(dashboardPathFor(user.role));
 }
@@ -170,9 +178,35 @@ export async function logoutAction(): Promise<void> {
   redirect("/login");
 }
 
+/**
+ * Switching language sets a cookie and re-renders. It deliberately does not
+ * redirect, touch the session, or clear form state - changing language mid-form
+ * should not cost somebody the details they already typed.
+ *
+ * The cookie is the source of truth because it is the only store that holds all
+ * thirteen locales and survives a browser restart. For signed-in users whose
+ * choice the `Language` enum can represent, it is mirrored to the database too,
+ * so en/hi carry across devices. The other eleven stay cookie-only rather than
+ * forcing a schema migration; see the report.
+ */
 export async function setLanguageAction(formData: FormData): Promise<void> {
   const lang = normaliseLang(String(formData.get("lang") ?? "en"));
   const store = await cookies();
-  store.set(LANG_COOKIE, lang, { path: "/", maxAge: 60 * 60 * 24 * 365 });
+  store.set(LANG_COOKIE, lang, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+  });
+
+  if (lang === "en" || lang === "hi") {
+    const session = await getSession();
+    if (session) {
+      await prisma.user.update({
+        where: { id: session.userId },
+        data: { preferredLanguage: lang },
+      });
+    }
+  }
+
   revalidatePath("/", "layout");
 }

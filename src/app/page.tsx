@@ -8,22 +8,21 @@ import { getTranslator } from "@/lib/lang";
 /**
  * The authentication gateway.
  *
- * This is the only screen an unauthenticated visitor sees. It deliberately
- * carries no product surface - no feature cards, no workflow tour, no
- * dashboard preview - so the single decision on offer is create an account or
- * sign in. Everything the platform actually does lives behind a role layout
- * that calls `requireRole` on the server.
+ * The only screen an unauthenticated visitor sees. It carries no product
+ * surface - no feature cards, no workflow tour, no dashboard preview - so the
+ * single decision on offer is create an account or sign in. Everything the
+ * platform does lives behind a role layout that calls `requireRole` on the
+ * server.
  *
- * The language toggle is the one control that stays. A worker who reads Hindi
- * has to be able to switch before reaching the sign-in form, or the form
- * itself is unreadable to them.
+ * The language selector sits above the fold and before authentication on
+ * purpose: a worker who reads only Punjabi has to be able to switch before
+ * reaching the sign-in form, or the form itself is unreadable to them.
  */
 export default async function Home() {
   const session = await getSession();
   if (session) redirect(dashboardPathFor(session.role));
 
   const { lang, t } = await getTranslator();
-  const isHi = lang === "hi";
 
   return (
     <div className="flex flex-1 flex-col">
@@ -49,9 +48,7 @@ export default async function Home() {
           </p>
 
           <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-            {isHi
-              ? "ब्लू-कॉलर वर्कफ़ोर्स ट्रस्ट प्लेटफ़ॉर्म"
-              : "Blue-collar workforce trust platform"}
+            {t("app.descriptor")}
           </p>
         </div>
 
@@ -68,17 +65,13 @@ export default async function Home() {
         </div>
 
         <p className="mt-6 text-center text-sm text-[var(--muted-foreground)]">
-          {isHi
-            ? "जारी रखने के लिए खाता बनाएँ या साइन इन करें।"
-            : "Create an account or sign in to continue."}
+          {t("app.gatewayPrompt")}
         </p>
       </main>
 
       <footer className="px-5 pb-6">
         <p className="mx-auto max-w-sm text-center text-xs text-[var(--muted-foreground)]">
-          {isHi
-            ? "LYBOR प्रोटोटाइप — डेमो डेटा पर चल रहा है। यह एक प्रदर्शन बिल्ड है, वास्तविक भुगतान सेवा नहीं।"
-            : "LYBOR prototype — running on seeded demo data. This is a demonstration build, not a live payments service."}
+          {t("app.prototypeNotice")}
         </p>
       </footer>
     </div>

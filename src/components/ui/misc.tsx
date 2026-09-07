@@ -144,7 +144,7 @@ export function DataRow({
   return (
     <div className="flex items-baseline justify-between gap-4 py-1.5 text-sm">
       <span className="text-[var(--muted-foreground)]">{label}</span>
-      <span className="text-right font-medium">{value}</span>
+      <span className="text-end font-medium">{value}</span>
     </div>
   );
 }

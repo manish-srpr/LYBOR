@@ -14,7 +14,7 @@ export default async function AuthLayout({ children }: LayoutProps<"/">) {
             </span>
             {t("app.name")}
           </Link>
-          <div className="ml-auto">
+          <div className="ms-auto">
             <LanguageToggle lang={lang} />
           </div>
         </div>

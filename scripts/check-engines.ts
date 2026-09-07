@@ -4,8 +4,19 @@
  * These are the parts of LYBOR where being wrong costs somebody money, so
  * they get asserted rather than eyeballed. Run with `npm run check:engines`.
  */
-import { assessAttendanceRisk } from "../src/lib/risk";
-import { computeMatch, type MatchJob, type MatchWorker } from "../src/lib/matching";
+import {
+  assessAttendanceRisk,
+  renderRiskDetail,
+  renderRiskTitle,
+} from "../src/lib/risk";
+import { LOCALES } from "../src/lib/i18n";
+import {
+  computeMatch,
+  renderMatchFactorLabel,
+  renderMatchFactorReason,
+  type MatchJob,
+  type MatchWorker,
+} from "../src/lib/matching";
 import { calculateWage } from "../src/lib/wages";
 import { distanceMeters, offsetBy } from "../src/lib/geo";
 import { rupeesToPaise } from "../src/lib/money";
@@ -138,8 +149,24 @@ console.log("\nRisk engine");
   check("an out-of-radius shift is high risk", outside.level === "HIGH");
   check("an out-of-radius shift is flagged for review", outside.verification === "FLAGGED");
   check(
-    "every flag states the rule and a detail",
-    outside.flags.every((f) => f.code.length > 0 && f.detail.length > 0 && f.detailHi.length > 0),
+    "every flag states its rule code",
+    outside.flags.every((f) => f.code.length > 0),
+  );
+  check(
+    "every flag renders a title and detail in all 13 locales",
+    outside.flags.every((f) =>
+      LOCALES.every(({ code }) => {
+        const title = renderRiskTitle(f, code);
+        const detail = renderRiskDetail(f, code);
+        return (
+          title.length > 0 &&
+          detail.length > 0 &&
+          !title.startsWith("risk.") &&
+          !detail.startsWith("risk.") &&
+          !detail.includes("{")
+        );
+      }),
+    ),
   );
   check("the score is capped at 100", outside.score <= 100);
 }
@@ -178,8 +205,22 @@ console.log("\nMatch engine");
   const strong = computeMatch(baseWorker, job);
   check("a well-suited worker scores strongly", strong.score >= 80, `got ${strong.score}`);
   check("the score stays within 0..100", strong.score >= 0 && strong.score <= 100);
-  check("every factor carries a reason", strong.factors.every((f) => f.reason.length > 0));
-  check("every factor carries a Hindi reason", strong.factors.every((f) => f.reasonHi.length > 0));
+  check(
+    "every factor renders a label and reason in all 13 locales",
+    strong.factors.every((f) =>
+      LOCALES.every(({ code }) => {
+        const label = renderMatchFactorLabel(f, code);
+        const reason = renderMatchFactorReason(f, code);
+        return (
+          label.length > 0 &&
+          reason.length > 0 &&
+          !label.startsWith("match.") &&
+          !reason.startsWith("match.") &&
+          !reason.includes("{")
+        );
+      }),
+    ),
+  );
   check(
     "the weights sum to 1",
     Math.abs(strong.factors.reduce((s, f) => s + f.weight, 0) - 1) < 1e-9,

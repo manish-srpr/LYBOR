@@ -1,7 +1,7 @@
 import { MapPin, Navigation, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "@/lib/geo";
-import type { Lang } from "@/lib/i18n";
+import { translatorFor, type Lang } from "@/lib/i18n";
 
 /**
  * A to-scale schematic of the geofence check, not a map.
@@ -27,7 +27,7 @@ export function GeofenceMap({
   label: string;
   lang: Lang;
 }) {
-  const isHi = lang === "hi";
+  const t = translatorFor(lang);
 
   // The frame scales to whichever is larger so both circles always fit.
   const extent = Math.max(radiusM * 1.6, distanceM * 1.25, 1);
@@ -48,11 +48,9 @@ export function GeofenceMap({
         viewBox="0 0 160 160"
         className="mx-auto size-36 shrink-0"
         role="img"
-        aria-label={
-          isHi
-            ? `कार्यस्थल से ${formatDistance(distanceM)} दूर, अनुमत सीमा ${formatDistance(radiusM)}`
-            : `${formatDistance(distanceM)} from the worksite, allowed radius ${formatDistance(radiusM)}`
-        }
+        aria-label={`${t("att.workerDistance")}: ${formatDistance(
+          distanceM,
+        )}. ${t("att.allowedRadius")}: ${formatDistance(radiusM)}.`}
       >
         <defs>
           <pattern id="lybor-grid" width="16" height="16" patternUnits="userSpaceOnUse">
@@ -97,14 +95,14 @@ export function GeofenceMap({
         <div className="flex items-center justify-between gap-3">
           <dt className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
             <MapPin className="size-3.5 text-[var(--primary)]" aria-hidden />
-            {isHi ? "कार्यस्थल" : "Worksite"}
+            {t("att.worksite")}
           </dt>
-          <dd className="truncate text-right font-medium">{label}</dd>
+          <dd className="truncate text-end font-medium">{label}</dd>
         </div>
         <div className="flex items-center justify-between gap-3">
           <dt className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
             <Navigation className="size-3.5" style={{ color: tone }} aria-hidden />
-            {isHi ? "श्रमिक की दूरी" : "Worker distance"}
+            {t("att.workerDistance")}
           </dt>
           <dd className="font-semibold tabular-nums" style={{ color: tone }}>
             {formatDistance(distanceM)}
@@ -112,14 +110,14 @@ export function GeofenceMap({
         </div>
         <div className="flex items-center justify-between gap-3">
           <dt className="text-[var(--muted-foreground)]">
-            {isHi ? "अनुमत सीमा" : "Allowed radius"}
+            {t("att.allowedRadius")}
           </dt>
           <dd className="font-medium tabular-nums">{formatDistance(radiusM)}</dd>
         </div>
         {accuracyM ? (
           <div className="flex items-center justify-between gap-3">
             <dt className="text-[var(--muted-foreground)]">
-              {isHi ? "जीपीएस सटीकता" : "GPS accuracy"}
+              {t("att.gpsAccuracy")}
             </dt>
             <dd className="font-medium tabular-nums">± {Math.round(accuracyM)} m</dd>
           </div>
@@ -131,13 +129,7 @@ export function GeofenceMap({
             ) : (
               <TriangleAlert className="size-3" aria-hidden />
             )}
-            {withinRadius
-              ? isHi
-                ? "कार्यस्थल के भीतर"
-                : "Inside the worksite"
-              : isHi
-                ? "कार्यस्थल के बाहर"
-                : "Outside the worksite"}
+            {withinRadius ? t("att.insideSite") : t("att.outsideRadius")}
           </Badge>
         </div>
       </dl>

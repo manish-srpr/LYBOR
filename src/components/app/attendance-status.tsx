@@ -1,5 +1,5 @@
 import { StatusBadge } from "./status-badge";
-import type { Lang } from "@/lib/i18n";
+import { translatorFor, type Lang } from "@/lib/i18n";
 
 /**
  * Three separate decisions ride on every attendance day: did GPS verify it, did
@@ -17,19 +17,19 @@ export function AttendanceStatusStrip({
   payment?: string | null;
   lang: Lang;
 }) {
-  const isHi = lang === "hi";
+  const t = translatorFor(lang);
 
   const items = [
     {
-      label: isHi ? "जीपीएस जाँच" : "GPS check",
+      label: t("att.gpsCheck"),
       status: verification,
     },
     {
-      label: isHi ? "नियोक्ता" : "Employer",
+      label: t("att.employerDecision"),
       status: approval,
     },
     ...(payment
-      ? [{ label: isHi ? "भुगतान" : "Payment", status: payment }]
+      ? [{ label: t("att.paymentState"), status: payment }]
       : []),
   ];
 

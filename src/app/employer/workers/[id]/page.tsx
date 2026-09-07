@@ -242,7 +242,7 @@ export default async function EmployerWorkerProfile(
                         />
                       ))}
                       {entry.employerReview ? (
-                        <span className="ml-1 text-xs text-[var(--muted-foreground)]">
+                        <span className="ms-1 text-xs text-[var(--muted-foreground)]">
                           {entry.employerReview}
                         </span>
                       ) : null}

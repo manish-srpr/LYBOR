@@ -1,13 +1,13 @@
 import { ShieldCheck } from "lucide-react";
 import { Progress } from "@/components/ui/misc";
-import type { ReliabilityBreakdown } from "@/lib/reliability";
-import type { Lang } from "@/lib/i18n";
+import { renderReliabilityDetail, type ReliabilityBreakdown } from "@/lib/reliability";
+import { translatorFor, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function band(score: number) {
-  if (score >= 75) return { tone: "success" as const, en: "Strong", hi: "मजबूत" };
-  if (score >= 50) return { tone: "warning" as const, en: "Building", hi: "बन रहा है" };
-  return { tone: "destructive" as const, en: "Needs work", hi: "सुधार चाहिए" };
+  if (score >= 75) return { tone: "success" as const, key: "reliability.strong" } as const;
+  if (score >= 50) return { tone: "warning" as const, key: "reliability.building" } as const;
+  return { tone: "destructive" as const, key: "reliability.needsWork" } as const;
 }
 
 const TONE_TEXT = {
@@ -30,27 +30,27 @@ export function ReliabilityPanel({
   breakdown: ReliabilityBreakdown;
   lang: Lang;
 }) {
-  const isHi = lang === "hi";
+  const t = translatorFor(lang);
   const level = band(breakdown.score);
 
   const bars = [
     {
-      label: isHi ? "शिफ्ट पूरी की" : "Shifts completed",
+      label: t("reliability.shiftsCompleted"),
       value: breakdown.totalDays === 0 ? 0 : breakdown.attendanceRate * 100,
       weight: "30%",
     },
     {
-      label: isHi ? "नियोक्ता स्वीकृति" : "Employer approvals",
+      label: t("reliability.employerApprovals"),
       value: breakdown.approvalRate * 100,
       weight: "35%",
     },
     {
-      label: isHi ? "स्वच्छ जीपीएस रिकॉर्ड" : "Clean GPS record",
+      label: t("reliability.cleanGps"),
       value: breakdown.cleanRate * 100,
       weight: "25%",
     },
     {
-      label: isHi ? "पूरे किए गए काम" : "Jobs completed",
+      label: t("reliability.jobsCompleted"),
       value: Math.min(100, (breakdown.completedJobs / 5) * 100),
       weight: "10%",
     },
@@ -59,7 +59,7 @@ export function ReliabilityPanel({
   return (
     <section
       className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]"
-      aria-label={isHi ? "LYBOR विश्वसनीयता स्कोर" : "LYBOR Reliability Score"}
+      aria-label={t("reliability.title")}
     >
       <div className="flex items-center gap-4 border-b border-[var(--border)] bg-[var(--muted)]/50 p-4">
         <div
@@ -79,11 +79,11 @@ export function ReliabilityPanel({
         <div className="min-w-0">
           <h2 className="flex items-center gap-1.5 text-sm font-semibold">
             <ShieldCheck className="size-4 text-[var(--primary)]" aria-hidden />
-            {isHi ? "LYBOR विश्वसनीयता स्कोर" : "LYBOR Reliability Score"}
+            {t("reliability.title")}
           </h2>
           <p className={cn("mt-0.5 text-sm font-medium", TONE_TEXT[level.tone])}>
-            {isHi ? level.hi : level.en}
-            <span className="ml-1 font-normal text-[var(--muted-foreground)]">
+            {t(level.key)}
+            <span className="ms-1 font-normal text-[var(--muted-foreground)]">
               · {breakdown.score}/100
             </span>
           </p>
@@ -97,7 +97,7 @@ export function ReliabilityPanel({
               <span className="font-medium">{bar.label}</span>
               <span className="tabular-nums text-[var(--muted-foreground)]">
                 {Math.round(bar.value)}%
-                <span className="ml-1 opacity-70">× {bar.weight}</span>
+                <span className="ms-1 opacity-70">× {bar.weight}</span>
               </span>
             </div>
             <Progress value={bar.value} tone={band(bar.value).tone} className="h-1.5" />
@@ -106,19 +106,17 @@ export function ReliabilityPanel({
 
         <ul className="space-y-0.5 pt-1 text-xs text-[var(--muted-foreground)]">
           {breakdown.reasons.map((reason) => (
-            <li key={reason.label}>
+            <li key={reason.labelKey}>
               <span className="font-medium text-[var(--foreground)]">
-                {isHi ? reason.labelHi : reason.label}:
+                {t(reason.labelKey)}:
               </span>{" "}
-              {reason.detail}
+              {renderReliabilityDetail(reason, lang)}
             </li>
           ))}
         </ul>
 
         <p className="rounded-lg bg-[var(--muted)] p-2.5 text-xs text-[var(--muted-foreground)]">
-          {isHi
-            ? "यह स्कोर सत्यापित उपस्थिति से बनता है और केवल रैंकिंग को प्रभावित करता है। यह आपकी अर्जित मजदूरी कभी कम नहीं करता।"
-            : "Derived from verified attendance. It only affects ranking — it never reduces wages you have already earned."}
+          {t("reliability.disclaimer")}
         </p>
       </div>
     </section>

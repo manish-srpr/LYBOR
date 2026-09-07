@@ -1,11 +1,18 @@
 import type { WageType } from "@prisma/client";
 import { formatMinutes, formatPaise } from "./money";
+import { translate, type Locale, type MessageKey, type TranslateParams } from "./i18n";
 
 export type WageBreakdownLine = {
-  label: string;
-  labelHi: string;
-  detail: string;
+  /** Catalog key for the line label. */
+  labelKey?: MessageKey;
+  /** Catalog key for the explanatory detail, plus its values. */
+  detailKey?: MessageKey;
+  params?: Record<string, string | number>;
   amountPaise?: number;
+  /** Legacy rendered prose on payments written before localisation. */
+  label?: string;
+  labelHi?: string;
+  detail?: string;
 };
 
 export type WageBreakdown = {
@@ -18,9 +25,12 @@ export type WageBreakdown = {
   deductionsPaise: number;
   netAmountPaise: number;
   lines: WageBreakdownLine[];
-  /** Plain-language sentence shown to the worker above the table. */
-  summary: string;
-  summaryHi: string;
+  /** Catalog key for the plain-language sentence above the table. */
+  summaryKey?: MessageKey;
+  summaryParams?: Record<string, string | number>;
+  /** Legacy rendered summary. */
+  summary?: string;
+  summaryHi?: string;
 };
 
 export type WageInput = {
@@ -42,9 +52,14 @@ function round2(n: number): number {
 /**
  * The single source of truth for "what is this worker owed?".
  *
- * Every branch appends a human-readable line to `lines`, so the same object
- * that produced the number also explains it. Worker, employer and admin all
- * read this identical breakdown - transparency here is the product.
+ * Every branch appends a line carrying a translation key and the values that
+ * drove it, so the same object that produced the number also explains it - in
+ * whatever language the reader prefers, including for payments calculated
+ * before that language was supported. Worker, employer and admin all read this
+ * identical breakdown; transparency here is the product.
+ *
+ * The arithmetic is untouched by localisation: money stays integer paise and
+ * rounding still happens exactly once, at the end of each branch.
  */
 export function calculateWage(input: WageInput): WageBreakdown {
   const { wageType, rateAppliedPaise, verifiedMinutes } = input;
@@ -53,17 +68,17 @@ export function calculateWage(input: WageInput): WageBreakdown {
 
   const lines: WageBreakdownLine[] = [
     {
-      label: "Verified working time",
-      labelHi: "सत्यापित कार्य समय",
-      detail: `${formatMinutes(verifiedMinutes)} between GPS check-in and check-out`,
+      labelKey: "wage.verifiedTime",
+      detailKey: "wage.detailVerifiedWindow",
+      params: { worked: formatMinutes(verifiedMinutes) },
     },
   ];
 
   let billableUnits = 0;
   let unitLabel: WageBreakdown["unitLabel"] = "hours";
   let grossAmountPaise = 0;
-  let summary = "";
-  let summaryHi = "";
+  let summaryKey: MessageKey = "wage.summaryHourly";
+  let summaryParams: Record<string, string | number> = {};
 
   if (wageType === "HOURLY") {
     unitLabel = "hours";
@@ -80,55 +95,68 @@ export function calculateWage(input: WageInput): WageBreakdown {
     grossAmountPaise = normalPaise + overtimePaise;
 
     lines.push({
-      label: "Regular hours",
-      labelHi: "सामान्य घंटे",
-      detail: `${round2(normalHours)} h x ${formatPaise(rateAppliedPaise)}/h`,
+      labelKey: "wage.lineRegularHours",
+      detailKey: "wage.detailHoursAtRate",
+      params: { units: round2(normalHours), rate: formatPaise(rateAppliedPaise) },
       amountPaise: normalPaise,
     });
     if (overtimeHours > 0) {
       lines.push({
-        label: "Overtime",
-        labelHi: "ओवरटाइम",
-        detail: `${round2(overtimeHours)} h x ${formatPaise(rateAppliedPaise)}/h x ${OVERTIME_MULTIPLIER}`,
+        labelKey: "wage.lineOvertime",
+        detailKey: "wage.detailOvertimeAtRate",
+        params: {
+          units: round2(overtimeHours),
+          rate: formatPaise(rateAppliedPaise),
+          multiplier: OVERTIME_MULTIPLIER,
+        },
         amountPaise: overtimePaise,
       });
     }
-    summary = `Paid hourly at ${formatPaise(rateAppliedPaise)} per hour for ${round2(rawHours)} verified hours.`;
-    summaryHi = `${round2(rawHours)} सत्यापित घंटों के लिए ${formatPaise(rateAppliedPaise)} प्रति घंटा।`;
+    summaryKey = "wage.summaryHourly";
+    summaryParams = {
+      rate: formatPaise(rateAppliedPaise),
+      units: round2(rawHours),
+    };
   } else if (wageType === "DAILY") {
     unitLabel = "days";
     const dayFraction = verifiedMinutes / expectedMinutes;
+    const detailParams = {
+      worked: formatMinutes(verifiedMinutes),
+      expected: expectedHoursPerDay,
+    };
 
     if (dayFraction >= 0.9) {
       billableUnits = 1;
       lines.push({
-        label: "Full day",
-        labelHi: "पूरा दिन",
-        detail: `Worked ${formatMinutes(verifiedMinutes)} of an expected ${expectedHoursPerDay} h day`,
+        labelKey: "wage.lineFullDay",
+        detailKey: "wage.detailDayFraction",
+        params: detailParams,
         amountPaise: rateAppliedPaise,
       });
     } else if (dayFraction >= HALF_DAY_THRESHOLD) {
       billableUnits = 0.5;
       lines.push({
-        label: "Half day",
-        labelHi: "आधा दिन",
-        detail: `Worked ${formatMinutes(verifiedMinutes)}, at least half of the expected ${expectedHoursPerDay} h day`,
+        labelKey: "wage.lineHalfDay",
+        detailKey: "wage.detailDayFraction",
+        params: detailParams,
         amountPaise: Math.round(rateAppliedPaise * 0.5),
       });
     } else {
-      // Billable units are rounded first and the amount derived from them, so
-      // the line in the breakdown always equals the total below it.
       billableUnits = round2(dayFraction);
       lines.push({
-        label: "Pro-rated day",
-        labelHi: "आनुपातिक दिन",
-        detail: `Worked ${formatMinutes(verifiedMinutes)} of an expected ${expectedHoursPerDay} h day`,
+        labelKey: "wage.lineProratedDay",
+        detailKey: "wage.detailDayFraction",
+        params: detailParams,
+        // Billed off the rounded unit, not the raw fraction, so this line and
+        // the gross below are the same number by construction. Using
+        // dayFraction here makes the breakdown disagree with the total it is
+        // supposed to explain.
         amountPaise: Math.round(rateAppliedPaise * billableUnits),
       });
     }
     grossAmountPaise = Math.round(rateAppliedPaise * billableUnits);
-    summary = `Paid daily at ${formatPaise(rateAppliedPaise)} per day; ${billableUnits} day billed.`;
-    summaryHi = `${formatPaise(rateAppliedPaise)} प्रति दिन की दर से ${billableUnits} दिन।`;
+    summaryKey = "wage.summaryDaily";
+    summaryParams = { rate: formatPaise(rateAppliedPaise), units: billableUnits };
   } else {
     unitLabel = "shifts";
     // A shift is all-or-nothing above the half-shift mark; below it, the shift
@@ -137,13 +165,18 @@ export function calculateWage(input: WageInput): WageBreakdown {
     billableUnits = shiftFraction >= HALF_DAY_THRESHOLD ? 1 : round2(shiftFraction);
     grossAmountPaise = Math.round(rateAppliedPaise * billableUnits);
     lines.push({
-      label: billableUnits === 1 ? "Shift completed" : "Partial shift",
-      labelHi: billableUnits === 1 ? "शिफ्ट पूरी" : "आंशिक शिफ्ट",
-      detail: `${formatMinutes(verifiedMinutes)} of a ${expectedHoursPerDay} h shift x ${formatPaise(rateAppliedPaise)}/shift`,
+      labelKey:
+        billableUnits === 1 ? "wage.lineShiftCompleted" : "wage.linePartialShift",
+      detailKey: "wage.detailShiftFraction",
+      params: {
+        worked: formatMinutes(verifiedMinutes),
+        expected: expectedHoursPerDay,
+        rate: formatPaise(rateAppliedPaise),
+      },
       amountPaise: grossAmountPaise,
     });
-    summary = `Paid per shift at ${formatPaise(rateAppliedPaise)}; ${billableUnits} shift billed.`;
-    summaryHi = `${formatPaise(rateAppliedPaise)} प्रति शिफ्ट की दर से ${billableUnits} शिफ्ट।`;
+    summaryKey = "wage.summaryShift";
+    summaryParams = { rate: formatPaise(rateAppliedPaise), units: billableUnits };
   }
 
   // The prototype takes no platform cut. The field exists so that a real
@@ -152,9 +185,8 @@ export function calculateWage(input: WageInput): WageBreakdown {
   const netAmountPaise = grossAmountPaise - deductionsPaise;
 
   lines.push({
-    label: "Net payable to worker",
-    labelHi: "श्रमिक को देय राशि",
-    detail: "Gross minus deductions. No platform fee is charged.",
+    labelKey: "wage.net",
+    detailKey: "wage.detailNetPayable",
     amountPaise: netAmountPaise,
   });
 
@@ -168,9 +200,34 @@ export function calculateWage(input: WageInput): WageBreakdown {
     deductionsPaise,
     netAmountPaise,
     lines,
-    summary,
-    summaryHi,
+    summaryKey,
+    summaryParams,
   };
+}
+
+// --- Rendering -------------------------------------------------------------
+
+export function renderWageLineLabel(line: WageBreakdownLine, locale: Locale): string {
+  if (line.labelKey) return translate(locale, line.labelKey);
+  return (locale === "hi" ? line.labelHi : line.label) ?? line.label ?? "";
+}
+
+export function renderWageLineDetail(line: WageBreakdownLine, locale: Locale): string {
+  if (line.detailKey) {
+    return translate(locale, line.detailKey, line.params as TranslateParams);
+  }
+  return line.detail ?? "";
+}
+
+export function renderWageSummary(breakdown: WageBreakdown, locale: Locale): string {
+  if (breakdown.summaryKey) {
+    return translate(
+      locale,
+      breakdown.summaryKey,
+      breakdown.summaryParams as TranslateParams,
+    );
+  }
+  return (locale === "hi" ? breakdown.summaryHi : breakdown.summary) ?? breakdown.summary ?? "";
 }
 
 export function parseBreakdown(json: string | null): WageBreakdown | null {

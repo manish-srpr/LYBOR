@@ -8,7 +8,12 @@ import { distanceMeters } from "@/lib/geo";
 import { formatMinutes, formatPaise } from "@/lib/money";
 import { notify } from "@/lib/notifications";
 import { refreshReliability } from "@/lib/reliability";
-import { assessAttendanceRisk } from "@/lib/risk";
+import {
+  assessAttendanceRisk,
+  renderRiskDetail,
+  renderRiskTitle,
+  type RiskFlag,
+} from "@/lib/risk";
 import { calculateWage } from "@/lib/wages";
 
 const locationSchema = z.object({
@@ -319,7 +324,7 @@ async function raiseFraudAlerts(
   attendanceId: string,
   workerProfileId: string,
   jobId: string,
-  flags: { code: string; severity: "LOW" | "MEDIUM" | "HIGH"; title: string; detail: string }[],
+  flags: RiskFlag[],
 ): Promise<void> {
   // Only material flags escalate to the admin queue; a low-severity late
   // check-in is a conversation between worker and employer, not a fraud case.
@@ -341,8 +346,11 @@ async function raiseFraudAlerts(
         workerProfileId,
         attendanceId,
         jobId,
-        title: f.title,
-        description: f.detail,
+        // Stored in English: a fraud alert is an operator-facing audit
+        // record read in logs and exports, so it keeps one stable
+        // language. The admin UI re-localises from ruleCode for display.
+        title: renderRiskTitle(f, "en"),
+        description: renderRiskDetail(f, "en"),
         evidence: JSON.stringify({ attendanceId, rule: f.code }),
       })),
   });

@@ -1,14 +1,19 @@
 import { Calculator } from "lucide-react";
 import { formatHoursDecimal, unitLabelFor } from "@/lib/format";
 import { formatMinutes, formatPaise } from "@/lib/money";
-import type { WageBreakdown } from "@/lib/wages";
-import type { Lang } from "@/lib/i18n";
+import {
+  renderWageLineDetail,
+  renderWageLineLabel,
+  renderWageSummary,
+  type WageBreakdown,
+} from "@/lib/wages";
+import { translatorFor, type Lang } from "@/lib/i18n";
 
-const RATE_SUFFIX = {
-  HOURLY: { en: "/hr", hi: "/घंटा" },
-  DAILY: { en: "/day", hi: "/दिन" },
-  SHIFT: { en: "/shift", hi: "/शिफ्ट" },
-};
+const RATE_SUFFIX_KEY = {
+  HOURLY: "wage.perHourSuffix",
+  DAILY: "wage.perDaySuffix",
+  SHIFT: "wage.perShiftSuffix",
+} as const;
 
 /**
  * The same breakdown object is rendered identically for worker, employer and
@@ -22,26 +27,24 @@ export function WageBreakdownTable({
   breakdown: WageBreakdown;
   lang: Lang;
 }) {
-  const isHi = lang === "hi";
-  const suffix = RATE_SUFFIX[breakdown.wageType][isHi ? "hi" : "en"];
+  const t = translatorFor(lang);
+  const suffix = t(RATE_SUFFIX_KEY[breakdown.wageType]);
 
   return (
     <section
       className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]"
-      aria-label={isHi ? "मजदूरी की गणना" : "Wage calculation"}
+      aria-label={t("wage.calculation")}
     >
       <div className="flex items-center gap-2 border-b border-[var(--border)] bg-[var(--muted)]/50 px-4 py-2.5">
         <Calculator className="size-4 text-[var(--primary)]" aria-hidden />
-        <h3 className="text-sm font-semibold">
-          {isHi ? "मजदूरी की गणना" : "Wage calculation"}
-        </h3>
+        <h3 className="text-sm font-semibold">{t("wage.calculation")}</h3>
       </div>
 
       {/* The three numbers that answer "how did you get this?" at a glance. */}
       <dl className="grid grid-cols-3 divide-x divide-[var(--border)] border-b border-[var(--border)]">
         <div className="px-3 py-3 text-center">
           <dt className="text-[11px] uppercase tracking-wide text-[var(--muted-foreground)]">
-            {isHi ? "दर" : "Rate"}
+            {t("wage.rateShort")}
           </dt>
           <dd className="mt-0.5 text-sm font-semibold tabular-nums">
             {formatPaise(breakdown.rateAppliedPaise)}
@@ -52,7 +55,7 @@ export function WageBreakdownTable({
         </div>
         <div className="px-3 py-3 text-center">
           <dt className="text-[11px] uppercase tracking-wide text-[var(--muted-foreground)]">
-            {isHi ? "सत्यापित" : "Verified"}
+            {t("wage.verifiedShort")}
           </dt>
           <dd className="mt-0.5 text-sm font-semibold tabular-nums">
             {formatHoursDecimal(breakdown.verifiedMinutes)}
@@ -60,7 +63,7 @@ export function WageBreakdownTable({
         </div>
         <div className="px-3 py-3 text-center">
           <dt className="text-[11px] uppercase tracking-wide text-[var(--muted-foreground)]">
-            {isHi ? "कुल" : "Gross"}
+            {t("wage.gross")}
           </dt>
           <dd className="mt-0.5 text-sm font-semibold tabular-nums text-[var(--primary)]">
             {formatPaise(breakdown.grossAmountPaise)}
@@ -69,7 +72,7 @@ export function WageBreakdownTable({
       </dl>
 
       <p className="px-4 pt-3 text-sm text-[var(--muted-foreground)]">
-        {isHi ? breakdown.summaryHi : breakdown.summary}
+        {renderWageSummary(breakdown, lang)}
       </p>
 
       <div className="overflow-x-auto p-4 pt-3">
@@ -86,19 +89,19 @@ export function WageBreakdownTable({
                       : "border-t border-[var(--border)] first:border-t-0"
                   }
                 >
-                  <td className="py-2 pr-3 align-top">
+                  <td className="py-2 pe-3 align-top">
                     <div className={isNet ? "font-semibold" : "font-medium"}>
-                      {isHi ? line.labelHi : line.label}
+                      {renderWageLineLabel(line, lang)}
                     </div>
                     <div className="text-xs font-normal text-[var(--muted-foreground)]">
-                      {line.detail}
+                      {renderWageLineDetail(line, lang)}
                     </div>
                   </td>
                   <td
                     className={
                       isNet
-                        ? "whitespace-nowrap py-2 text-right align-top text-lg font-bold tabular-nums text-[var(--success)]"
-                        : "whitespace-nowrap py-2 text-right align-top tabular-nums"
+                        ? "whitespace-nowrap py-2 text-end align-top text-lg font-bold tabular-nums text-[var(--success)]"
+                        : "whitespace-nowrap py-2 text-end align-top tabular-nums"
                     }
                   >
                     {line.amountPaise === undefined
@@ -115,7 +118,7 @@ export function WageBreakdownTable({
       <dl className="grid grid-cols-2 gap-x-4 gap-y-1 border-t border-[var(--border)] bg-[var(--muted)]/30 px-4 py-2.5 text-xs sm:grid-cols-4">
         <div>
           <dt className="text-[var(--muted-foreground)]">
-            {isHi ? "सत्यापित समय" : "Verified time"}
+            {t("wage.verifiedTime")}
           </dt>
           <dd className="font-medium tabular-nums">
             {formatMinutes(breakdown.verifiedMinutes)}
@@ -123,7 +126,7 @@ export function WageBreakdownTable({
         </div>
         <div>
           <dt className="text-[var(--muted-foreground)]">
-            {isHi ? "लागू दर" : "Rate applied"}
+            {t("wage.rate")}
           </dt>
           <dd className="font-medium tabular-nums">
             {formatPaise(breakdown.rateAppliedPaise)}
@@ -131,7 +134,7 @@ export function WageBreakdownTable({
         </div>
         <div>
           <dt className="text-[var(--muted-foreground)]">
-            {isHi ? "बिल योग्य" : "Billable"}
+            {t("wage.billable")}
           </dt>
           <dd className="font-medium tabular-nums">
             {unitLabelFor(breakdown.billableUnits, breakdown.unitLabel, lang)}
@@ -139,7 +142,7 @@ export function WageBreakdownTable({
         </div>
         <div>
           <dt className="text-[var(--muted-foreground)]">
-            {isHi ? "कटौती" : "Deductions"}
+            {t("wage.deductions")}
           </dt>
           <dd className="font-medium tabular-nums">
             {formatPaise(breakdown.deductionsPaise)}

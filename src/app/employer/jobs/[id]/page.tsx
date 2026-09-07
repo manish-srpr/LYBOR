@@ -11,7 +11,12 @@ import { wageLabel } from "@/components/app/job-card";
 import { prisma } from "@/lib/db";
 import { requireEmployerProfile } from "@/lib/auth";
 import { getTranslator } from "@/lib/lang";
-import { computeMatch, parseFactors, type MatchJob } from "@/lib/matching";
+import {
+  computeMatch,
+  parseFactors,
+  renderMatchSummary,
+  type MatchJob,
+} from "@/lib/matching";
 import { formatDateRange, plural } from "@/lib/format";
 import { formatMinutes, formatPaise } from "@/lib/money";
 import { closeJobAction, respondToApplicationAction } from "@/server/actions/jobs";
@@ -200,7 +205,7 @@ export default async function EmployerJobDetail(props: PageProps<"/employer/jobs
                           ? "यह नियुक्ति बंद है और सत्यापित इतिहास में दर्ज है।"
                           : "Closed and recorded in the verified work history."}
                         {assignment.workHistory.employerRating ? (
-                          <span className="ml-1 inline-flex items-center gap-0.5">
+                          <span className="ms-1 inline-flex items-center gap-0.5">
                             <Star
                               className="size-3.5 fill-[var(--warning)] text-[var(--warning)]"
                               aria-hidden
@@ -318,7 +323,7 @@ export default async function EmployerJobDetail(props: PageProps<"/employer/jobs
                       score={live.score}
                       factors={live.factors}
                       lang={lang}
-                      summary={isHi ? live.summaryHi : live.summary}
+                      summary={renderMatchSummary(live, lang)}
                     />
 
                     {application.matchScore !== null &&

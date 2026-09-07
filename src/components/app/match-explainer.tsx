@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { Check, ChevronDown, CircleAlert, Minus, Sparkles } from "lucide-react";
 import { Progress } from "@/components/ui/misc";
-import type { MatchFactor } from "@/lib/matching";
-import type { Lang } from "@/lib/i18n";
+import {
+  renderMatchFactorLabel,
+  renderMatchFactorReason,
+  type MatchFactor,
+} from "@/lib/matching";
+import { translatorFor, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function toneFor(score: number) {
@@ -67,13 +71,13 @@ export function MatchExplainer({
 }) {
   const [open, setOpen] = useState(false);
   const tone = toneFor(score);
-  const isHi = lang === "hi";
+  const t = translatorFor(lang);
   const met = factors.filter((f) => verdictOf(f.score) === "met").length;
 
   return (
     <section
       className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]"
-      aria-label={isHi ? "मिलान स्कोर की व्याख्या" : "Match score explanation"}
+      aria-label={t("match.title")}
     >
       <div className="flex items-center gap-3 border-b border-[var(--border)] bg-[var(--muted)]/50 p-3">
         {/* Score dial: the number and its severity readable without colour alone. */}
@@ -93,12 +97,10 @@ export function MatchExplainer({
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-sm font-semibold">
             <Sparkles className="size-3.5 text-[var(--primary)]" aria-hidden />
-            {isHi ? "LYBOR मिलान" : "LYBOR Match"}
+            {t("match.title")}
           </p>
           <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
-            {isHi
-              ? `${factors.length} में से ${met} कारक पूरे`
-              : `${met} of ${factors.length} factors met`}
+            {t("match.factorsMet", { met, total: factors.length })}
           </p>
         </div>
       </div>
@@ -117,12 +119,12 @@ export function MatchExplainer({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="text-sm font-medium">
-                      {isHi ? factor.labelHi : factor.label}
+                      {renderMatchFactorLabel(factor, lang)}
                     </span>
                     {open ? (
                       <span className="shrink-0 text-xs tabular-nums text-[var(--muted-foreground)]">
                         {Math.round(factor.score * 100)}%
-                        <span className="ml-1 opacity-70">
+                        <span className="ms-1 opacity-70">
                           × {Math.round(factor.weight * 100)}%
                         </span>
                       </span>
@@ -134,7 +136,7 @@ export function MatchExplainer({
                       !open && "line-clamp-1",
                     )}
                   >
-                    {isHi ? factor.reasonHi : factor.reason}
+                    {renderMatchFactorReason(factor, lang)}
                   </p>
                   {open ? (
                     <Progress
@@ -156,13 +158,7 @@ export function MatchExplainer({
         aria-expanded={open}
         className="flex w-full items-center justify-center gap-1.5 border-t border-[var(--border)] px-3 py-2 text-xs font-medium text-[var(--primary)] hover:bg-[var(--muted)]"
       >
-        {open
-          ? isHi
-            ? "कम दिखाएँ"
-            : "Show less"
-          : isHi
-            ? "यह स्कोर कैसे बना?"
-            : "How was this score calculated?"}
+        {open ? t("match.showLess") : t("match.howCalculated")}
         <ChevronDown
           className={cn("size-3.5 transition-transform", open && "rotate-180")}
           aria-hidden
@@ -171,9 +167,7 @@ export function MatchExplainer({
 
       {open ? (
         <p className="border-t border-[var(--border)] bg-[var(--muted)]/40 px-3 py-2 text-xs text-[var(--muted-foreground)]">
-          {isHi
-            ? "यह स्कोर छह कारकों का भारित औसत है। कोई अनिवार्य कौशल न होने पर स्कोर सीमित कर दिया जाता है। यह एक सिफ़ारिश है, गारंटी नहीं।"
-            : "A weighted average of six factors. A missing mandatory skill caps the score. This is a recommendation, not a guarantee."}
+          {t("match.methodology")}
           {summary ? ` ${summary}` : ""}
         </p>
       ) : null}

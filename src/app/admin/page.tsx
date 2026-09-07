@@ -52,24 +52,20 @@ export default async function AdminOverview() {
     <div className="space-y-6">
       <PageHeader
         title={t("nav.overview")}
-        description={
-          isHi
-            ? "पूरे प्लेटफ़ॉर्म की स्थिति एक नज़र में।"
-            : "The state of the whole platform at a glance."
-        }
+        description={t("dash.adminIntro")}
       />
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Link href="/admin/users">
           <Stat
-            label={isHi ? "श्रमिक" : "Workers"}
+            label={t("nav.workers")}
             value={String(workers)}
             hint={`${employers} ${isHi ? "नियोक्ता" : "employers"}`}
           />
         </Link>
         <Link href="/admin/jobs">
           <Stat
-            label={isHi ? "खुले काम" : "Open jobs"}
+            label={t("nav.allJobs")}
             value={String(openJobs)}
             hint={`${activeAssignments} ${isHi ? "सक्रिय नियुक्तियाँ" : "active assignments"}`}
           />
@@ -84,7 +80,7 @@ export default async function AdminOverview() {
         </Link>
         <Link href="/admin/attendance">
           <Stat
-            label={isHi ? "सत्यापित घंटे" : "Verified hours"}
+            label={t("att.verifiedHours")}
             value={formatMinutes(attendanceAgg._sum.workingMinutes ?? 0)}
             hint={`${attendanceCount} ${isHi ? "दिन" : "days"}`}
           />
@@ -137,7 +133,7 @@ export default async function AdminOverview() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isHi ? "भरोसे के संकेतक" : "Trust indicators"}</CardTitle>
+          <CardTitle>{t("dash.trustIndicators")}</CardTitle>
         </CardHeader>
         <CardContent className="divide-y divide-[var(--border)]">
           <DataRow

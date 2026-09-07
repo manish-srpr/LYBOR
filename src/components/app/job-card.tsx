@@ -3,7 +3,7 @@ import { CalendarDays, Clock, MapPin, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { MatchExplainer } from "./match-explainer";
 import { StatusBadge } from "./status-badge";
-import type { MatchResult } from "@/lib/matching";
+import { renderMatchSummary, type MatchResult } from "@/lib/matching";
 import { formatDateRange } from "@/lib/format";
 import { formatPaise } from "@/lib/money";
 import type { Lang } from "@/lib/i18n";
@@ -117,7 +117,7 @@ export function JobCard({
             score={match.score}
             factors={match.factors}
             lang={lang}
-            summary={lang === "hi" ? match.summaryHi : match.summary}
+            summary={renderMatchSummary(match, lang)}
           />
         </div>
       ) : null}

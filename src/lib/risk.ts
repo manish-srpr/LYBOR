@@ -1,6 +1,7 @@
 import type { FraudSeverity } from "@prisma/client";
 import { formatDistance } from "./geo";
 import { formatMinutes } from "./money";
+import { translate, type Locale, type MessageKey, type TranslateParams } from "./i18n";
 
 /**
  * Explainable attendance risk scoring.
@@ -9,6 +10,11 @@ import { formatMinutes } from "./money";
  * an employer rejecting a day, or an admin reviewing a fraud alert, can see
  * exactly which rule fired and why. Nothing here silently withholds wages: the
  * engine only annotates, a human still approves or rejects.
+ *
+ * Flags carry a translation key plus the observed values as params, not
+ * rendered prose. The engine has no idea what language anyone reads, and a
+ * flag persisted months ago renders in whatever language its reader prefers
+ * today. Scores and thresholds are untouched by any of this.
  */
 
 export type RiskFlagCode =
@@ -27,11 +33,17 @@ export type RiskFlag = {
   severity: FraudSeverity;
   /** Points added to the 0..100 risk score. */
   points: number;
-  title: string;
-  titleHi: string;
-  /** Observed value vs. the rule threshold, in plain language. */
-  detail: string;
-  detailHi: string;
+  /** Values observed by the rule, already formatted for display. */
+  params?: Record<string, string | number>;
+  /**
+   * Legacy rendered prose. Rows written before localisation still carry these
+   * and nothing else, so the renderers below fall back to them rather than
+   * showing a raw key to somebody reviewing an old attendance record.
+   */
+  title?: string;
+  titleHi?: string;
+  detail?: string;
+  detailHi?: string;
 };
 
 export type RiskAssessment = {
@@ -41,8 +53,6 @@ export type RiskAssessment = {
   flags: RiskFlag[];
   /** VERIFIED when clean, FLAGGED when a human should look. */
   verification: "VERIFIED" | "FLAGGED";
-  summary: string;
-  summaryHi: string;
 };
 
 export type AttendanceRiskInput = {
@@ -77,10 +87,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "GPS_OUT_OF_RADIUS_IN",
       severity: "HIGH",
       points: 40,
-      title: "Check-in outside the job site",
-      titleHi: "चेक-इन कार्यस्थल के बाहर",
-      detail: `Check-in was ${formatDistance(input.checkInDistanceM)} from the site, outside the ${formatDistance(input.radiusMeters)} geofence.`,
-      detailHi: `चेक-इन कार्यस्थल से ${formatDistance(input.checkInDistanceM)} दूर था, जो ${formatDistance(input.radiusMeters)} की सीमा से बाहर है।`,
+      params: {
+        distance: formatDistance(input.checkInDistanceM),
+        radius: formatDistance(input.radiusMeters),
+      },
     });
   }
 
@@ -89,10 +99,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "GPS_OUT_OF_RADIUS_OUT",
       severity: "HIGH",
       points: 30,
-      title: "Check-out outside the job site",
-      titleHi: "चेक-आउट कार्यस्थल के बाहर",
-      detail: `Check-out was ${formatDistance(input.checkOutDistanceM)} from the site, outside the ${formatDistance(input.radiusMeters)} geofence.`,
-      detailHi: `चेक-आउट कार्यस्थल से ${formatDistance(input.checkOutDistanceM)} दूर था, जो ${formatDistance(input.radiusMeters)} की सीमा से बाहर है।`,
+      params: {
+        distance: formatDistance(input.checkOutDistanceM),
+        radius: formatDistance(input.radiusMeters),
+      },
     });
   }
 
@@ -105,10 +115,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "LOW_GPS_ACCURACY",
       severity: "LOW",
       points: 8,
-      title: "Low GPS accuracy",
-      titleHi: "जीपीएस सटीकता कम",
-      detail: `Device reported +/- ${Math.round(worstAccuracy)} m, above the ${POOR_ACCURACY_METERS} m threshold. Distance checks are less certain.`,
-      detailHi: `डिवाइस ने +/- ${Math.round(worstAccuracy)} मीटर बताया, जो ${POOR_ACCURACY_METERS} मीटर की सीमा से अधिक है।`,
+      params: {
+        accuracy: Math.round(worstAccuracy),
+        threshold: POOR_ACCURACY_METERS,
+      },
     });
   }
 
@@ -117,12 +127,6 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "DEMO_LOCATION_USED",
       severity: "MEDIUM",
       points: 15,
-      title: "Simulated location used",
-      titleHi: "नकली स्थान का उपयोग",
-      detail:
-        "Location was entered through the demo control rather than the device GPS. Acceptable in a prototype, never in production.",
-      detailHi:
-        "स्थान डिवाइस जीपीएस के बजाय डेमो नियंत्रण से दर्ज किया गया था।",
     });
   }
 
@@ -131,11 +135,6 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "MISSING_CHECK_OUT",
       severity: "MEDIUM",
       points: 20,
-      title: "No check-out recorded",
-      titleHi: "चेक-आउट दर्ज नहीं",
-      detail:
-        "The shift was opened but never closed, so verified hours cannot be computed yet.",
-      detailHi: "शिफ्ट शुरू हुई लेकिन बंद नहीं हुई, इसलिए घंटे गिने नहीं जा सकते।",
     });
   } else {
     if (input.workingMinutes < expectedMinutes * 0.5) {
@@ -143,10 +142,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
         code: "SHIFT_TOO_SHORT",
         severity: "MEDIUM",
         points: 18,
-        title: "Shift much shorter than expected",
-        titleHi: "शिफ्ट अपेक्षा से बहुत छोटी",
-        detail: `Worked ${formatMinutes(input.workingMinutes)} against an expected ${input.expectedHoursPerDay} h, under the 50% mark.`,
-        detailHi: `अपेक्षित ${input.expectedHoursPerDay} घंटे के मुकाबले ${formatMinutes(input.workingMinutes)} काम हुआ।`,
+        params: {
+          worked: formatMinutes(input.workingMinutes),
+          expected: input.expectedHoursPerDay,
+        },
       });
     }
     if (input.workingMinutes > MAX_PLAUSIBLE_MINUTES) {
@@ -154,10 +153,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
         code: "SHIFT_TOO_LONG",
         severity: "HIGH",
         points: 25,
-        title: "Implausibly long shift",
-        titleHi: "असंभव रूप से लंबी शिफ्ट",
-        detail: `Recorded ${formatMinutes(input.workingMinutes)}, beyond the ${MAX_PLAUSIBLE_MINUTES / 60} h plausibility limit. Likely a forgotten check-out.`,
-        detailHi: `${formatMinutes(input.workingMinutes)} दर्ज हुआ, जो ${MAX_PLAUSIBLE_MINUTES / 60} घंटे की सीमा से अधिक है।`,
+        params: {
+          worked: formatMinutes(input.workingMinutes),
+          limit: MAX_PLAUSIBLE_MINUTES / 60,
+        },
       });
     }
   }
@@ -167,10 +166,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "LATE_CHECK_IN",
       severity: "LOW",
       points: 10,
-      title: "Late check-in",
-      titleHi: "देर से चेक-इन",
-      detail: `Checked in ${formatMinutes(input.lateByMinutes)} after the rostered start, past the ${LATE_GRACE_MINUTES} minute grace period.`,
-      detailHi: `निर्धारित समय से ${formatMinutes(input.lateByMinutes)} देर से चेक-इन किया।`,
+      params: {
+        late: formatMinutes(input.lateByMinutes),
+        grace: LATE_GRACE_MINUTES,
+      },
     });
   }
 
@@ -179,10 +178,10 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
       code: "EARLY_CHECK_OUT",
       severity: "LOW",
       points: 10,
-      title: "Early check-out",
-      titleHi: "जल्दी चेक-आउट",
-      detail: `Checked out ${formatMinutes(input.earlyByMinutes)} before the rostered end, past the ${EARLY_GRACE_MINUTES} minute grace period.`,
-      detailHi: `निर्धारित समय से ${formatMinutes(input.earlyByMinutes)} पहले चेक-आउट किया।`,
+      params: {
+        early: formatMinutes(input.earlyByMinutes),
+        grace: EARLY_GRACE_MINUTES,
+      },
     });
   }
 
@@ -190,20 +189,38 @@ export function assessAttendanceRisk(input: AttendanceRiskInput): RiskAssessment
   const level: RiskAssessment["level"] = score >= 50 ? "HIGH" : score >= 20 ? "MEDIUM" : "LOW";
   const verification: RiskAssessment["verification"] = score >= 20 ? "FLAGGED" : "VERIFIED";
 
-  return {
-    score,
-    level,
-    flags,
-    verification,
-    summary:
-      flags.length === 0
-        ? "All attendance checks passed. GPS was inside the job site and hours look normal."
-        : `${flags.length} check(s) need attention: ${flags.map((f) => f.title).join("; ")}.`,
-    summaryHi:
-      flags.length === 0
-        ? "सभी उपस्थिति जांच पास हुईं। जीपीएस कार्यस्थल के भीतर था।"
-        : `${flags.length} जांच पर ध्यान चाहिए: ${flags.map((f) => f.titleHi).join("; ")}।`,
-  };
+  return { score, level, flags, verification };
+}
+
+// --- Rendering -------------------------------------------------------------
+// The engine emits keys; these turn a flag into text in the reader's language,
+// falling back to any legacy prose on rows written before localisation.
+
+export function renderRiskTitle(flag: RiskFlag, locale: Locale): string {
+  if (flag.code) {
+    const key = `risk.${flag.code}.title` as MessageKey;
+    const out = translate(locale, key);
+    if (out !== key) return out;
+  }
+  return (locale === "hi" ? flag.titleHi : flag.title) ?? flag.title ?? flag.code;
+}
+
+export function renderRiskDetail(flag: RiskFlag, locale: Locale): string {
+  if (flag.code) {
+    const key = `risk.${flag.code}.detail` as MessageKey;
+    const out = translate(locale, key, flag.params as TranslateParams);
+    if (out !== key) return out;
+  }
+  return (locale === "hi" ? flag.detailHi : flag.detail) ?? flag.detail ?? "";
+}
+
+/** A one-line summary, built from the flag titles in the reader's language. */
+export function renderRiskSummary(
+  flags: RiskFlag[],
+  locale: Locale,
+): string {
+  if (flags.length === 0) return translate(locale, "att.allChecksPassedBody");
+  return flags.map((flag) => renderRiskTitle(flag, locale)).join("; ");
 }
 
 export function parseRiskFlags(json: string | null): RiskFlag[] {

@@ -59,11 +59,7 @@ export default async function EmployerDashboard() {
     <div className="space-y-6">
       <PageHeader
         title={profile.companyName}
-        description={
-          isHi
-            ? "आपके काम, श्रमिक और भुगतान एक जगह।"
-            : "Your jobs, your workers and your payments in one place."
-        }
+        description={t("dash.employerIntro")}
         action={
           <Link href="/employer/jobs/new" className={buttonVariants({ size: "sm" })}>
             {t("nav.postJob")}
@@ -75,13 +71,13 @@ export default async function EmployerDashboard() {
         <Stat
           label={t("nav.approvals")}
           value={String(pendingApprovals)}
-          hint={isHi ? "दिन समीक्षा के लिए" : "days to review"}
+          hint={t("nav.attendance")}
           tone={pendingApprovals > 0 ? "warning" : "default"}
         />
         <Stat
           label={t("job.applicants")}
           value={String(pendingApplications)}
-          hint={isHi ? "उत्तर की प्रतीक्षा" : "awaiting a response"}
+          hint={t("pay.awaiting")}
         />
         <Stat
           label={t("pay.readyToPay")}
@@ -96,7 +92,7 @@ export default async function EmployerDashboard() {
       </div>
 
       {pendingApprovals > 0 ? (
-        <Alert tone="warning" title={isHi ? "स्वीकृति बाकी" : "Attendance waiting on you"}>
+        <Alert tone="warning" title={t("nav.approvals")}>
           {isHi
             ? `${pendingApprovals} दिन की उपस्थिति स्वीकृति के बिना मजदूरी रुकी हुई है।`
             : `${plural(pendingApprovals, "day")} of verified hours are holding up wages.`}{" "}
@@ -110,7 +106,7 @@ export default async function EmployerDashboard() {
       ) : null}
 
       {flaggedDays > 0 ? (
-        <Alert tone="destructive" title={isHi ? "चिह्नित उपस्थिति" : "Flagged attendance"}>
+        <Alert tone="destructive" title={t("att.riskFlags")}>
           {isHi
             ? `${flaggedDays} दिन जोखिम जाँच में चिह्नित हैं। हर संकेत का कारण दिखाया गया है।`
             : `${plural(flaggedDays, "day")} tripped a risk check. Each flag names the rule that fired.`}
@@ -129,7 +125,7 @@ export default async function EmployerDashboard() {
 
         {jobs.length === 0 ? (
           <EmptyState
-            title={isHi ? "अभी कोई काम पोस्ट नहीं" : "No jobs posted yet"}
+            title={t("job.noneFound")}
             action={
               <Link href="/employer/jobs/new" className={buttonVariants({ size: "sm" })}>
                 {t("nav.postJob")}
