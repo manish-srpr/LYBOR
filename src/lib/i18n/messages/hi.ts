@@ -382,6 +382,11 @@ const hi: PartialMessages = {
   "reliability.detailApprovals": "{total} में से {done} उपस्थिति दिन स्वीकृत हुए।",
   "reliability.detailClean": "{total} में से {done} दिन हर जोखिम जाँच में पास हुए।",
   "reliability.detailJobs": "{count} काम पूरी तरह पूरे किए गए।",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR हर जगह इसी भाषा का उपयोग करेगा। आप इसे कभी भी बदल सकते हैं।",
+  "common.continue": "जारी रखें",
+  "app.languageChangeAnytime": "भाषा बदलें",
+  "app.languageSelected": "चुना गया",
 };
 
 export default hi;

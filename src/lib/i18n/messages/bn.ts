@@ -384,6 +384,11 @@ const bn: PartialMessages = {
   "reliability.detailApprovals": "{total}-এর মধ্যে {done} হাজিরা দিন অনুমোদিত হয়েছে।",
   "reliability.detailClean": "{total}-এর মধ্যে {done} দিন সব ঝুঁকি পরীক্ষায় উত্তীর্ণ হয়েছে।",
   "reliability.detailJobs": "{count} কাজ সম্পূর্ণভাবে শেষ হয়েছে।",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR সর্বত্র এই ভাষাই ব্যবহার করবে। আপনি যেকোনো সময় এটি বদলাতে পারেন।",
+  "common.continue": "চালিয়ে যান",
+  "app.languageChangeAnytime": "ভাষা বদলান",
+  "app.languageSelected": "নির্বাচিত",
 };
 
 export default bn;

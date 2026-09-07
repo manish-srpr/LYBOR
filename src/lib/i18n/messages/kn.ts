@@ -384,6 +384,11 @@ const kn: PartialMessages = {
   "reliability.detailApprovals": "{total} ರಲ್ಲಿ {done} ಹಾಜರಾತಿ ದಿನಗಳು ಅನುಮೋದಿಸಲಾಗಿದೆ.",
   "reliability.detailClean": "{total} ರಲ್ಲಿ {done} ದಿನಗಳು ಎಲ್ಲಾ ಅಪಾಯ ಪರಿಶೀಲನೆಗಳಲ್ಲಿ ಉತ್ತೀರ್ಣ.",
   "reliability.detailJobs": "{count} ಕೆಲಸಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಮುಗಿದಿವೆ.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR ಎಲ್ಲೆಡೆ ಈ ಭಾಷೆಯನ್ನು ಬಳಸುತ್ತದೆ. ನೀವು ಅದನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಬದಲಾಯಿಸಬಹುದು.",
+  "common.continue": "ಮುಂದುವರಿಸಿ",
+  "app.languageChangeAnytime": "ಭಾಷೆ ಬದಲಾಯಿಸಿ",
+  "app.languageSelected": "ಆಯ್ಕೆಯಾಗಿದೆ",
 };
 
 export default kn;

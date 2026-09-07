@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { LanguageToggle } from "@/components/app/language-toggle";
 import { dashboardPathFor, getSession } from "@/lib/auth";
-import { getTranslator } from "@/lib/lang";
+import { getTranslator, hasChosenLocale } from "@/lib/lang";
 
 /**
  * The authentication gateway.
@@ -21,6 +21,10 @@ import { getTranslator } from "@/lib/lang";
 export default async function Home() {
   const session = await getSession();
   if (session) redirect(dashboardPathFor(session.role));
+
+  // Language comes before everything else for a first-time visitor. Checked
+  // after the session redirect so a signed-in user is never bounced here.
+  if (!(await hasChosenLocale())) redirect("/language?next=%2F");
 
   const { lang, t } = await getTranslator();
 

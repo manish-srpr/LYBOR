@@ -384,6 +384,11 @@ const ml: PartialMessages = {
   "reliability.detailApprovals": "{total}-ൽ {done} ഹാജർ ദിവസങ്ങൾ അനുവദിച്ചു.",
   "reliability.detailClean": "{total}-ൽ {done} ദിവസങ്ങൾ എല്ലാ അപായ പരിശോധനകളും വിജയിച്ചു.",
   "reliability.detailJobs": "{count} ജോലികൾ പൂർണ്ണമായി പൂർത്തിയാക്കി.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR എല്ലായിടത്തും ഈ ഭാഷ ഉപയോഗിക്കും. നിങ്ങൾക്ക് എപ്പോൾ വേണമെങ്കിലും മാറ്റാം.",
+  "common.continue": "തുടരുക",
+  "app.languageChangeAnytime": "ഭാഷ മാറ്റുക",
+  "app.languageSelected": "തിരഞ്ഞെടുത്തു",
 };
 
 export default ml;

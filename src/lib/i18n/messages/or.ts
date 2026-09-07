@@ -384,6 +384,11 @@ const or: PartialMessages = {
   "reliability.detailApprovals": "{total} ମଧ୍ୟରୁ {done} ଉପସ୍ଥିତି ଦିନ ଅନୁମୋଦିତ ହୋଇଛି।",
   "reliability.detailClean": "{total} ମଧ୍ୟରୁ {done} ଦିନ ପ୍ରତ୍ୟେକ ବିପଦ ଯାଞ୍ଚରେ ସଫଳ ହୋଇଛି।",
   "reliability.detailJobs": "{count} କାମ ସମ୍ପୂର୍ଣ୍ଣ ଭାବେ ସରିଛି।",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR ସବୁଠାରେ ଏହି ଭାଷା ବ୍ୟବହାର କରିବ। ଆପଣ ଏହାକୁ ଯେକୌଣସି ସମୟରେ ବଦଳାଇ ପାରିବେ।",
+  "common.continue": "ଜାରି ରଖନ୍ତୁ",
+  "app.languageChangeAnytime": "ଭାଷା ବଦଳାନ୍ତୁ",
+  "app.languageSelected": "ଚୟନ ହୋଇଛି",
 };
 
 export default or;

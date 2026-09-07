@@ -384,6 +384,11 @@ const ur: PartialMessages = {
   "reliability.detailApprovals": "{total} میں سے {done} حاضری کے دن منظور ہوئے۔",
   "reliability.detailClean": "{total} میں سے {done} دن ہر خطرے کی جانچ میں کامیاب رہے۔",
   "reliability.detailJobs": "{count} کام مکمل طور پر ختم کیے گئے۔",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR ہر جگہ یہی زبان استعمال کرے گا۔ آپ اسے کسی بھی وقت بدل سکتے ہیں۔",
+  "common.continue": "جاری رکھیں",
+  "app.languageChangeAnytime": "زبان بدلیں",
+  "app.languageSelected": "منتخب",
 };
 
 export default ur;

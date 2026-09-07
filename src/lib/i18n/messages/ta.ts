@@ -384,6 +384,11 @@ const ta: PartialMessages = {
   "reliability.detailApprovals": "{total} இல் {done} வருகை நாட்கள் அனுமதிக்கப்பட்டன.",
   "reliability.detailClean": "{total} இல் {done} நாட்கள் அனைத்து அபாய சோதனைகளிலும் வெற்றி பெற்றன.",
   "reliability.detailJobs": "{count} வேலைகள் முழுமையாக முடிக்கப்பட்டன.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR எல்லா இடங்களிலும் இந்த மொழியைப் பயன்படுத்தும். எப்போது வேண்டுமானாலும் மாற்றலாம்.",
+  "common.continue": "தொடரவும்",
+  "app.languageChangeAnytime": "மொழியை மாற்று",
+  "app.languageSelected": "தேர்ந்தெடுக்கப்பட்டது",
 };
 
 export default ta;

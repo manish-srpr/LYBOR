@@ -1,9 +1,25 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { LanguageToggle } from "@/components/app/language-toggle";
-import { getTranslator } from "@/lib/lang";
+import { getSession } from "@/lib/auth";
+import { getTranslator, hasChosenLocale } from "@/lib/lang";
 
+/**
+ * Shell for sign-in and registration.
+ *
+ * A first-time visitor who lands straight on /login - from a shared link, a
+ * bookmark, or the browser restoring a tab - still gets the language screen
+ * first, then comes back here. Without this the redirect on the gateway would
+ * be a front door with the side windows left open.
+ */
 export default async function AuthLayout({ children }: LayoutProps<"/">) {
+  const session = await getSession();
+  if (!session && !(await hasChosenLocale())) {
+    redirect("/language?next=%2Flogin");
+  }
+
   const { lang, t } = await getTranslator();
+
   return (
     <div className="flex flex-1 flex-col">
       <header className="border-b border-[var(--border)]">

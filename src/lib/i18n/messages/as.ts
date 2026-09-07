@@ -384,6 +384,11 @@ const as: PartialMessages = {
   "reliability.detailApprovals": "{total}-ৰ ভিতৰত {done} উপস্থিতি দিন অনুমোদিত হৈছে।",
   "reliability.detailClean": "{total}-ৰ ভিতৰত {done} দিন সকলো বিপদ পৰীক্ষাত উত্তীৰ্ণ হৈছে।",
   "reliability.detailJobs": "{count} কাম সম্পূৰ্ণভাৱে শেষ হৈছে।",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR সকলো ঠাইত এই ভাষা ব্যৱহাৰ কৰিব। আপুনি ইয়াক যিকোনো সময়তে সলনি কৰিব পাৰে।",
+  "common.continue": "আগবাঢ়ক",
+  "app.languageChangeAnytime": "ভাষা সলনি কৰক",
+  "app.languageSelected": "নিৰ্বাচিত",
 };
 
 export default as;

@@ -384,6 +384,11 @@ const te: PartialMessages = {
   "reliability.detailApprovals": "{total}‌లో {done} హాజరు రోజులు ఆమోదించబడ్డాయి.",
   "reliability.detailClean": "{total}‌లో {done} రోజులు అన్ని ప్రమాద తనిఖీలలో ఉత్తీర్ణమయ్యాయి.",
   "reliability.detailJobs": "{count} పనులు పూర్తిగా ముగించబడ్డాయి.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR అన్ని చోట్ల ఈ భాషను ఉపయోగిస్తుంది. మీరు దీన్ని ఎప్పుడైనా మార్చవచ్చు.",
+  "common.continue": "కొనసాగించండి",
+  "app.languageChangeAnytime": "భాష మార్చండి",
+  "app.languageSelected": "ఎంపిక చేయబడింది",
 };
 
 export default te;

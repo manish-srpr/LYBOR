@@ -384,6 +384,11 @@ const gu: PartialMessages = {
   "reliability.detailApprovals": "{total} માંથી {done} હાજરી દિવસ મંજૂર થયા.",
   "reliability.detailClean": "{total} માંથી {done} દિવસ દરેક જોખમ તપાસમાં પાસ થયા.",
   "reliability.detailJobs": "{count} કામ સંપૂર્ણ રીતે પૂરાં થયાં.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR બધે આ જ ભાષા વાપરશે. તમે તેને કોઈપણ સમયે બદલી શકો છો.",
+  "common.continue": "આગળ વધો",
+  "app.languageChangeAnytime": "ભાષા બદલો",
+  "app.languageSelected": "પસંદ કરેલ",
 };
 
 export default gu;

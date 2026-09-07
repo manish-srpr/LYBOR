@@ -92,3 +92,20 @@ export function negotiateLocale(acceptLanguage: string | null): Locale | null {
   }
   return null;
 }
+
+/**
+ * Sanitises a `?next=` destination for the language screen.
+ *
+ * Only same-origin absolute paths are honoured. A protocol-relative value like
+ * "//evil.example.com" is a real open-redirect vector - the browser treats it
+ * as a host, not a path - so it is rejected alongside anything with a scheme.
+ */
+export function resolveNextPath(value: unknown, fallback = "/"): string {
+  if (typeof value !== "string" || value.length === 0) return fallback;
+  if (!value.startsWith("/")) return fallback;
+  if (value.startsWith("//")) return fallback;
+  // Backslashes are normalised to slashes by some browsers, so "/\evil.com"
+  // would escape the origin too.
+  if (value.includes("\\")) return fallback;
+  return value;
+}

@@ -384,6 +384,11 @@ const mr: PartialMessages = {
   "reliability.detailApprovals": "{total} पैकी {done} हजेरी दिवस मंजूर झाले.",
   "reliability.detailClean": "{total} पैकी {done} दिवस प्रत्येक जोखीम तपासणीत उत्तीर्ण झाले.",
   "reliability.detailJobs": "{count} कामे पूर्णपणे पूर्ण झाली.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR सर्वत्र ही भाषा वापरेल. तुम्ही ती कधीही बदलू शकता.",
+  "common.continue": "पुढे जा",
+  "app.languageChangeAnytime": "भाषा बदला",
+  "app.languageSelected": "निवडलेली",
 };
 
 export default mr;

@@ -203,12 +203,22 @@ console.log("=== CASE: Urdu RTL specifics ===");
   ck(gateway.includes('dir="rtl"'), "Urdu gateway is RTL too");
 }
 
-console.log("=== CASE: unsupported / hostile locale cookie falls back ===");
+console.log("=== CASE: unsupported / hostile locale cookie is not a choice ===");
 for (const bad of ["xx", "../etc", "", "en-US-x-hack"]) {
+  // A cookie holding something unsupported is treated as "never chose", so the
+  // visitor is routed to the language screen rather than silently served a
+  // language they did not pick. Asserted here, and from the other direction in
+  // verify-language-flow.mts TEST D.
   const res = await get("/", { locale: bad });
-  const html = await res.text();
-  ck(res.status === 200, `locale cookie ${JSON.stringify(bad)} still renders`);
-  ck(html.includes('lang="en"'), `locale cookie ${JSON.stringify(bad)} falls back to English`);
+  ck(
+    res.status === 307 && (res.headers.get("location") ?? "").startsWith("/language"),
+    `locale cookie ${JSON.stringify(bad)} routes to the language screen`,
+  );
+  // And the screen itself still renders, in English, rather than erroring.
+  const screen = await get("/language", { locale: bad });
+  const html = await screen.text();
+  ck(screen.status === 200, `language screen renders with cookie ${JSON.stringify(bad)}`);
+  ck(html.includes('lang="en"'), `cookie ${JSON.stringify(bad)} falls back to English`);
 }
 
 console.log("=== CASE: Accept-Language negotiation for a first-time visitor ===");

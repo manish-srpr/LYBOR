@@ -382,6 +382,11 @@ const pa: PartialMessages = {
   "reliability.detailApprovals": "{total} ਵਿੱਚੋਂ {done} ਹਾਜ਼ਰੀ ਦਿਨ ਮਨਜ਼ੂਰ ਹੋਏ।",
   "reliability.detailClean": "{total} ਵਿੱਚੋਂ {done} ਦਿਨ ਹਰ ਜੋਖਮ ਜਾਂਚ ਵਿੱਚ ਪਾਸ ਹੋਏ।",
   "reliability.detailJobs": "{count} ਕੰਮ ਪੂਰੀ ਤਰ੍ਹਾਂ ਪੂਰੇ ਕੀਤੇ ਗਏ।",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR ਹਰ ਥਾਂ ਇਸੇ ਭਾਸ਼ਾ ਦੀ ਵਰਤੋਂ ਕਰੇਗਾ। ਤੁਸੀਂ ਇਸਨੂੰ ਕਦੇ ਵੀ ਬਦਲ ਸਕਦੇ ਹੋ।",
+  "common.continue": "ਜਾਰੀ ਰੱਖੋ",
+  "app.languageChangeAnytime": "ਭਾਸ਼ਾ ਬਦਲੋ",
+  "app.languageSelected": "ਚੁਣਿਆ ਗਿਆ",
 };
 
 export default pa;

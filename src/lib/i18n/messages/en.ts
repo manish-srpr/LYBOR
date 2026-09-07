@@ -406,6 +406,11 @@ const en = {
   "reliability.detailApprovals": "{done} of {total} attendance days were approved.",
   "reliability.detailClean": "{done} of {total} days passed every risk check.",
   "reliability.detailJobs": "{count} job(s) finished end to end.",
+  // --- First-launch language screen ---
+  "app.chooseLanguageBody": "LYBOR will use this language everywhere. You can change it at any time.",
+  "common.continue": "Continue",
+  "app.languageChangeAnytime": "Change language",
+  "app.languageSelected": "Selected",
 } as const;
 
 export default en;
