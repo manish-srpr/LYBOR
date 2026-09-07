@@ -85,7 +85,7 @@ export default async function Home() {
         <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-3 px-4">
           <span className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="grid size-8 place-items-center rounded-lg bg-[var(--primary)] text-sm text-[var(--primary-foreground)]">
-              S
+              L
             </span>
             {t("app.name")}
           </span>
@@ -113,8 +113,8 @@ export default async function Home() {
           </h1>
           <p className="mt-3 text-base text-[var(--muted-foreground)]">
             {isHi
-              ? "स्ट्राइवर हर शिफ्ट को जीपीएस से सत्यापित करता है, हर रुपये की गणना दिखाता है, और हर पूरे किए गए काम को सत्यापित इतिहास में बदल देता है।"
-              : "STRIVER verifies every shift with GPS, shows the arithmetic behind every rupee, and turns every completed job into a work record a worker can carry with them."}
+              ? "LYBOR हर शिफ्ट को जीपीएस से सत्यापित करता है, हर रुपये की गणना दिखाता है, और हर पूरे किए गए काम को सत्यापित इतिहास में बदल देता है।"
+              : "LYBOR verifies every shift with GPS, shows the arithmetic behind every rupee, and turns every completed job into a work record a worker can carry with them."}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/register" className={buttonVariants({ size: "lg" })}>
@@ -185,8 +185,8 @@ export default async function Home() {
       <footer className="border-t border-[var(--border)] py-6">
         <p className="mx-auto max-w-5xl px-4 text-xs text-[var(--muted-foreground)]">
           {isHi
-            ? "स्ट्राइवर प्रोटोटाइप — डेमो डेटा के साथ।"
-            : "STRIVER prototype — running on seeded demo data."}
+            ? "LYBOR प्रोटोटाइप — डेमो डेटा के साथ।"
+            : "LYBOR prototype — running on seeded demo data."}
         </p>
       </footer>
     </div>

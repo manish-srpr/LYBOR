@@ -32,7 +32,7 @@ const prisma = new PrismaClient({
   }),
 });
 
-const PASSWORD_HASH = hashSync("striver123", 10);
+const PASSWORD_HASH = hashSync("lybor123", 10);
 
 const BENGALURU = { latitude: 12.9716, longitude: 77.5946 };
 
@@ -125,7 +125,7 @@ async function main() {
   await prisma.user.create({
     data: {
       phone: "9800000099",
-      email: "admin@striver.example",
+      email: "admin@lybor.example",
       passwordHash: PASSWORD_HASH,
       role: "ADMIN",
       fullName: "Platform Admin",
@@ -999,7 +999,7 @@ async function main() {
   };
   console.log("Seed complete:", counts);
   console.log("Sign in with 9800000001 (worker), 9800000010 (employer), 9800000099 (admin).");
-  console.log("Password for every demo account: striver123");
+  console.log("Password for every demo account: lybor123");
 }
 
 main()

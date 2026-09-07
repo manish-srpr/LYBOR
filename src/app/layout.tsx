@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "STRIVER - Verified work, transparent wages",
+  title: "LYBOR - Verified work, transparent wages",
   description:
     "A blue-collar workforce platform: GPS-verified attendance, transparent wage calculation and verified work history for workers, employers and administrators.",
 };

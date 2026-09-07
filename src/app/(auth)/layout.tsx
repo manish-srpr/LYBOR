@@ -10,7 +10,7 @@ export default async function AuthLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto flex h-14 w-full max-w-md items-center gap-3 px-4">
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="grid size-8 place-items-center rounded-lg bg-[var(--primary)] text-sm text-[var(--primary-foreground)]">
-              S
+              L
             </span>
             {t("app.name")}
           </Link>

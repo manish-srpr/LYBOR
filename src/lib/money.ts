@@ -1,5 +1,5 @@
 /**
- * All money in STRIVER is an integer number of paise. Floating point rupees are
+ * All money in LYBOR is an integer number of paise. Floating point rupees are
  * never stored or arithmetic'd - rounding happens once, at the very end of a
  * calculation, and is always documented in the wage breakdown.
  */

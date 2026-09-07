@@ -59,7 +59,7 @@ export function ReliabilityPanel({
   return (
     <section
       className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]"
-      aria-label={isHi ? "स्ट्राइवर विश्वसनीयता स्कोर" : "STRIVER Reliability Score"}
+      aria-label={isHi ? "LYBOR विश्वसनीयता स्कोर" : "LYBOR Reliability Score"}
     >
       <div className="flex items-center gap-4 border-b border-[var(--border)] bg-[var(--muted)]/50 p-4">
         <div
@@ -79,7 +79,7 @@ export function ReliabilityPanel({
         <div className="min-w-0">
           <h2 className="flex items-center gap-1.5 text-sm font-semibold">
             <ShieldCheck className="size-4 text-[var(--primary)]" aria-hidden />
-            {isHi ? "स्ट्राइवर विश्वसनीयता स्कोर" : "STRIVER Reliability Score"}
+            {isHi ? "LYBOR विश्वसनीयता स्कोर" : "LYBOR Reliability Score"}
           </h2>
           <p className={cn("mt-0.5 text-sm font-medium", TONE_TEXT[level.tone])}>
             {isHi ? level.hi : level.en}

@@ -1,7 +1,7 @@
 /**
  * Invariant checks for the three pure domain engines.
  *
- * These are the parts of STRIVER where being wrong costs somebody money, so
+ * These are the parts of LYBOR where being wrong costs somebody money, so
  * they get asserted rather than eyeballed. Run with `npm run check:engines`.
  */
 import { assessAttendanceRisk } from "../src/lib/risk";

@@ -5,7 +5,7 @@ import { SignJWT, jwtVerify } from "jose";
 import type { Role } from "@prisma/client";
 import { prisma } from "./db";
 
-const COOKIE_NAME = "striver_session";
+const COOKIE_NAME = "lybor_session";
 const SESSION_DAYS = 7;
 
 function secretKey(): Uint8Array {

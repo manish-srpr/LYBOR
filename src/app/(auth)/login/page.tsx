@@ -48,8 +48,8 @@ export default async function LoginPage() {
           ))}
           <p className="pt-2 text-xs text-[var(--muted-foreground)]">
             {lang === "hi"
-              ? "सभी डेमो खातों का पासवर्ड: striver123"
-              : "Password for every demo account: striver123"}
+              ? "सभी डेमो खातों का पासवर्ड: lybor123"
+              : "Password for every demo account: lybor123"}
           </p>
         </CardContent>
       </Card>

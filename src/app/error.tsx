@@ -16,7 +16,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("STRIVER route error:", error);
+    console.error("LYBOR route error:", error);
   }, [error]);
 
   return (

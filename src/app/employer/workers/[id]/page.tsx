@@ -170,7 +170,7 @@ export default async function EmployerWorkerProfile(
             description={
               isHi
                 ? "यह श्रमिक अभी तक कोई काम पूरा नहीं कर पाया है।"
-                : "This worker has not completed a job on STRIVER yet."
+                : "This worker has not completed a job on LYBOR yet."
             }
           />
         ) : (

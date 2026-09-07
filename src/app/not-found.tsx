@@ -11,12 +11,12 @@ export default function NotFound() {
       <div>
         <h1 className="text-lg font-semibold">Page not found</h1>
         <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-          That link does not point anywhere in STRIVER. It may have been a job or
+          That link does not point anywhere in LYBOR. It may have been a job or
           assignment that has since closed.
         </p>
       </div>
       <Link href="/" className={buttonVariants({ size: "lg" })}>
-        Back to STRIVER
+        Back to LYBOR
       </Link>
     </div>
   );

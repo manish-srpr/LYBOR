@@ -107,7 +107,7 @@ const COPY: Record<NotificationType, { title: NotificationCopy; body: Notificati
     body: { en: "Your document was rejected: {reason}.", hi: "आपका दस्तावेज़ अस्वीकृत: {reason}।" },
   },
   SYSTEM: {
-    title: { en: "STRIVER", hi: "स्ट्राइवर" },
+    title: { en: "LYBOR", hi: "LYBOR" },
     body: { en: "{message}", hi: "{message}" },
   },
 };

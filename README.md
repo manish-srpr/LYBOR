@@ -1,4 +1,4 @@
-# STRIVER
+# LYBOR
 
 **Verified work. Transparent wages.**
 
@@ -51,7 +51,7 @@ See `next.config.ts` for how `ALLOWED_ORIGINS` is wired.
 
 ### Demo accounts
 
-Password for every account: `striver123`
+Password for every account: `lybor123`
 
 | Role     | Phone        | Who                        |
 | -------- | ------------ | -------------------------- |

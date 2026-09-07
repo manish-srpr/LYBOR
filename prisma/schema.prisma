@@ -1,4 +1,4 @@
-// STRIVER - Blue-collar workforce trust platform
+// LYBOR - Blue-collar workforce trust platform
 // Datasource is SQLite for zero-setup, offline-reliable demos.
 // The schema is written to be PostgreSQL-portable: no SQLite-specific native
 // types, money stored as integer paise, and every enum maps cleanly to a

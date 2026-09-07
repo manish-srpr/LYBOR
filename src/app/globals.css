@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * STRIVER design tokens. Mobile-first, high contrast, large touch targets:
+ * LYBOR design tokens. Mobile-first, high contrast, large touch targets:
  * the primary user is on a low-end Android phone, often outdoors in daylight.
  */
 :root {

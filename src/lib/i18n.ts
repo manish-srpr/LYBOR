@@ -1,7 +1,7 @@
 export type Lang = "en" | "hi";
 
 export const LANGS: Lang[] = ["en", "hi"];
-export const LANG_COOKIE = "striver_lang";
+export const LANG_COOKIE = "lybor_lang";
 
 /**
  * A flat dictionary keyed by dotted paths. Flat beats nested here: every key is
@@ -9,7 +9,7 @@ export const LANG_COOKIE = "striver_lang";
  * than crashing a screen a worker depends on.
  */
 const en = {
-  "app.name": "STRIVER",
+  "app.name": "LYBOR",
   "app.tagline": "Verified work. Transparent wages.",
   "app.language": "Language",
 
@@ -43,7 +43,7 @@ const en = {
   "auth.role": "I am a",
   "auth.roleWorker": "Worker",
   "auth.roleEmployer": "Employer",
-  "auth.noAccount": "New to STRIVER?",
+  "auth.noAccount": "New to LYBOR?",
   "auth.haveAccount": "Already registered?",
   "auth.invalid": "Phone number or password is incorrect.",
   "auth.city": "City",
@@ -138,7 +138,7 @@ const en = {
 export type TranslationKey = keyof typeof en;
 
 const hi: Record<TranslationKey, string> = {
-  "app.name": "स्ट्राइवर",
+  "app.name": "LYBOR",
   "app.tagline": "सत्यापित काम। पारदर्शी मजदूरी।",
   "app.language": "भाषा",
 
@@ -172,7 +172,7 @@ const hi: Record<TranslationKey, string> = {
   "auth.role": "मैं हूँ",
   "auth.roleWorker": "श्रमिक",
   "auth.roleEmployer": "नियोक्ता",
-  "auth.noAccount": "स्ट्राइवर पर नए हैं?",
+  "auth.noAccount": "LYBOR पर नए हैं?",
   "auth.haveAccount": "पहले से पंजीकृत हैं?",
   "auth.invalid": "मोबाइल नंबर या पासवर्ड गलत है।",
   "auth.city": "शहर",

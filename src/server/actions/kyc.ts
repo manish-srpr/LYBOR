@@ -22,7 +22,7 @@ function maskDocNumber(value: string): string {
 }
 
 function hashDocNumber(value: string): string {
-  const pepper = process.env.JWT_SECRET ?? "striver";
+  const pepper = process.env.JWT_SECRET ?? "lybor";
   return createHash("sha256")
     .update(`${pepper}:${value.replace(/\s+/gu, "").toUpperCase()}`)
     .digest("hex");

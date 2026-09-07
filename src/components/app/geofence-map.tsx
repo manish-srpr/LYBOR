@@ -55,11 +55,11 @@ export function GeofenceMap({
         }
       >
         <defs>
-          <pattern id="striver-grid" width="16" height="16" patternUnits="userSpaceOnUse">
+          <pattern id="lybor-grid" width="16" height="16" patternUnits="userSpaceOnUse">
             <path d="M16 0H0V16" fill="none" stroke="var(--border)" strokeWidth="0.5" />
           </pattern>
         </defs>
-        <rect width="160" height="160" fill="url(#striver-grid)" rx="10" />
+        <rect width="160" height="160" fill="url(#lybor-grid)" rx="10" />
 
         {/* Allowed radius */}
         <circle
