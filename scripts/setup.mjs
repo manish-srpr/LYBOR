@@ -30,12 +30,13 @@ function die(title, lines) {
   process.exit(1);
 }
 
-function run(command, args) {
-  execFileSync(command, args, {
-    cwd: root,
-    stdio: "inherit",
-    shell: process.platform === "win32",
-  });
+// On Windows the launcher is npx.cmd. Naming it directly avoids `shell: true`,
+// which Node warns about because arguments are concatenated rather than
+// escaped - a real hazard, even if nothing here takes user input.
+const NPX = process.platform === "win32" ? "npx.cmd" : "npx";
+
+function run(args) {
+  execFileSync(NPX, args, { cwd: root, stdio: "inherit" });
 }
 
 // --- 1. Node version -------------------------------------------------------
@@ -86,14 +87,16 @@ say("Creating the database");
 {
   // `migrate deploy` applies the committed migrations without prompting, which
   // is what a scripted setup needs; `migrate dev` can stop to ask questions.
-  run("npx", ["prisma", "migrate", "deploy"]);
-  ok("Schema applied to prisma/dev.db.");
+  run(["prisma", "migrate", "deploy"]);
+  ok("Schema applied to dev.db.");
 }
 
 // --- 4. Demo data ----------------------------------------------------------
 say("Loading demo data");
 {
-  const dbPath = path.join(root, "prisma", "dev.db");
+  // Root, not prisma/ - this must agree with resolveSqliteUrl in src/lib/db.ts
+  // and with where prisma.config.ts puts it, or the check below never matches.
+  const dbPath = path.join(root, "dev.db");
   const reseed = process.argv.includes("--reseed");
   let alreadySeeded = false;
 
@@ -111,7 +114,7 @@ say("Loading demo data");
     ok("Demo data already present - skipping.");
     ok("Run `npm run setup -- --reseed` to rebuild it from scratch.");
   } else {
-    run("npx", ["tsx", "prisma/seed.ts"]);
+    run(["tsx", "prisma/seed.ts"]);
   }
 }
 
