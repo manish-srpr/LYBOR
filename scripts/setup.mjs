@@ -30,13 +30,33 @@ function die(title, lines) {
   process.exit(1);
 }
 
-// On Windows the launcher is npx.cmd. Naming it directly avoids `shell: true`,
-// which Node warns about because arguments are concatenated rather than
-// escaped - a real hazard, even if nothing here takes user input.
-const NPX = process.platform === "win32" ? "npx.cmd" : "npx";
-
-function run(args) {
-  execFileSync(NPX, args, { cwd: root, stdio: "inherit" });
+/**
+ * Runs a locally installed CLI by handing its JavaScript entry point to the
+ * same Node that is running this script.
+ *
+ * Not `npx`: on Windows the launcher is a .cmd, which Node refuses to
+ * execFileSync without a shell, and `shell: true` concatenates arguments
+ * instead of escaping them - so the two obvious approaches are each broken in
+ * their own way. The entry point comes from the package's own `bin` field
+ * rather than a hardcoded path, so a version bump that moves it still works.
+ */
+function run(pkg, args) {
+  const manifestPath = path.join(root, "node_modules", pkg, "package.json");
+  if (!existsSync(manifestPath)) {
+    die(`${pkg} is not installed.`, ["Run `npm install` first, then try again."]);
+  }
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+  const entry = typeof manifest.bin === "string" ? manifest.bin : manifest.bin?.[pkg];
+  if (!entry) {
+    die(`Could not find the ${pkg} entry point.`, [
+      "Try deleting node_modules and running `npm install` again.",
+    ]);
+  }
+  execFileSync(
+    process.execPath,
+    [path.join(root, "node_modules", pkg, entry), ...args],
+    { cwd: root, stdio: "inherit" },
+  );
 }
 
 // --- 1. Node version -------------------------------------------------------
@@ -87,7 +107,7 @@ say("Creating the database");
 {
   // `migrate deploy` applies the committed migrations without prompting, which
   // is what a scripted setup needs; `migrate dev` can stop to ask questions.
-  run(["prisma", "migrate", "deploy"]);
+  run("prisma", ["migrate", "deploy"]);
   ok("Schema applied to dev.db.");
 }
 
@@ -114,7 +134,7 @@ say("Loading demo data");
     ok("Demo data already present - skipping.");
     ok("Run `npm run setup -- --reseed` to rebuild it from scratch.");
   } else {
-    run(["tsx", "prisma/seed.ts"]);
+    run("tsx", ["prisma/seed.ts"]);
   }
 }
 
