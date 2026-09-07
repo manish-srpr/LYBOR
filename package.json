@@ -17,7 +17,9 @@
     "check:engines": "tsx scripts/check-engines.ts",
     "check:i18n": "tsx scripts/check-i18n.ts",
     "verify:i18n": "tsx scripts/verify-i18n-http.mts",
-    "verify:language": "tsx scripts/verify-language-flow.mts"
+    "verify:language": "tsx scripts/verify-language-flow.mts",
+    "setup": "node scripts/setup.mjs",
+    "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",
@@ -47,5 +49,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

@@ -12,21 +12,57 @@ Three roles: **WORKER**, **EMPLOYER**, **ADMIN**.
 
 ---
 
-## Running it
+## Running it on your laptop
+
+You need [Node.js](https://nodejs.org) 20.9 or newer. Nothing else - no
+database server, no Docker, no accounts, no API keys.
 
 ```bash
+git clone https://github.com/manish-sprp/lybor-blue-collar-workforce.git
+cd lybor-blue-collar-workforce
 npm install
-cp .env.example .env      # then set JWT_SECRET to any long random string
-npm run db:migrate        # creates dev.db and applies the schema
-npm run db:seed           # demo users, jobs, attendance, payments, disputes
-npm run dev               # http://localhost:3000
+npm run setup
+npm run dev
 ```
 
-`.env` is gitignored, so a fresh clone will not have one. Generate a secret with:
+Then open <http://localhost:3000>.
+
+`npm run setup` checks your Node version, writes a `.env` with a freshly
+generated `JWT_SECRET`, creates the SQLite database, and loads the demo data.
+It is safe to re-run: it leaves anything that already exists alone. To rebuild
+the demo data from scratch:
 
 ```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+npm run setup -- --reseed
 ```
+
+The first screen asks you to choose a language. Pick any of the thirteen; the
+whole app follows it.
+
+### If something goes wrong
+
+**`npm install` fails while building `better-sqlite3`.** This is the only
+native dependency. It normally installs a prebuilt binary, but if your
+platform and Node version have no prebuild it compiles from source and needs a
+C++ toolchain - Xcode command line tools on macOS, `build-essential` and
+`python3` on Linux, or the "Desktop development with C++" workload from Visual
+Studio Build Tools on Windows. Installing an active Node LTS release usually
+avoids the compile entirely.
+
+**`JWT_SECRET is missing or too short`.** Delete `.env` and re-run
+`npm run setup`.
+
+**The port is taken.** `npm run dev -- -p 3001`.
+
+### Useful commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Development server with hot reload |
+| `npm run build && npm start` | Production build, then serve it |
+| `npm run setup -- --reseed` | Rebuild the demo data |
+| `npm run verify:all` | Typecheck, lint, and both invariant suites |
+| `npm run db:studio` | Browse the database in Prisma Studio |
 
 ### Sharing a running instance
 
