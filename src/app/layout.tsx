@@ -13,10 +13,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Kept to the value proposition. This description is served on the
+// unauthenticated route and is what a link preview or search result shows, so
+// it stays behind the same boundary as the gateway itself and does not
+// enumerate the product surface.
 export const metadata: Metadata = {
   title: "LYBOR - Verified work, transparent wages",
   description:
-    "A blue-collar workforce platform: GPS-verified attendance, transparent wage calculation and verified work history for workers, employers and administrators.",
+    "LYBOR is a blue-collar workforce trust platform. Create an account or sign in to continue.",
 };
 
 export const viewport: Viewport = {
