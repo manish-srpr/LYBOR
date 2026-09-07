@@ -19,7 +19,8 @@
     "verify:i18n": "tsx scripts/verify-i18n-http.mts",
     "verify:language": "tsx scripts/verify-language-flow.mts",
     "setup": "node scripts/setup.mjs",
-    "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n"
+    "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n",
+    "verify:session": "tsx scripts/verify-stale-session.mts"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",

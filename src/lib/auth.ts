@@ -6,6 +6,13 @@ import type { Role } from "@prisma/client";
 import { prisma } from "./db";
 
 const COOKIE_NAME = "lybor_session";
+
+/**
+ * Where to send a request whose session cannot be honoured. A Route Handler,
+ * not /login, because only a handler can actually delete the cookie - see
+ * src/app/auth/clear/route.ts for why redirecting to /login instead loops.
+ */
+const STALE_SESSION_PATH = "/auth/clear";
 const SESSION_DAYS = 7;
 
 function secretKey(): Uint8Array {
@@ -78,6 +85,17 @@ export async function getSession(): Promise<SessionPayload | null> {
 export async function requireSession(): Promise<SessionPayload> {
   const session = await getSession();
   if (!session) redirect("/login");
+
+  // A structurally valid token is not enough. If the row it names is gone -
+  // the database was rebuilt, the account was deleted - the session has to be
+  // torn down rather than trusted, or the guards below bounce the browser
+  // between /login and the dashboard forever. One lookup on a primary key.
+  const stillExists = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: { id: true, isActive: true },
+  });
+  if (!stillExists || !stillExists.isActive) redirect(STALE_SESSION_PATH);
+
   return session;
 }
 
@@ -105,7 +123,7 @@ export async function requireWorkerProfile() {
     where: { userId: session.userId },
     include: { user: true },
   });
-  if (!profile) redirect("/login");
+  if (!profile) redirect(STALE_SESSION_PATH);
   return { session, profile };
 }
 
@@ -115,6 +133,6 @@ export async function requireEmployerProfile() {
     where: { userId: session.userId },
     include: { user: true },
   });
-  if (!profile) redirect("/login");
+  if (!profile) redirect(STALE_SESSION_PATH);
   return { session, profile };
 }
