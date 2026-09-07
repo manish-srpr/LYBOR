@@ -41,13 +41,10 @@ whole app follows it.
 
 ### If something goes wrong
 
-**`npm install` fails while building `better-sqlite3`.** This is the only
-native dependency. It normally installs a prebuilt binary, but if your
-platform and Node version have no prebuild it compiles from source and needs a
-C++ toolchain - Xcode command line tools on macOS, `build-essential` and
-`python3` on Linux, or the "Desktop development with C++" workload from Visual
-Studio Build Tools on Windows. Installing an active Node LTS release usually
-avoids the compile entirely.
+**`npm install` fails.** It should not: nothing here compiles. The SQLite
+driver is libSQL, whose native module ships N-API prebuilds - one binary works
+across Node versions, so no C++ toolchain is ever needed. If install does fail,
+it is worth reporting.
 
 **`JWT_SECRET is missing or too short`.** Delete `.env` and re-run
 `npm run setup`.
@@ -289,7 +286,7 @@ sessions in an httpOnly cookie) · bcryptjs · Zod v4 · lucide-react
 
 Prisma 7 moved the connection URL out of `schema.prisma`. It now lives in
 [`prisma.config.ts`](prisma.config.ts) for migrate/introspect, and the runtime
-client uses a driver adapter (`@prisma/adapter-better-sqlite3`) in
+client uses a driver adapter (`@prisma/adapter-libsql`) in
 [`src/lib/db.ts`](src/lib/db.ts).
 
 ### Switching to PostgreSQL

@@ -9,17 +9,12 @@
  * background.
  */
 import "dotenv/config";
-import path from "node:path";
 import { SignJWT } from "jose";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/lib/db";
 import { LOCALES, resolveNextPath, type Locale } from "../src/lib/i18n/locales";
 import { translate, type MessageKey } from "../src/lib/i18n";
 
 const B = "http://localhost:3000";
-const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({ url: path.resolve(process.cwd(), "dev.db") }),
-});
 const key = new TextEncoder().encode(process.env.JWT_SECRET);
 
 const tok: Record<string, string> = {};

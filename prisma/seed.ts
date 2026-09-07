@@ -1,36 +1,21 @@
-import path from "node:path";
 import "dotenv/config";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import {
-  PrismaClient,
-  type EmployerProfile,
-  type Job,
-  type JobSkill,
-  type Skill,
-  type User,
-  type WorkerProfile,
+import type {
+  EmployerProfile,
+  Job,
+  JobSkill,
+  Skill,
+  User,
+  WorkerProfile,
 } from "@prisma/client";
+// The one client, so the seed can never write to a different file than the app
+// reads from. That drift is exactly what produced two databases before.
+import { prisma } from "../src/lib/db";
 import { hashSync } from "bcryptjs";
 import { distanceMeters, offsetBy } from "../src/lib/geo";
 import { assessAttendanceRisk, renderRiskDetail, renderRiskTitle } from "../src/lib/risk";
 import { calculateWage } from "../src/lib/wages";
 import { computeMatch, type MatchJob } from "../src/lib/matching";
 import { rupeesToPaise } from "../src/lib/money";
-
-function resolveSqliteUrl(url: string): string {
-  if (!url.startsWith("file:")) return url;
-  const target = url.slice("file:".length);
-  if (path.isAbsolute(target) || target === ":memory:") return target;
-  // turbopackIgnore keeps this dynamic path out of the build trace; the file
-  // is a local dev database, never a bundled asset.
-  return path.resolve(/* turbopackIgnore: true */ process.cwd(), target);
-}
-
-const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({
-    url: resolveSqliteUrl(process.env.DATABASE_URL ?? "file:./dev.db"),
-  }),
-});
 
 const PASSWORD_HASH = hashSync("lybor123", 10);
 
