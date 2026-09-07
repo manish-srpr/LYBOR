@@ -55,9 +55,11 @@ whole app follows it.
 ### If something goes wrong
 
 **`npm install` fails.** It should not: nothing here compiles. The SQLite
-driver is libSQL, whose native module ships N-API prebuilds - one binary works
-across Node versions, so no C++ toolchain is ever needed. If install does fail,
-it is worth reporting.
+driver is libSQL, which ships prebuilt N-API binaries - one per platform,
+working across Node versions, so no C++ toolchain is needed. Prebuilds exist
+for Windows x64, macOS (Intel and Apple Silicon), and Linux x64/ARM. The one
+gap is **Windows on ARM** (Snapdragon and similar), which has no prebuild and
+would try to compile; use a machine on the list above, or WSL.
 
 **`JWT_SECRET is missing or too short`.** Delete `.env` and re-run
 `npm run setup`.
