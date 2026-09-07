@@ -27,6 +27,19 @@ npm run dev
 
 Then open <http://localhost:3000>.
 
+### Or just double-click
+
+If you would rather not touch a terminal:
+
+| Your machine | Double-click |
+| --- | --- |
+| Windows | `start-lybor.cmd` |
+| macOS / Linux | `start-lybor.sh` (run `chmod +x start-lybor.sh` once) |
+
+Either one installs what is missing, sets up the database, starts the server
+and opens your browser. Keep the window open while you use the app - closing
+it stops the server.
+
 `npm run setup` checks your Node version, writes a `.env` with a freshly
 generated `JWT_SECRET`, creates the SQLite database, and loads the demo data.
 It is safe to re-run: it leaves anything that already exists alone. To rebuild
