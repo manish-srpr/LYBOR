@@ -12,6 +12,36 @@ import type { Lang } from "@/lib/i18n";
 type Mode = "IN" | "OUT";
 
 /**
+ * Turns a GeolocationPositionError into something a worker can act on.
+ *
+ * The three codes are the whole of the spec, but they are not
+ * interchangeable: PERMISSION_DENIED is a settings problem,
+ * POSITION_UNAVAILABLE usually means no sky, and TIMEOUT often just needs
+ * another few seconds. The default branch exists because the object arrives
+ * from the browser and older engines have been known to omit `code`.
+ */
+function geolocationMessage(error: GeolocationPositionError, isHi: boolean): string {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      return isHi
+        ? "स्थान की अनुमति नहीं मिली। ब्राउज़र सेटिंग में स्थान चालू करें, या नीचे डेमो विकल्प उपयोग करें।"
+        : "Location permission was denied. Turn location on for this site in your browser settings, or use a demo option below.";
+    case error.POSITION_UNAVAILABLE:
+      return isHi
+        ? "स्थान उपलब्ध नहीं है। खुले आसमान के नीचे जाएँ और दोबारा कोशिश करें।"
+        : "Your location is not available right now. Step outside or near a window, then try again.";
+    case error.TIMEOUT:
+      return isHi
+        ? "स्थान मिलने में बहुत समय लगा। एक पल रुककर दोबारा कोशिश करें।"
+        : "Finding your location took too long. Wait a moment and try again.";
+    default:
+      return isHi
+        ? "स्थान नहीं मिल सका। दोबारा कोशिश करें।"
+        : "Could not read your location. Try again.";
+  }
+}
+
+/**
  * The GPS punch control.
  *
  * Location is read in the browser and posted to the server, which recomputes
@@ -86,17 +116,12 @@ export function GpsPunch({
       },
       (error) => {
         setReading(false);
-        setResult({
-          ok: false,
-          message:
-            error.code === error.PERMISSION_DENIED
-              ? isHi
-                ? "स्थान की अनुमति नहीं मिली। नीचे डेमो विकल्प उपयोग करें।"
-                : "Location permission was denied. Use a demo option below."
-              : isHi
-                ? "स्थान नहीं मिल सका। दोबारा कोशिश करें।"
-                : "Could not read your location. Try again.",
-        });
+        // Each failure gets its own message, because each has a different
+        // remedy. Collapsing them into "could not read your location" leaves a
+        // worker with no idea whether to change a setting, step outside, or
+        // simply wait - and the fix for a denied permission is nothing like
+        // the fix for a slow satellite lock.
+        setResult({ ok: false, message: geolocationMessage(error, isHi) });
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
     );
@@ -151,8 +176,8 @@ export function GpsPunch({
         <div className="space-y-2 border-t border-[var(--warning)]/40 p-3">
           <p className="text-xs text-[var(--muted-foreground)]">
             {isHi
-              ? "ये बटन असली जीपीएस नहीं हैं। इनसे किया गया चेक-इन हमेशा जोखिम जाँच में DEMO_LOCATION_USED के रूप में दर्ज होता है।"
-              : "These buttons are not real GPS. A punch made with them is always recorded as DEMO_LOCATION_USED in the risk checks, so it can never pass as a genuine verification."}
+              ? "ये बटन असली जीपीएस नहीं हैं। इनसे किया गया चेक-इन जोखिम जाँच में DEMO_LOCATION_USED के रूप में दर्ज होता है। सीमा के बाहर वाला बटन अस्वीकार होगा — जियोफेंस डेमो पर भी लागू होता है।"
+              : "These buttons are not real GPS, and a punch made with them is recorded as DEMO_LOCATION_USED in the risk checks. The out-of-radius one is refused: the geofence applies to demo punches too, so this cannot be used to bypass it."}
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             <Button

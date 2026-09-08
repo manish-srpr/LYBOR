@@ -365,6 +365,8 @@ model Job {
   latitude    Float
   longitude   Float
   // Geofence radius used by the GPS attendance verifier.
+  // Kept in step with DEFAULT_GEOFENCE_RADIUS_M in src/lib/geofence.ts,
+  // which owns the value and the bounds an employer may choose from.
   checkInRadiusMeters Int @default(250)
 
   wageType      WageType

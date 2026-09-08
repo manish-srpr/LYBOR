@@ -4,6 +4,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import {
+  MAX_GEOFENCE_RADIUS_M,
+  MIN_GEOFENCE_RADIUS_M,
+} from "@/lib/geofence";
 import { requireEmployerProfile, requireWorkerProfile } from "@/lib/auth";
 import { computeMatch, type MatchJob, type MatchWorker } from "@/lib/matching";
 import { rupeesToPaise } from "@/lib/money";
@@ -20,7 +24,11 @@ const jobSchema = z.object({
   pincode: z.string().trim().regex(/^\d{6}$/u, "Enter a 6 digit pincode."),
   latitude: z.coerce.number().min(-90).max(90),
   longitude: z.coerce.number().min(-180).max(180),
-  checkInRadiusMeters: z.coerce.number().int().min(50).max(2000),
+  checkInRadiusMeters: z.coerce
+    .number()
+    .int()
+    .min(MIN_GEOFENCE_RADIUS_M)
+    .max(MAX_GEOFENCE_RADIUS_M),
   wageType: z.enum(["HOURLY", "DAILY", "SHIFT"]),
   wageRateRupees: z.coerce.number().positive("Wage must be more than zero."),
   startDate: z.string().min(8),

@@ -1,6 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import {
+  DEFAULT_GEOFENCE_RADIUS_M,
+  MAX_GEOFENCE_RADIUS_M,
+  MIN_GEOFENCE_RADIUS_M,
+} from "@/lib/geofence";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { Alert } from "@/components/ui/misc";
@@ -268,10 +273,10 @@ export function JobForm({
               id="checkInRadiusMeters"
               name="checkInRadiusMeters"
               type="number"
-              min={50}
-              max={2000}
+              min={MIN_GEOFENCE_RADIUS_M}
+              max={MAX_GEOFENCE_RADIUS_M}
               step={10}
-              defaultValue={250}
+              defaultValue={DEFAULT_GEOFENCE_RADIUS_M}
               required
             />
           </Field>
