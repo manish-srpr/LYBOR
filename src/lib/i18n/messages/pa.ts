@@ -454,6 +454,24 @@ const pa: PartialMessages = {
   "assess.unavailableBody":
     "ਤੁਹਾਡੇ ਕਿਸੇ ਹੁਨਰ ਲਈ ਹਾਲੇ ਜਾਂਚ ਨਹੀਂ ਹੈ। ਤੁਹਾਡਾ ਪੱਧਰ ਪੂਰੇ ਕੀਤੇ ਕੰਮਾਂ ਅਤੇ ਨਿਯੋਕਤਾ ਰੇਟਿੰਗਾਂ ਤੋਂ ਬਣਦਾ ਰਹੇਗਾ।",
   "assess.addSkillsFirst": "ਪਹਿਲਾਂ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਹੁਨਰ ਜੋੜੋ, ਫਿਰ ਉਨ੍ਹਾਂ ਦੀ ਜਾਂਚ ਲਈ ਇੱਥੇ ਆਓ।",
+  "emp.findWorkersTitle": "ਕਾਮੇ ਲੱਭੋ",
+  "emp.findWorkersIntro": "ਆਪਣੀ ਸਾਈਟ ਦੇ ਨੇੜੇ ਦੇ ਕਾਮੇ ਵੇਖੋ। ਕੰਮ, ਭਰੋਸੇ ਦੇ ਪੱਧਰ ਅਤੇ ਉਪਲਬਧਤਾ ਨਾਲ ਛਾਣੋ।",
+  "emp.nearMe": "ਤੁਹਾਡੇ ਨੇੜੇ ਦੇ ਕਾਮੇ",
+  "emp.nearMeIntro": "ਤੁਹਾਡੇ ਦਰਜ ਪਤੇ ਦੇ ਸਭ ਤੋਂ ਨੇੜੇ ਉਪਲਬਧ ਕਾਮੇ।",
+  "emp.noWorkers": "ਇਹਨਾਂ ਛਾਣਨੀਆਂ ਨਾਲ ਕੋਈ ਕਾਮਾ ਨਹੀਂ ਮਿਲਿਆ",
+  "emp.noWorkersBody": "ਦੂਰੀ ਵਧਾ ਕੇ ਵੇਖੋ, ਜਾਂ ਕੰਮ ਦੀ ਛਾਣਨੀ ਹਟਾਓ।",
+  "emp.filterTrade": "ਕੰਮ",
+  "emp.filterTrust": "ਭਰੋਸੇ ਦਾ ਪੱਧਰ",
+  "emp.filterRadius": "ਇਸ ਦੂਰੀ ਵਿੱਚ",
+  "emp.anyTrade": "ਕੋਈ ਵੀ ਕੰਮ",
+  "emp.anyLevel": "ਕੋਈ ਵੀ ਪੱਧਰ",
+  "emp.availableOnly": "ਸਿਰਫ਼ ਹੁਣ ਉਪਲਬਧ",
+  "emp.browseWorkers": "ਸਾਰੇ ਕਾਮੇ ਵੇਖੋ",
+  "emp.applicationsWaiting": "ਤੁਹਾਡੇ ਜਵਾਬ ਦੀ ਉਡੀਕ ਵਿੱਚ ਅਰਜ਼ੀਆਂ",
+  "emp.journey": "ਕਾਮੇ ਲੱਭੋ → ਕੰਮ ਪਾਓ → ਨਿਯੁਕਤ ਕਰੋ → ਪਰਖੋ → ਭੁਗਤਾਨ ਕਰੋ",
+  "wrk.journey": "ਕੰਮ ਲੱਭੋ → ਅਰਜ਼ੀ ਦਿਓ → ਕੰਮ ਕਰੋ → ਪੈਸੇ ਲਓ → ਭਰੋਸਾ ਬਣਾਓ",
+  "wrk.availableWork": "ਤੁਹਾਡੇ ਨੇੜੇ ਉਪਲਬਧ ਕੰਮ",
+  "emp.workerSummary": "{years} ਸਾਲ · {jobs} ਕੰਮ ਪੂਰੇ",
 };
 
 export default pa;

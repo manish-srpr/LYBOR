@@ -481,6 +481,24 @@ const en = {
   "assess.unavailableBody":
     "None of your skills has a check yet. Your standing still builds from completed jobs and employer ratings.",
   "assess.addSkillsFirst": "Add your skills to your profile first, then come back to check them.",
+  "emp.findWorkersTitle": "Find workers",
+  "emp.findWorkersIntro": "Browse workers near your sites. Filter by trade, trust level and availability.",
+  "emp.nearMe": "Workers near you",
+  "emp.nearMeIntro": "Closest available workers to your registered address.",
+  "emp.noWorkers": "No workers match these filters",
+  "emp.noWorkersBody": "Try a wider distance, or clear the trade filter.",
+  "emp.filterTrade": "Trade",
+  "emp.filterTrust": "Trust level",
+  "emp.filterRadius": "Within",
+  "emp.anyTrade": "Any trade",
+  "emp.anyLevel": "Any level",
+  "emp.availableOnly": "Available now only",
+  "emp.browseWorkers": "Browse all workers",
+  "emp.applicationsWaiting": "Applications waiting on you",
+  "emp.journey": "Find workers → Post work → Assign → Verify → Pay",
+  "wrk.journey": "Find work → Apply → Work → Get paid → Build trust",
+  "wrk.availableWork": "Work available near you",
+  "emp.workerSummary": "{years} yrs · {jobs} jobs done",
 } as const;
 
 export default en;

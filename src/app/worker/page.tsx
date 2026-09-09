@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Clock, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, BadgeCheck, Clock, MapPin, Sparkles } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Alert, EmptyState, PageHeader, Stat } from "@/components/ui/misc";
 import { Badge } from "@/components/ui/badge";
 import { GpsPunch } from "@/components/app/gps-punch";
 import { JobCard, wageLabel } from "@/components/app/job-card";
+import { RoleJourney } from "@/components/app/role-journey";
 import { ReliabilityPanel } from "@/components/app/reliability-panel";
 import { StatusBadge } from "@/components/app/status-badge";
 import { prisma } from "@/lib/db";
@@ -14,6 +15,8 @@ import { formatTime } from "@/lib/format";
 import { formatMinutes, formatPaise } from "@/lib/money";
 import { computeMatch, type MatchWorker } from "@/lib/matching";
 import { computeReliability } from "@/lib/reliability";
+import { getWorkerTrust } from "@/lib/skill-evidence";
+import { SkillTrustPanel } from "@/components/app/skill-trust-panel";
 
 function todayUtcMidnight(): Date {
   const now = new Date();
@@ -85,6 +88,8 @@ export default async function WorkerDashboard() {
       proficiency: s.proficiency,
     })),
   };
+  const trust = await getWorkerTrust(profile.id);
+
   const recommended = openJobs
     .map((job) => ({
       job,
@@ -102,7 +107,7 @@ export default async function WorkerDashboard() {
       }),
     }))
     .sort((a, b) => b.match.score - a.match.score)
-    .slice(0, 2);
+    .slice(0, 4);
 
   return (
     <div className="space-y-6">
@@ -110,6 +115,8 @@ export default async function WorkerDashboard() {
         title={t("dash.greeting", { name: profile.user.fullName })}
         description={t("dash.workerIntro")}
       />
+
+      <RoleJourney role="WORKER" lang={lang} />
 
       {/* Today: the single most important thing a worker needs on opening the app. */}
       {activeAssignments.length > 0 ? (
@@ -245,6 +252,58 @@ export default async function WorkerDashboard() {
         />
       )}
 
+      <section className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
+              <Sparkles className="size-4 text-[var(--primary)]" aria-hidden />
+              {t("wrk.availableWork")}
+            </h2>
+            <Link href="/worker/jobs" className="text-sm font-medium text-[var(--primary)]">
+              {t("common.viewAll")}
+            </Link>
+          </div>
+        {recommended.length > 0 ? (
+          <div className="grid gap-3">
+            {recommended.map(({ job, match }) => (
+              <JobCard
+                key={job.id}
+                href={`/worker/jobs/${job.id}`}
+                lang={lang}
+                match={match}
+                job={{
+                  id: job.id,
+                  title: job.title,
+                  city: job.city,
+                  status: job.status,
+                  wageType: job.wageType,
+                  wageRatePaise: job.wageRatePaise,
+                  startDate: job.startDate,
+                  endDate: job.endDate,
+                  shiftStart: job.shiftStart,
+                  shiftEnd: job.shiftEnd,
+                  workersRequired: job.workersRequired,
+                  workersAssigned: job.workersAssigned,
+                  employerName: job.employer.companyName,
+                  skills: job.requiredSkills.map((s) =>
+                    isHi ? s.skill.nameHi : s.skill.nameEn,
+                  ),
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title={t("job.noneFound")}
+            description={t("job.findWorkIntro")}
+            action={
+              <Link href="/worker/jobs" className={buttonVariants({ size: "sm" })}>
+                {t("nav.allJobs")}
+              </Link>
+            }
+          />
+        )}
+      </section>
+
       {profile.kycStatus !== "VERIFIED" ? (
         <Alert tone="warning" title={t("kyc.verifyPrompt")}>
           {t("kyc.verifyBody")}{" "}
@@ -279,49 +338,21 @@ export default async function WorkerDashboard() {
         />
       </div>
 
-      {recommended.length > 0 ? (
-        <section className="space-y-3">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
-              <Sparkles className="size-4 text-[var(--primary)]" aria-hidden />
-              {t("dash.recommended")}
-            </h2>
-            <Link href="/worker/jobs" className="text-sm font-medium text-[var(--primary)]">
-              {t("common.viewAll")}
-            </Link>
-          </div>
-          <div className="grid gap-3">
-            {recommended.map(({ job, match }) => (
-              <JobCard
-                key={job.id}
-                href={`/worker/jobs/${job.id}`}
-                lang={lang}
-                match={match}
-                job={{
-                  id: job.id,
-                  title: job.title,
-                  city: job.city,
-                  status: job.status,
-                  wageType: job.wageType,
-                  wageRatePaise: job.wageRatePaise,
-                  startDate: job.startDate,
-                  endDate: job.endDate,
-                  shiftStart: job.shiftStart,
-                  shiftEnd: job.shiftEnd,
-                  workersRequired: job.workersRequired,
-                  workersAssigned: job.workersAssigned,
-                  employerName: job.employer.companyName,
-                  skills: job.requiredSkills.map((s) =>
-                    isHi ? s.skill.nameHi : s.skill.nameEn,
-                  ),
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <ReliabilityPanel breakdown={reliability} lang={lang} />
+
+      {/* What an employer sees about their trades, and the next rung. */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
+            <BadgeCheck className="size-4 text-[var(--primary)]" aria-hidden />
+            {t("trust.sectionTitle")}
+          </h2>
+          <Link href="/worker/profile" className="text-sm font-medium text-[var(--primary)]">
+            {t("nav.profile")}
+          </Link>
+        </div>
+        <SkillTrustPanel skills={trust.skills} lang={lang} showNextSteps />
+      </section>
 
       {pendingApplications > 0 ? (
         <Alert title={t("nav.applications")}>

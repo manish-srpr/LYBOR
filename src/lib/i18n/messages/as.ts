@@ -456,6 +456,24 @@ const as: PartialMessages = {
   "assess.unavailableBody":
     "আপোনাৰ কোনো দক্ষতাৰ বাবে এতিয়াও পৰীক্ষা নাই। সম্পূৰ্ণ কৰা কাম আৰু নিয়োগকৰ্তাৰ মূল্যায়নৰ পৰা আপোনাৰ স্তৰ গঢ় লৈ থাকিব।",
   "assess.addSkillsFirst": "প্ৰথমে প্ৰফাইলত আপোনাৰ দক্ষতা যোগ কৰক, তাৰ পিছত সেইবোৰ পৰীক্ষা কৰিবলৈ ইয়ালৈ আহক।",
+  "emp.findWorkersTitle": "শ্ৰমিক বিচাৰক",
+  "emp.findWorkersIntro": "আপোনাৰ কামৰ ঠাইৰ কাষৰ শ্ৰমিক চাওক। কাম, ভৰসাৰ স্তৰ আৰু উপলব্ধতাৰে বাছনি কৰক।",
+  "emp.nearMe": "আপোনাৰ কাষৰ শ্ৰমিক",
+  "emp.nearMeIntro": "আপোনাৰ পঞ্জীভুক্ত ঠিকনাৰ সবাতোকৈ কাষৰ উপলব্ধ শ্ৰমিক।",
+  "emp.noWorkers": "এই বাছনিৰ সৈতে মিল খোৱা শ্ৰমিক নাই",
+  "emp.noWorkersBody": "দূৰত্ব বঢ়াই চাওক, বা কামৰ বাছনি আঁতৰাওক।",
+  "emp.filterTrade": "কাম",
+  "emp.filterTrust": "ভৰসাৰ স্তৰ",
+  "emp.filterRadius": "এই দূৰত্বৰ ভিতৰত",
+  "emp.anyTrade": "যিকোনো কাম",
+  "emp.anyLevel": "যিকোনো স্তৰ",
+  "emp.availableOnly": "কেৱল এতিয়া উপলব্ধ",
+  "emp.browseWorkers": "সকলো শ্ৰমিক চাওক",
+  "emp.applicationsWaiting": "আপোনাৰ উত্তৰৰ অপেক্ষাত আবেদন",
+  "emp.journey": "শ্ৰমিক বিচাৰক → কাম দিয়ক → নিযুক্ত কৰক → পৰীক্ষা কৰক → পৰিশোধ কৰক",
+  "wrk.journey": "কাম বিচাৰক → আবেদন কৰক → কাম কৰক → মজুৰি লওক → ভৰসা গঢ়ক",
+  "wrk.availableWork": "আপোনাৰ কাষত উপলব্ধ কাম",
+  "emp.workerSummary": "{years} বছৰ · {jobs} কাম সম্পূৰ্ণ",
 };
 
 export default as;

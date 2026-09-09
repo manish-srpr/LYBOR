@@ -46,74 +46,128 @@ function parseSkillsUsed(json: string): string[] {
   }
 }
 
-export async function getWorkerTrust(workerProfileId: string): Promise<WorkerTrust> {
+/**
+ * Standing for many workers at once.
+ *
+ * The employer's worker directory needs this for every row it shows. Calling
+ * the single-worker version in a loop would issue four queries per worker,
+ * which against a network database (Turso in production) turns a twenty-row
+ * list into eighty round trips. These are the same four queries, widened to
+ * the whole set and then grouped in memory, so the cost is four regardless of
+ * how many workers are listed.
+ *
+ * The derivation itself is untouched - it still goes through deriveSkillTrust,
+ * so the ladder has exactly one implementation.
+ */
+export async function getWorkerTrustMany(
+  workerProfileIds: string[],
+): Promise<Map<string, WorkerTrust>> {
+  const ids = [...new Set(workerProfileIds)];
+  const result = new Map<string, WorkerTrust>();
+  if (ids.length === 0) return result;
+
   const [workerSkills, assessments, history, assignmentCounts] = await Promise.all([
     prisma.workerSkill.findMany({
-      where: { workerProfileId },
+      where: { workerProfileId: { in: ids } },
       include: { skill: true },
       orderBy: { skill: { nameEn: "asc" } },
     }),
-    prisma.skillAssessment.findMany({ where: { workerProfileId } }),
+    prisma.skillAssessment.findMany({ where: { workerProfileId: { in: ids } } }),
     prisma.workHistory.findMany({
-      where: { workerProfileId, completionStatus: "COMPLETED" },
-      select: { skillsUsed: true, employerRating: true },
+      where: { workerProfileId: { in: ids }, completionStatus: "COMPLETED" },
+      select: { workerProfileId: true, skillsUsed: true, employerRating: true },
     }),
     prisma.jobAssignment.groupBy({
-      by: ["status"],
-      where: { workerProfileId },
+      by: ["workerProfileId", "status"],
+      where: { workerProfileId: { in: ids } },
       _count: { _all: true },
     }),
   ]);
 
-  const bySkillId = new Map(assessments.map((a) => [a.skillId, a]));
-
-  // Completion rate over assignments that have actually reached an end state.
-  // Counting live assignments as failures would punish a worker for having
-  // work in progress.
-  // ASSIGNED and ACTIVE are still running; COMPLETED and TERMINATED are the
-  // two ways an assignment ends.
-  const settled = assignmentCounts.filter(
-    (row) => row.status === "COMPLETED" || row.status === "TERMINATED",
-  );
-  const settledTotal = settled.reduce((sum, row) => sum + row._count._all, 0);
-  const completed =
-    settled.find((row) => row.status === "COMPLETED")?._count._all ?? 0;
-  // A worker with nothing settled yet gets the benefit of the doubt here,
-  // because the Expert rung already requires completed jobs of its own.
-  const completionRate = settledTotal === 0 ? 1 : completed / settledTotal;
-
-  const skills = workerSkills.map((ws) => {
-    const needle = ws.skill.nameEn.trim().toLowerCase();
-    const matching = history.filter((h) => parseSkillsUsed(h.skillsUsed).includes(needle));
-    const assessment = bySkillId.get(ws.skillId);
-
-    const evidence: SkillEvidence = {
-      skillCode: ws.skill.code,
-      skillName: ws.skill.nameEn,
-      selfDeclaredProficiency: ws.proficiency,
-      selfDeclaredYears: ws.yearsExperience,
-      assessment: assessment
-        ? {
-            scorePercent: assessment.scorePercent,
-            passed: assessment.passed,
-            takenAt: assessment.takenAt,
-          }
-        : null,
-      verifiedJobs: matching.length,
-      ratings: matching
-        .map((h) => h.employerRating)
-        .filter((r): r is number => typeof r === "number"),
-    };
-
-    return deriveSkillTrust(evidence, completionRate);
-  });
-
-  return {
-    skills,
-    headline: headlineTrust(skills),
-    completionRate,
-    hasAnyEvidence: skills.some((s) => s.level !== "SELF_DECLARED"),
+  const group = <T,>(rows: T[], key: (row: T) => string) => {
+    const map = new Map<string, T[]>();
+    for (const row of rows) {
+      const k = key(row);
+      const bucket = map.get(k);
+      if (bucket) bucket.push(row);
+      else map.set(k, [row]);
+    }
+    return map;
   };
+
+  const skillsBy = group(workerSkills, (r) => r.workerProfileId);
+  const assessmentsBy = group(assessments, (r) => r.workerProfileId);
+  const historyBy = group(history, (r) => r.workerProfileId);
+  const countsBy = group(assignmentCounts, (r) => r.workerProfileId);
+
+  for (const id of ids) {
+    const mySkills = skillsBy.get(id) ?? [];
+    const myHistory = historyBy.get(id) ?? [];
+    const bySkillId = new Map((assessmentsBy.get(id) ?? []).map((a) => [a.skillId, a]));
+
+    // Completion rate over assignments that have actually reached an end
+    // state. Counting live assignments as failures would punish a worker for
+    // having work in progress.
+    // ASSIGNED and ACTIVE are still running; COMPLETED and TERMINATED are the
+    // two ways an assignment ends.
+    const settled = (countsBy.get(id) ?? []).filter(
+      (row) => row.status === "COMPLETED" || row.status === "TERMINATED",
+    );
+    const settledTotal = settled.reduce((sum, row) => sum + row._count._all, 0);
+    const completed = settled.find((row) => row.status === "COMPLETED")?._count._all ?? 0;
+    // A worker with nothing settled yet gets the benefit of the doubt here,
+    // because the Expert rung already requires completed jobs of its own.
+    const completionRate = settledTotal === 0 ? 1 : completed / settledTotal;
+
+    const skills = mySkills.map((ws) => {
+      const needle = ws.skill.nameEn.trim().toLowerCase();
+      const matching = myHistory.filter((h) =>
+        parseSkillsUsed(h.skillsUsed).includes(needle),
+      );
+      const assessment = bySkillId.get(ws.skillId);
+
+      const evidence: SkillEvidence = {
+        skillCode: ws.skill.code,
+        skillName: ws.skill.nameEn,
+        selfDeclaredProficiency: ws.proficiency,
+        selfDeclaredYears: ws.yearsExperience,
+        assessment: assessment
+          ? {
+              scorePercent: assessment.scorePercent,
+              passed: assessment.passed,
+              takenAt: assessment.takenAt,
+            }
+          : null,
+        verifiedJobs: matching.length,
+        ratings: matching
+          .map((h) => h.employerRating)
+          .filter((r): r is number => typeof r === "number"),
+      };
+
+      return deriveSkillTrust(evidence, completionRate);
+    });
+
+    result.set(id, {
+      skills,
+      headline: headlineTrust(skills),
+      completionRate,
+      hasAnyEvidence: skills.some((s) => s.level !== "SELF_DECLARED"),
+    });
+  }
+
+  return result;
+}
+
+export async function getWorkerTrust(workerProfileId: string): Promise<WorkerTrust> {
+  const many = await getWorkerTrustMany([workerProfileId]);
+  return (
+    many.get(workerProfileId) ?? {
+      skills: [],
+      headline: null,
+      completionRate: 1,
+      hasAnyEvidence: false,
+    }
+  );
 }
 
 /**

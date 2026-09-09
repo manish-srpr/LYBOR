@@ -456,6 +456,24 @@ const mr: PartialMessages = {
   "assess.unavailableBody":
     "तुमच्या कोणत्याही कौशल्यासाठी अजून चाचणी नाही. तुमचा स्तर पूर्ण केलेली कामे आणि नियोक्ता मानांकनांतून तयार होत राहील.",
   "assess.addSkillsFirst": "आधी तुमच्या प्रोफाइलमध्ये कौशल्ये जोडा, मग ती तपासण्यासाठी येथे या.",
+  "emp.findWorkersTitle": "कामगार शोधा",
+  "emp.findWorkersIntro": "तुमच्या कामाच्या ठिकाणाजवळील कामगार पाहा. काम, विश्वास पातळी आणि उपलब्धतेनुसार गाळा.",
+  "emp.nearMe": "तुमच्या जवळील कामगार",
+  "emp.nearMeIntro": "तुमच्या नोंदणीकृत पत्त्याच्या सर्वात जवळचे उपलब्ध कामगार.",
+  "emp.noWorkers": "या गाळण्यांशी जुळणारा कामगार नाही",
+  "emp.noWorkersBody": "अंतर वाढवून पाहा, किंवा कामाची गाळणी काढा.",
+  "emp.filterTrade": "काम",
+  "emp.filterTrust": "विश्वास पातळी",
+  "emp.filterRadius": "या अंतरात",
+  "emp.anyTrade": "कोणतेही काम",
+  "emp.anyLevel": "कोणतीही पातळी",
+  "emp.availableOnly": "फक्त आता उपलब्ध",
+  "emp.browseWorkers": "सर्व कामगार पाहा",
+  "emp.applicationsWaiting": "तुमच्या उत्तराच्या प्रतीक्षेत अर्ज",
+  "emp.journey": "कामगार शोधा → काम टाका → नियुक्त करा → पडताळा → पैसे द्या",
+  "wrk.journey": "काम शोधा → अर्ज करा → काम करा → पैसे मिळवा → विश्वास कमवा",
+  "wrk.availableWork": "तुमच्या जवळ उपलब्ध काम",
+  "emp.workerSummary": "{years} वर्षे · {jobs} कामे पूर्ण",
 };
 
 export default mr;

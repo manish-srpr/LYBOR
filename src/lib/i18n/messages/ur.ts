@@ -456,6 +456,24 @@ const ur: PartialMessages = {
   "assess.unavailableBody":
     "آپ کے کسی ہنر کے لیے ابھی جانچ نہیں ہے۔ آپ کا درجہ مکمل کیے گئے کاموں اور آجر درجہ بندیوں سے بنتا رہے گا۔",
   "assess.addSkillsFirst": "پہلے اپنی پروفائل میں ہنر شامل کریں، پھر انہیں جانچنے کے لیے یہاں آئیں۔",
+  "emp.findWorkersTitle": "کارکن تلاش کریں",
+  "emp.findWorkersIntro": "اپنی سائٹ کے قریب کارکن دیکھیں۔ کام، بھروسے کی سطح اور دستیابی سے چھانیں۔",
+  "emp.nearMe": "آپ کے قریب کارکن",
+  "emp.nearMeIntro": "آپ کے رجسٹرڈ پتے کے قریب ترین دستیاب کارکن۔",
+  "emp.noWorkers": "ان چھاننیوں سے کوئی کارکن نہیں ملا",
+  "emp.noWorkersBody": "فاصلہ بڑھا کر دیکھیں، یا کام کی چھاننی ہٹا دیں۔",
+  "emp.filterTrade": "کام",
+  "emp.filterTrust": "بھروسے کی سطح",
+  "emp.filterRadius": "اس فاصلے میں",
+  "emp.anyTrade": "کوئی بھی کام",
+  "emp.anyLevel": "کوئی بھی سطح",
+  "emp.availableOnly": "صرف ابھی دستیاب",
+  "emp.browseWorkers": "تمام کارکن دیکھیں",
+  "emp.applicationsWaiting": "آپ کے جواب کے منتظر درخواستیں",
+  "emp.journey": "کارکن تلاش کریں → کام ڈالیں → مقرر کریں → تصدیق کریں → ادائیگی کریں",
+  "wrk.journey": "کام تلاش کریں → درخواست دیں → کام کریں → اجرت لیں → بھروسہ بنائیں",
+  "wrk.availableWork": "آپ کے قریب دستیاب کام",
+  "emp.workerSummary": "{years} سال · {jobs} کام مکمل",
 };
 
 export default ur;

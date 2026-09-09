@@ -456,6 +456,24 @@ const gu: PartialMessages = {
   "assess.unavailableBody":
     "તમારા કોઈ કૌશલ્ય માટે હજી ચકાસણી નથી. તમારું સ્તર પૂર્ણ કરેલાં કામ અને નિયોક્તા રેટિંગથી બનતું રહેશે.",
   "assess.addSkillsFirst": "પહેલાં તમારી પ્રોફાઇલમાં કૌશલ્ય ઉમેરો, પછી તેમને ચકાસવા માટે અહીં આવો.",
+  "emp.findWorkersTitle": "કામદારો શોધો",
+  "emp.findWorkersIntro": "તમારી સાઇટ પાસેના કામદારો જુઓ. કામ, ભરોસાનું સ્તર અને ઉપલબ્ધતા વડે ગાળો.",
+  "emp.nearMe": "તમારી નજીકના કામદારો",
+  "emp.nearMeIntro": "તમારા નોંધાયેલા સરનામાની સૌથી નજીકના ઉપલબ્ધ કામદારો.",
+  "emp.noWorkers": "આ ગાળણીઓ સાથે કોઈ કામદાર મળ્યો નથી",
+  "emp.noWorkersBody": "અંતર વધારીને જુઓ, અથવા કામની ગાળણી હટાવો.",
+  "emp.filterTrade": "કામ",
+  "emp.filterTrust": "ભરોસાનું સ્તર",
+  "emp.filterRadius": "આ અંતરમાં",
+  "emp.anyTrade": "કોઈપણ કામ",
+  "emp.anyLevel": "કોઈપણ સ્તર",
+  "emp.availableOnly": "ફક્ત હાલ ઉપલબ્ધ",
+  "emp.browseWorkers": "બધા કામદારો જુઓ",
+  "emp.applicationsWaiting": "તમારા જવાબની રાહમાં અરજીઓ",
+  "emp.journey": "કામદાર શોધો → કામ મૂકો → નિયુક્ત કરો → ચકાસો → ચૂકવો",
+  "wrk.journey": "કામ શોધો → અરજી કરો → કામ કરો → પૈસા મેળવો → ભરોસો બનાવો",
+  "wrk.availableWork": "તમારી નજીક ઉપલબ્ધ કામ",
+  "emp.workerSummary": "{years} વર્ષ · {jobs} કામ પૂર્ણ",
 };
 
 export default gu;

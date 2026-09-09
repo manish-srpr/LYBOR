@@ -1,5 +1,6 @@
 import {
   BriefcaseBusiness,
+  Users,
   CircleCheckBig,
   LayoutDashboard,
   MessageSquareWarning,
@@ -21,6 +22,7 @@ import {
 
 const NAV: NavItem[] = [
   { href: "/employer", labelKey: "nav.dashboard", icon: <LayoutDashboard /> },
+  { href: "/employer/workers", labelKey: "nav.workers", icon: <Users /> },
   { href: "/employer/jobs", labelKey: "nav.myJobs", icon: <BriefcaseBusiness /> },
   { href: "/employer/approvals", labelKey: "nav.attendanceApprovals", icon: <CircleCheckBig /> },
   { href: "/employer/payments", labelKey: "nav.payments", icon: <Wallet /> },

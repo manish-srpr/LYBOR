@@ -456,6 +456,24 @@ const bn: PartialMessages = {
   "assess.unavailableBody":
     "আপনার কোনও দক্ষতার জন্য এখনও পরীক্ষা নেই। সম্পন্ন কাজ আর নিয়োগকর্তার রেটিং থেকে আপনার স্তর তৈরি হতে থাকবে।",
   "assess.addSkillsFirst": "প্রথমে প্রোফাইলে আপনার দক্ষতা যোগ করুন, তারপর সেগুলি যাচাই করতে এখানে আসুন।",
+  "emp.findWorkersTitle": "শ্রমিক খুঁজুন",
+  "emp.findWorkersIntro": "আপনার কর্মস্থলের কাছের শ্রমিক দেখুন। কাজ, ভরসার স্তর ও উপলব্ধতা দিয়ে ছাঁকুন।",
+  "emp.nearMe": "আপনার কাছের শ্রমিক",
+  "emp.nearMeIntro": "আপনার নিবন্ধিত ঠিকানার সবচেয়ে কাছের উপলব্ধ শ্রমিক।",
+  "emp.noWorkers": "এই ছাঁকনিতে কোনো শ্রমিক মেলেনি",
+  "emp.noWorkersBody": "দূরত্ব বাড়িয়ে দেখুন, বা কাজের ছাঁকনি সরান।",
+  "emp.filterTrade": "কাজ",
+  "emp.filterTrust": "ভরসার স্তর",
+  "emp.filterRadius": "এই দূরত্বে",
+  "emp.anyTrade": "যেকোনো কাজ",
+  "emp.anyLevel": "যেকোনো স্তর",
+  "emp.availableOnly": "কেবল এখন উপলব্ধ",
+  "emp.browseWorkers": "সব শ্রমিক দেখুন",
+  "emp.applicationsWaiting": "আপনার উত্তরের অপেক্ষায় আবেদন",
+  "emp.journey": "শ্রমিক খুঁজুন → কাজ দিন → নিয়োগ → যাচাই → পরিশোধ",
+  "wrk.journey": "কাজ খুঁজুন → আবেদন → কাজ → পারিশ্রমিক → ভরসা গড়ুন",
+  "wrk.availableWork": "আপনার কাছে উপলব্ধ কাজ",
+  "emp.workerSummary": "{years} বছর · {jobs} কাজ সম্পন্ন",
 };
 
 export default bn;

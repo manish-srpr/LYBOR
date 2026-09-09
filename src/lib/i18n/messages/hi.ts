@@ -454,6 +454,24 @@ const hi: PartialMessages = {
   "assess.unavailableBody":
     "आपके किसी कौशल के लिए अभी जाँच उपलब्ध नहीं है। आपका स्तर पूरे किए गए काम और नियोक्ता रेटिंग से बनता रहेगा।",
   "assess.addSkillsFirst": "पहले अपनी प्रोफ़ाइल में कौशल जोड़ें, फिर उन्हें जाँचने के लिए यहाँ आएँ।",
+  "emp.findWorkersTitle": "श्रमिक खोजें",
+  "emp.findWorkersIntro": "अपने कार्यस्थल के पास के श्रमिक देखें। काम, भरोसे के स्तर और उपलब्धता से छाँटें।",
+  "emp.nearMe": "आपके पास के श्रमिक",
+  "emp.nearMeIntro": "आपके पंजीकृत पते के सबसे नज़दीक उपलब्ध श्रमिक।",
+  "emp.noWorkers": "इन छाँटों से कोई श्रमिक नहीं मिला",
+  "emp.noWorkersBody": "दूरी बढ़ाकर देखें, या काम की छाँट हटा दें।",
+  "emp.filterTrade": "काम",
+  "emp.filterTrust": "भरोसे का स्तर",
+  "emp.filterRadius": "इस दूरी में",
+  "emp.anyTrade": "कोई भी काम",
+  "emp.anyLevel": "कोई भी स्तर",
+  "emp.availableOnly": "केवल अभी उपलब्ध",
+  "emp.browseWorkers": "सभी श्रमिक देखें",
+  "emp.applicationsWaiting": "आपके उत्तर की प्रतीक्षा में आवेदन",
+  "emp.journey": "श्रमिक खोजें → काम डालें → नियुक्त करें → सत्यापित करें → भुगतान करें",
+  "wrk.journey": "काम खोजें → आवेदन करें → काम करें → भुगतान पाएँ → भरोसा बनाएँ",
+  "wrk.availableWork": "आपके पास उपलब्ध काम",
+  "emp.workerSummary": "{years} वर्ष · {jobs} काम पूरे",
 };
 
 export default hi;
