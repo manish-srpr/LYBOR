@@ -39,11 +39,43 @@ type StepState =
   | { kind: "timeout" }
   | { kind: "unsupported" };
 
+/**
+ * Our own ceiling on the wait.
+ *
+ * The `timeout` option below is not enough on its own. It bounds *acquiring* a
+ * position once permission exists; it does not run while the browser is
+ * waiting for the person to answer the permission prompt. Dismiss that prompt
+ * rather than blocking it - tap the X, or outside it - and Chrome calls
+ * neither the success nor the error callback. Nothing resolves, and the screen
+ * sits on "Checking location" forever. This timer is what guarantees the
+ * screen always comes back with something to do.
+ */
+const WATCHDOG_MS = 9000;
+
+/**
+ * Shorter than the watchdog so a real GPS timeout reports itself as one,
+ * rather than being overtaken by our fallback.
+ */
+const POSITION_TIMEOUT_MS = 8000;
+
+/**
+ * A fix from the last five minutes is accepted, which on a phone that has
+ * recently used maps returns instantly. Login only needs to establish that
+ * location works and where the person broadly is - metre accuracy belongs to
+ * the worksite check-in, which asks separately with its own stricter options.
+ */
+const POSITION_MAX_AGE_MS = 300_000;
+
 export function LocationRequest({ lang, next }: { lang: Lang; next: string }) {
   const isHi = lang === "hi";
   const router = useRouter();
-  const [state, setState] = useState<StepState>({ kind: "checking" });
+  // Starts idle, not checking. Rendering a spinner before anything has been
+  // asked was half the reported problem: the screen looked busy while it was
+  // in fact waiting for a tap.
+  const [state, setState] = useState<StepState>({ kind: "idle" });
   const started = useRef(false);
+  const watchdog = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const settled = useRef(false);
 
   const proceed = useCallback(() => {
     // Written from the client because the browser is the only party that knows
@@ -60,35 +92,74 @@ export function LocationRequest({ lang, next }: { lang: Lang; next: string }) {
       setState({ kind: "unsupported" });
       return;
     }
+
+    // Whichever of the three outcomes arrives first wins, and the other two
+    // are ignored. Without this the watchdog and a late browser callback could
+    // both fire and fight over the state.
+    settled.current = false;
+    if (watchdog.current) clearTimeout(watchdog.current);
+
+    const finish = (outcome: StepState | "ok") => {
+      if (settled.current) return;
+      settled.current = true;
+      if (watchdog.current) clearTimeout(watchdog.current);
+      watchdog.current = null;
+      if (outcome === "ok") proceed();
+      else setState(outcome);
+    };
+
     setState({ kind: "checking" });
+
+    watchdog.current = setTimeout(() => finish({ kind: "timeout" }), WATCHDOG_MS);
+
     navigator.geolocation.getCurrentPosition(
-      () => proceed(),
+      // The coordinates are deliberately not read. This step establishes that
+      // location works; the position that matters is taken again, freshly, at
+      // check-in. No country or city test either - any valid fix is accepted.
+      () => finish("ok"),
       (error) => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setState({ kind: "denied" });
+            finish({ kind: "denied" });
             break;
           case error.POSITION_UNAVAILABLE:
-            setState({ kind: "unavailable" });
+            finish({ kind: "unavailable" });
             break;
           case error.TIMEOUT:
-            setState({ kind: "timeout" });
+            finish({ kind: "timeout" });
             break;
           default:
-            setState({ kind: "unavailable" });
+            finish({ kind: "unavailable" });
         }
       },
-      { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 },
+      {
+        // Low accuracy on purpose: a coarse network fix returns in a moment,
+        // where a GPS lock can take tens of seconds indoors and is no more
+        // useful for simply proving location is available.
+        enableHighAccuracy: false,
+        timeout: POSITION_TIMEOUT_MS,
+        maximumAge: POSITION_MAX_AGE_MS,
+      },
     );
   }, [proceed]);
+
+  // Clear the timer if the screen goes away mid-request.
+  useEffect(
+    () => () => {
+      if (watchdog.current) clearTimeout(watchdog.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (started.current) return;
     started.current = true;
     let cancelled = false;
 
-    // Resolved asynchronously rather than with a synchronous setState in the
-    // effect body, which would force a cascading render.
+    // Only auto-request when permission already exists. Otherwise the screen
+    // stays on its button and waits for a tap - which is both the honest thing
+    // to show and, on several mobile browsers, the user gesture the prompt
+    // requires anyway.
     async function decide(): Promise<StepState | "request"> {
       if (typeof navigator === "undefined" || !navigator.geolocation) {
         return { kind: "unsupported" };
@@ -247,11 +318,22 @@ function messageFor(
     case "timeout":
       return {
         tone: "warn",
-        title: isHi ? "स्थान मिलने में देर हुई" : "Finding your location took too long",
+        title: isHi ? "स्थान नहीं मिल सका" : "Unable to get your location",
         body: isHi
-          ? "जीपीएस को समय लग रहा है। एक पल रुककर दोबारा कोशिश करें।"
-          : "The GPS fix is taking a while. Wait a moment, then try again.",
+          ? "यह अपेक्षा से अधिक समय ले रहा है। जाँचें कि आपके डिवाइस में स्थान चालू है, और अगर ब्राउज़र ने अनुमति माँगी थी तो “अनुमति दें” चुनें।"
+          : "Please make sure Location is enabled on your device, and if the browser asked for permission, choose Allow.",
         action: retry,
+        steps: isHi
+          ? [
+              "डिवाइस सेटिंग में स्थान चालू करें।",
+              "अगर ब्राउज़र ने अनुमति माँगी हो तो “अनुमति दें” चुनें — उसे बंद न करें।",
+              "नीचे “दोबारा कोशिश करें” दबाएँ।",
+            ]
+          : [
+              "Turn on Location in your device settings.",
+              "If the browser asks for permission, choose Allow — closing the prompt leaves it unanswered.",
+              "Press “Try again” below.",
+            ],
       };
     case "unsupported":
       return {
@@ -265,8 +347,10 @@ function messageFor(
     default:
       return {
         tone: "info",
-        title: isHi ? "स्थान की जाँच" : "Checking location",
-        body: isHi ? "एक पल…" : "One moment…",
+        title: isHi ? "📍 आपका स्थान जाँचा जा रहा है…" : "📍 Checking your location…",
+        body: isHi
+          ? "कृपया प्रतीक्षा करें। यदि ब्राउज़र अनुमति माँगे तो “अनुमति दें” चुनें।"
+          : "Please wait while we verify your location. If the browser asks, choose Allow.",
         action: retry,
       };
   }

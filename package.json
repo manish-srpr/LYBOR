@@ -23,7 +23,8 @@
     "verify:session": "tsx scripts/verify-stale-session.mts",
     "verify:gps": "tsx scripts/verify-gps-attendance.mts",
     "verify:flow": "tsx scripts/verify-work-flow.mts",
-    "verify:login": "tsx scripts/verify-login-location.mts"
+    "verify:login": "tsx scripts/verify-login-location.mts",
+    "verify:loctiming": "tsx scripts/verify-location-timing.mts"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",
