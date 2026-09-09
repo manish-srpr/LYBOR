@@ -394,6 +394,68 @@ const te: PartialMessages = {
   "nav.attendanceApprovals": "హాజరు & ఆమోదాలు",
   "att.todaysShift": "ఈ రోజు షిఫ్ట్",
   "att.viewFullDay": "పూర్తి రోజు చూడండి",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "నైపుణ్యాలు మరియు ఆధారాలు",
+  "trust.sectionIntro": "కార్మికుడు ప్రతి నైపుణ్యం గురించి ఏమి చెప్పారు, LYBOR ఏమి ధృవీకరించగలిగింది — పక్కపక్కనే.",
+  "trust.selfDeclaredHeading": "స్వయం ప్రకటిత",
+  "trust.verifiedHeading": "ధృవీకరించిన ఆధారాలు",
+  "trust.noSkills": "ఇంకా ఏ నైపుణ్యం జోడించలేదు.",
+  "trust.basisLabel": "ఆధారం",
+  "trust.nextStepLabel": "పైకి ఎదగడానికి",
+  "trust.levelSelfDeclared": "స్వయం ప్రకటిత",
+  "trust.levelSkilled": "నైపుణ్య పరీక్షలో ఉత్తీర్ణత",
+  "trust.levelVerified": "ధృవీకరించిన",
+  "trust.levelExpert": "నిపుణుడు",
+  "trust.proficiencyBeginner": "ప్రారంభ స్థాయి",
+  "trust.proficiencyIntermediate": "మధ్యస్థ",
+  "trust.proficiencyExpert": "నిపుణుడు",
+  "trust.selfDeclaredYears_one": "{count} సంవత్సరం అని చెప్పారు",
+  "trust.selfDeclaredYears_other": "{count} సంవత్సరాలు అని చెప్పారు",
+  "trust.checkNotTaken": "నైపుణ్య పరీక్ష రాయలేదు",
+  "trust.checkScore": "నైపుణ్య పరీక్ష {percent}%",
+  "trust.verifiedJobs_one": "ఈ నైపుణ్యంతో {count} పని పూర్తి చేశారు",
+  "trust.verifiedJobs_other": "ఈ నైపుణ్యంతో {count} పనులు పూర్తి చేశారు",
+  "trust.fromEmployers_one": "{count} యజమాని నుండి",
+  "trust.fromEmployers_other": "{count} యజమానుల నుండి",
+  "trust.basisExpert":
+    "నైపుణ్య పరీక్షలో {percent}% మార్కులతో ఉత్తీర్ణత, ఈ నైపుణ్యంతో {jobs} ధృవీకరించిన పనులు పూర్తి, మరియు {raters} యజమానుల నుండి సగటు {rating}/5.",
+  "trust.basisVerified":
+    "నైపుణ్య పరీక్షలో {percent}% మార్కులతో ఉత్తీర్ణత మరియు ఈ నైపుణ్యంతో {jobs} ధృవీకరించిన పనులు పూర్తి.",
+  "trust.basisSkilled":
+    "నైపుణ్య పరీక్షలో {percent}% మార్కులతో ఉత్తీర్ణత. ఈ నైపుణ్యంతో ఇంకా ఏ పని పూర్తి కాలేదు.",
+  "trust.basisSkilledSomeJobs":
+    "నైపుణ్య పరీక్షలో {percent}% మార్కులతో ఉత్తీర్ణత మరియు ఈ నైపుణ్యంతో {jobs} ధృవీకరించిన పనులు పూర్తి.",
+  "trust.basisJobsNoCheck":
+    "కార్మికుడే జోడించారు. ఈ నైపుణ్యంతో {jobs} పనులు పూర్తి, కానీ నైపుణ్య పరీక్ష రాయలేదు.",
+  "trust.basisFailed":
+    "నైపుణ్య పరీక్షలో {percent}% మార్కులు, ఇది {pass}% ఉత్తీర్ణ మార్కుల కంటే తక్కువ. దీన్ని తిరిగి రాయవచ్చు.",
+  "trust.basisNone":
+    "కార్మికుడే జోడించారు. నైపుణ్య పరీక్ష రాయలేదు మరియు ఈ నైపుణ్యంతో ఏ పని పూర్తి కాలేదు.",
+  "trust.nextExpertJobs":
+    "నిపుణుడు స్థాయికి ఇంకా {jobs} ధృవీకరించిన పనులు మరియు యజమానుల నుండి {rating}/5 సగటు.",
+  "trust.nextExpertRating": "నిపుణుడు స్థాయికి యజమాని రేటింగ్ {rating}/5 లేదా ఎక్కువగా ఉంచండి.",
+  "trust.nextVerifiedJobs": "ధృవీకరించిన స్థాయికి ఈ నైపుణ్యంతో {jobs} పనులు పూర్తి చేయండి.",
+  "trust.nextSkilled": "“నైపుణ్య పరీక్షలో ఉత్తీర్ణత” కోసం పరీక్షలో {pass}% లేదా ఎక్కువ మార్కులు సాధించండి.",
+  "trust.disclaimer":
+    "ఈ స్థాయిలు LYBOR వద్ద ఉన్న ఆధారాలను తెలుపుతాయి — ఒక వ్యక్తి గురించి హామీ కాదు. ఒక చిన్న నైపుణ్య పరీక్ష మరియు కొన్ని యజమాని రేటింగ్‌లు ఒక ప్రారంభం మాత్రమే, వృత్తి ధృవపత్రం కాదు — పనికి తీసుకునే ముందు మీరే పరిశీలించండి.",
+  "assess.title": "నైపుణ్య పరీక్ష",
+  "assess.intro":
+    "ప్రతి పనికి కొన్ని ఆచరణాత్మక ప్రశ్నలు. ఉత్తీర్ణత సాధిస్తే ఆ నైపుణ్యం స్వయం ప్రకటిత నుండి “నైపుణ్య పరీక్షలో ఉత్తీర్ణత”గా మారుతుంది.",
+  "assess.chooseSkill": "ఏ నైపుణ్యం?",
+  "assess.passMark": "ఉత్తీర్ణ మార్కు {percent}%",
+  "assess.notCertification": "ఇది ఒక చిన్న జ్ఞాన పరీక్ష — ధృవపత్రం లేదా వృత్తి లైసెన్స్ కాదు.",
+  "assess.questionNumber": "ప్రశ్న {index} / {total}",
+  "assess.submit": "సమాధానాలు పంపండి",
+  "assess.retake": "పరీక్ష తిరిగి రాయండి",
+  "assess.backToProfile": "ప్రొఫైల్‌కు తిరిగి",
+  "assess.resultPassed": "ఉత్తీర్ణత.",
+  "assess.resultFailed": "ఈసారి ఉత్తీర్ణత కాలేదు.",
+  "assess.resultScore": "{total}లో {correct} సమాధానాలు సరైనవి — {percent}%.",
+  "assess.previousResult": "మీ గత ప్రయత్నంలో {percent}% మార్కులు. తిరిగి రాస్తే అది మారుతుంది.",
+  "assess.unavailableTitle": "ఇంకా నైపుణ్య పరీక్ష అందుబాటులో లేదు",
+  "assess.unavailableBody":
+    "మీ ఏ నైపుణ్యానికీ ఇంకా పరీక్ష లేదు. పూర్తి చేసిన పనులు మరియు యజమాని రేటింగ్‌ల నుండి మీ స్థాయి నిర్మాణమవుతూ ఉంటుంది.",
+  "assess.addSkillsFirst": "మొదట మీ ప్రొఫైల్‌లో నైపుణ్యాలు జోడించండి, తర్వాత వాటిని పరీక్షించడానికి ఇక్కడకు రండి.",
 };
 
 export default te;

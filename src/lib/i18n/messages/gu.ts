@@ -394,6 +394,68 @@ const gu: PartialMessages = {
   "nav.attendanceApprovals": "હાજરી અને મંજૂરીઓ",
   "att.todaysShift": "આજની શિફ્ટ",
   "att.viewFullDay": "આખો દિવસ જુઓ",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "કૌશલ્ય અને પુરાવા",
+  "trust.sectionIntro": "કામદાર દરેક કૌશલ્ય વિશે શું કહે છે, અને LYBOR શું ચકાસી શક્યું — સાથે સાથે.",
+  "trust.selfDeclaredHeading": "સ્વયં-ઘોષિત",
+  "trust.verifiedHeading": "ચકાસાયેલા પુરાવા",
+  "trust.noSkills": "હજી કોઈ કૌશલ્ય ઉમેર્યું નથી.",
+  "trust.basisLabel": "આધાર",
+  "trust.nextStepLabel": "આગળ વધવા માટે",
+  "trust.levelSelfDeclared": "સ્વયં-ઘોષિત",
+  "trust.levelSkilled": "કૌશલ્ય ચકાસણી પાસ",
+  "trust.levelVerified": "ચકાસાયેલ",
+  "trust.levelExpert": "નિષ્ણાત",
+  "trust.proficiencyBeginner": "શરૂઆતી",
+  "trust.proficiencyIntermediate": "મધ્યમ",
+  "trust.proficiencyExpert": "નિષ્ણાત",
+  "trust.selfDeclaredYears_one": "{count} વર્ષનો દાવો",
+  "trust.selfDeclaredYears_other": "{count} વર્ષોનો દાવો",
+  "trust.checkNotTaken": "કૌશલ્ય ચકાસણી આપી નથી",
+  "trust.checkScore": "કૌશલ્ય ચકાસણી {percent}%",
+  "trust.verifiedJobs_one": "આ કૌશલ્યથી {count} કામ પૂર્ણ કર્યું",
+  "trust.verifiedJobs_other": "આ કૌશલ્યથી {count} કામ પૂર્ણ કર્યાં",
+  "trust.fromEmployers_one": "{count} નિયોક્તા તરફથી",
+  "trust.fromEmployers_other": "{count} નિયોક્તાઓ તરફથી",
+  "trust.basisExpert":
+    "કૌશલ્ય ચકાસણી {percent}% સાથે પાસ, આ કૌશલ્યથી {jobs} ચકાસાયેલાં કામ પૂર્ણ કર્યાં, અને {raters} નિયોક્તાઓ તરફથી સરેરાશ {rating}/5.",
+  "trust.basisVerified":
+    "કૌશલ્ય ચકાસણી {percent}% સાથે પાસ અને આ કૌશલ્યથી {jobs} ચકાસાયેલાં કામ પૂર્ણ કર્યાં.",
+  "trust.basisSkilled":
+    "કૌશલ્ય ચકાસણી {percent}% સાથે પાસ. આ કૌશલ્યથી હજી કોઈ કામ પૂર્ણ કર્યું નથી.",
+  "trust.basisSkilledSomeJobs":
+    "કૌશલ્ય ચકાસણી {percent}% સાથે પાસ અને આ કૌશલ્યથી {jobs} ચકાસાયેલાં કામ પૂર્ણ કર્યાં.",
+  "trust.basisJobsNoCheck":
+    "કામદારે ઉમેર્યું. આ કૌશલ્યથી {jobs} કામ પૂર્ણ કર્યાં, પણ કૌશલ્ય ચકાસણી આપી નથી.",
+  "trust.basisFailed":
+    "કૌશલ્ય ચકાસણીમાં {percent}% ગુણ મળ્યા, જે {pass}% પાસ ગુણથી ઓછા છે. તે ફરીથી આપી શકાય છે.",
+  "trust.basisNone":
+    "કામદારે ઉમેર્યું. કોઈ કૌશલ્ય ચકાસણી આપી નથી અને આ કૌશલ્યથી કોઈ કામ પૂર્ણ થયું નથી.",
+  "trust.nextExpertJobs":
+    "નિષ્ણાત માટે {jobs} વધુ ચકાસાયેલાં કામ અને નિયોક્તાઓ તરફથી {rating}/5 સરેરાશ.",
+  "trust.nextExpertRating": "નિષ્ણાત માટે નિયોક્તા રેટિંગ {rating}/5 કે તેથી વધુ રાખો.",
+  "trust.nextVerifiedJobs": "ચકાસાયેલ માટે આ કૌશલ્યથી {jobs} ચકાસાયેલાં કામ.",
+  "trust.nextSkilled": "“કૌશલ્ય ચકાસણી પાસ” માટે ચકાસણીમાં {pass}% કે વધુ ગુણ મેળવો.",
+  "trust.disclaimer":
+    "આ સ્તર દર્શાવે છે કે LYBOR પાસે કયા પુરાવા છે — તે વ્યક્તિ વિશેની ખાતરી નથી. એક નાની કૌશલ્ય ચકાસણી અને કેટલીક નિયોક્તા રેટિંગ શરૂઆત છે, વ્યાવસાયિક પ્રમાણપત્ર નથી — કામે રાખતાં પહેલાં જાતે પણ ચકાસો.",
+  "assess.title": "કૌશલ્ય ચકાસણી",
+  "assess.intro":
+    "દરેક કામ માટે કેટલાક વ્યવહારુ પ્રશ્નો. પાસ થવાથી તે કૌશલ્ય સ્વયં-ઘોષિતથી “કૌશલ્ય ચકાસણી પાસ” બને છે.",
+  "assess.chooseSkill": "કયું કૌશલ્ય?",
+  "assess.passMark": "પાસ ગુણ {percent}%",
+  "assess.notCertification": "આ એક નાની જ્ઞાન ચકાસણી છે — પ્રમાણપત્ર કે વ્યાવસાયિક લાઇસન્સ નથી.",
+  "assess.questionNumber": "પ્રશ્ન {index} / {total}",
+  "assess.submit": "જવાબ મોકલો",
+  "assess.retake": "ચકાસણી ફરી આપો",
+  "assess.backToProfile": "પ્રોફાઇલ પર પાછા",
+  "assess.resultPassed": "પાસ.",
+  "assess.resultFailed": "આ વખતે પાસ થયા નથી.",
+  "assess.resultScore": "તમે {total} માંથી {correct} જવાબ સાચા આપ્યા — {percent}%.",
+  "assess.previousResult": "તમારા આગલા પ્રયાસમાં {percent}% ગુણ હતા. ફરી જવાબ આપવાથી તે બદલાશે.",
+  "assess.unavailableTitle": "હજી કોઈ કૌશલ્ય ચકાસણી ઉપલબ્ધ નથી",
+  "assess.unavailableBody":
+    "તમારા કોઈ કૌશલ્ય માટે હજી ચકાસણી નથી. તમારું સ્તર પૂર્ણ કરેલાં કામ અને નિયોક્તા રેટિંગથી બનતું રહેશે.",
+  "assess.addSkillsFirst": "પહેલાં તમારી પ્રોફાઇલમાં કૌશલ્ય ઉમેરો, પછી તેમને ચકાસવા માટે અહીં આવો.",
 };
 
 export default gu;

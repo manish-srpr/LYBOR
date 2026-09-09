@@ -416,6 +416,71 @@ const en = {
   "nav.attendanceApprovals": "Attendance & approvals",
   "att.todaysShift": "Today's shift",
   "att.viewFullDay": "View full day",
+  // --- Skill trust and the skill check ---
+  // A claim is never a credential: these keys keep the two visibly separate.
+  "trust.sectionTitle": "Skills and evidence",
+  "trust.sectionIntro":
+    "What the worker says about each skill, next to what LYBOR could verify.",
+  "trust.selfDeclaredHeading": "Self-declared",
+  "trust.verifiedHeading": "Verified evidence",
+  "trust.noSkills": "No skills added yet.",
+  "trust.basisLabel": "Why",
+  "trust.nextStepLabel": "To move up",
+  "trust.levelSelfDeclared": "Self-declared",
+  "trust.levelSkilled": "Skill check passed",
+  "trust.levelVerified": "Verified",
+  "trust.levelExpert": "Expert",
+  "trust.proficiencyBeginner": "Beginner",
+  "trust.proficiencyIntermediate": "Intermediate",
+  "trust.proficiencyExpert": "Expert",
+  "trust.selfDeclaredYears_one": "{count} year claimed",
+  "trust.selfDeclaredYears_other": "{count} years claimed",
+  "trust.checkNotTaken": "Skill check not taken",
+  "trust.checkScore": "Skill check {percent}%",
+  "trust.verifiedJobs_one": "{count} completed job using this skill",
+  "trust.verifiedJobs_other": "{count} completed jobs using this skill",
+  "trust.fromEmployers_one": "from {count} employer",
+  "trust.fromEmployers_other": "from {count} employers",
+  "trust.basisExpert":
+    "Passed the skill check at {percent}%, completed {jobs} verified jobs using this skill, and averages {rating}/5 from {raters} employers.",
+  "trust.basisVerified":
+    "Passed the skill check at {percent}% and completed {jobs} verified jobs using this skill.",
+  "trust.basisSkilled":
+    "Passed the skill check at {percent}%. No completed jobs using this skill yet.",
+  "trust.basisSkilledSomeJobs":
+    "Passed the skill check at {percent}% and completed {jobs} verified jobs using this skill.",
+  "trust.basisJobsNoCheck":
+    "Added by the worker. {jobs} completed jobs using this skill, but the skill check has not been taken.",
+  "trust.basisFailed":
+    "Skill check scored {percent}%, below the {pass}% pass mark. It can be retaken.",
+  "trust.basisNone":
+    "Added by the worker. No skill check taken and no completed jobs using this skill yet.",
+  "trust.nextExpertJobs":
+    "{jobs} more verified jobs and a {rating}/5 employer average for Expert.",
+  "trust.nextExpertRating": "Keep employer ratings at {rating}/5 or above for Expert.",
+  "trust.nextVerifiedJobs": "{jobs} verified jobs using this skill for Verified.",
+  "trust.nextSkilled": "Pass the skill check ({pass}% or above) for Skilled.",
+  "trust.disclaimer":
+    "These levels describe the evidence LYBOR holds, not a guarantee about a person. A short skill check and a few employer ratings are a starting point, not a trade certificate — always judge for yourself before hiring.",
+  "assess.title": "Skill check",
+  "assess.intro":
+    "A few practical questions per trade. Passing moves that skill from self-declared to Skilled.",
+  "assess.chooseSkill": "Which skill?",
+  "assess.passMark": "Pass mark {percent}%",
+  "assess.notCertification":
+    "This is a short knowledge check, not a certificate or a trade licence.",
+  "assess.questionNumber": "Question {index} of {total}",
+  "assess.submit": "Submit answers",
+  "assess.retake": "Retake the check",
+  "assess.backToProfile": "Back to profile",
+  "assess.resultPassed": "Passed.",
+  "assess.resultFailed": "Not passed this time.",
+  "assess.resultScore": "You answered {correct} of {total} correctly — {percent}%.",
+  "assess.previousResult": "Your last attempt scored {percent}%. Answering again replaces it.",
+  "assess.unavailableTitle": "No skill check available yet",
+  "assess.unavailableBody":
+    "None of your skills has a check yet. Your standing still builds from completed jobs and employer ratings.",
+  "assess.addSkillsFirst": "Add your skills to your profile first, then come back to check them.",
 } as const;
 
 export default en;

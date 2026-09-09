@@ -394,6 +394,68 @@ const or: PartialMessages = {
   "nav.attendanceApprovals": "ଉପସ୍ଥିତି ଓ ଅନୁମୋଦନ",
   "att.todaysShift": "ଆଜିର ସିଫ୍ଟ",
   "att.viewFullDay": "ସମ୍ପୂର୍ଣ୍ଣ ଦିନ ଦେଖନ୍ତୁ",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "ଦକ୍ଷତା ଏବଂ ପ୍ରମାଣ",
+  "trust.sectionIntro": "ଶ୍ରମିକ ପ୍ରତ୍ୟେକ ଦକ୍ଷତା ବିଷୟରେ କଣ କହନ୍ତି, ଏବଂ LYBOR କଣ ଯାଞ୍ଚ କରିପାରିଲା — ପାଶାପାଶି।",
+  "trust.selfDeclaredHeading": "ନିଜେ ଘୋଷିତ",
+  "trust.verifiedHeading": "ଯାଞ୍ଚ ହୋଇଥିବା ପ୍ରମାଣ",
+  "trust.noSkills": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଦକ୍ଷତା ଯୋଡ଼ାଯାଇ ନାହିଁ।",
+  "trust.basisLabel": "ଆଧାର",
+  "trust.nextStepLabel": "ଆଗକୁ ବଢ଼ିବା ପାଇଁ",
+  "trust.levelSelfDeclared": "ନିଜେ ଘୋଷିତ",
+  "trust.levelSkilled": "ଦକ୍ଷତା ଯାଞ୍ଚ ଉତ୍ତୀର୍ଣ୍ଣ",
+  "trust.levelVerified": "ଯାଞ୍ଚ ହୋଇଥିବା",
+  "trust.levelExpert": "ବିଶେଷଜ୍ଞ",
+  "trust.proficiencyBeginner": "ନୂଆ",
+  "trust.proficiencyIntermediate": "ମଧ୍ୟମ",
+  "trust.proficiencyExpert": "ବିଶେଷଜ୍ଞ",
+  "trust.selfDeclaredYears_one": "{count} ବର୍ଷର ଦାବି",
+  "trust.selfDeclaredYears_other": "{count} ବର୍ଷର ଦାବି",
+  "trust.checkNotTaken": "ଦକ୍ଷତା ଯାଞ୍ଚ ଦିଆଯାଇ ନାହିଁ",
+  "trust.checkScore": "ଦକ୍ଷତା ଯାଞ୍ଚ {percent}%",
+  "trust.verifiedJobs_one": "ଏହି ଦକ୍ଷତାରେ {count}ଟି କାମ ସମ୍ପୂର୍ଣ୍ଣ",
+  "trust.verifiedJobs_other": "ଏହି ଦକ୍ଷତାରେ {count}ଟି କାମ ସମ୍ପୂର୍ଣ୍ଣ",
+  "trust.fromEmployers_one": "{count} ନିଯୁକ୍ତିଦାତାଙ୍କଠାରୁ",
+  "trust.fromEmployers_other": "{count} ନିଯୁକ୍ତିଦାତାଙ୍କଠାରୁ",
+  "trust.basisExpert":
+    "ଦକ୍ଷତା ଯାଞ୍ଚରେ {percent}% ନମ୍ବର ସହିତ ଉତ୍ତୀର୍ଣ୍ଣ, ଏହି ଦକ୍ଷତାରେ {jobs}ଟି ଯାଞ୍ଚ ହୋଇଥିବା କାମ ସମ୍ପୂର୍ଣ୍ଣ, ଏବଂ {raters} ନିଯୁକ୍ତିଦାତାଙ୍କଠାରୁ ହାରାହାରି {rating}/5।",
+  "trust.basisVerified":
+    "ଦକ୍ଷତା ଯାଞ୍ଚରେ {percent}% ନମ୍ବର ସହିତ ଉତ୍ତୀର୍ଣ୍ଣ ଏବଂ ଏହି ଦକ୍ଷତାରେ {jobs}ଟି ଯାଞ୍ଚ ହୋଇଥିବା କାମ ସମ୍ପୂର୍ଣ୍ଣ।",
+  "trust.basisSkilled":
+    "ଦକ୍ଷତା ଯାଞ୍ଚରେ {percent}% ନମ୍ବର ସହିତ ଉତ୍ତୀର୍ଣ୍ଣ। ଏହି ଦକ୍ଷତାରେ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି କାମ ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ।",
+  "trust.basisSkilledSomeJobs":
+    "ଦକ୍ଷତା ଯାଞ୍ଚରେ {percent}% ନମ୍ବର ସହିତ ଉତ୍ତୀର୍ଣ୍ଣ ଏବଂ ଏହି ଦକ୍ଷତାରେ {jobs}ଟି ଯାଞ୍ଚ ହୋଇଥିବା କାମ ସମ୍ପୂର୍ଣ୍ଣ।",
+  "trust.basisJobsNoCheck":
+    "ଶ୍ରମିକ ନିଜେ ଯୋଡ଼ିଛନ୍ତି। ଏହି ଦକ୍ଷତାରେ {jobs}ଟି କାମ ସମ୍ପୂର୍ଣ୍ଣ, କିନ୍ତୁ ଦକ୍ଷତା ଯାଞ୍ଚ ଦିଆଯାଇ ନାହିଁ।",
+  "trust.basisFailed":
+    "ଦକ୍ଷତା ଯାଞ୍ଚରେ {percent}% ନମ୍ବର, ଯାହା {pass}% ଉତ୍ତୀର୍ଣ୍ଣ ନମ୍ବରରୁ କମ୍। ଏହା ପୁଣି ଦିଆଯାଇପାରିବ।",
+  "trust.basisNone":
+    "ଶ୍ରମିକ ନିଜେ ଯୋଡ଼ିଛନ୍ତି। କୌଣସି ଦକ୍ଷତା ଯାଞ୍ଚ ଦିଆଯାଇ ନାହିଁ ଏବଂ ଏହି ଦକ୍ଷତାରେ କୌଣସି କାମ ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ।",
+  "trust.nextExpertJobs":
+    "ବିଶେଷଜ୍ଞ ପାଇଁ ଆଉ {jobs}ଟି ଯାଞ୍ଚ ହୋଇଥିବା କାମ ଏବଂ ନିଯୁକ୍ତିଦାତାଙ୍କଠାରୁ {rating}/5 ହାରାହାରି।",
+  "trust.nextExpertRating": "ବିଶେଷଜ୍ଞ ପାଇଁ ନିଯୁକ୍ତିଦାତା ମୂଲ୍ୟାଙ୍କନ {rating}/5 କିମ୍ବା ଅଧିକ ରଖନ୍ତୁ।",
+  "trust.nextVerifiedJobs": "ଯାଞ୍ଚ ହୋଇଥିବା ସ୍ତର ପାଇଁ ଏହି ଦକ୍ଷତାରେ {jobs}ଟି କାମ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ।",
+  "trust.nextSkilled": "“ଦକ୍ଷତା ଯାଞ୍ଚ ଉତ୍ତୀର୍ଣ୍ଣ” ପାଇଁ ଯାଞ୍ଚରେ {pass}% କିମ୍ବା ଅଧିକ ନମ୍ବର ଆଣନ୍ତୁ।",
+  "trust.disclaimer":
+    "ଏହି ସ୍ତରଗୁଡ଼ିକ LYBOR ପାଖରେ ଥିବା ପ୍ରମାଣ ଦର୍ଶାଏ — ଏହା କୌଣସି ବ୍ୟକ୍ତି ବିଷୟରେ ଗ୍ୟାରେଣ୍ଟି ନୁହେଁ। ଏକ ଛୋଟ ଦକ୍ଷତା ଯାଞ୍ଚ ଏବଂ କିଛି ନିଯୁକ୍ତିଦାତା ମୂଲ୍ୟାଙ୍କନ ଆରମ୍ଭ ମାତ୍ର, ବୃତ୍ତିଗତ ପ୍ରମାଣପତ୍ର ନୁହେଁ — କାମରେ ରଖିବା ପୂର୍ବରୁ ନିଜେ ମଧ୍ୟ ପରଖନ୍ତୁ।",
+  "assess.title": "ଦକ୍ଷତା ଯାଞ୍ଚ",
+  "assess.intro":
+    "ପ୍ରତ୍ୟେକ କାମ ପାଇଁ କିଛି ବ୍ୟବହାରିକ ପ୍ରଶ୍ନ। ଉତ୍ତୀର୍ଣ୍ଣ ହେଲେ ସେହି ଦକ୍ଷତା ନିଜେ ଘୋଷିତରୁ “ଦକ୍ଷତା ଯାଞ୍ଚ ଉତ୍ତୀର୍ଣ୍ଣ” ହୋଇଯାଏ।",
+  "assess.chooseSkill": "କେଉଁ ଦକ୍ଷତା?",
+  "assess.passMark": "ଉତ୍ତୀର୍ଣ୍ଣ ନମ୍ବର {percent}%",
+  "assess.notCertification": "ଏହା ଏକ ଛୋଟ ଜ୍ଞାନ ଯାଞ୍ଚ — କୌଣସି ପ୍ରମାଣପତ୍ର କିମ୍ବା ବୃତ୍ତିଗତ ଲାଇସେନ୍ସ ନୁହେଁ।",
+  "assess.questionNumber": "ପ୍ରଶ୍ନ {index} / {total}",
+  "assess.submit": "ଉତ୍ତର ଦାଖଲ କରନ୍ତୁ",
+  "assess.retake": "ପୁଣି ଯାଞ୍ଚ ଦିଅନ୍ତୁ",
+  "assess.backToProfile": "ପ୍ରୋଫାଇଲକୁ ଫେରନ୍ତୁ",
+  "assess.resultPassed": "ଉତ୍ତୀର୍ଣ୍ଣ।",
+  "assess.resultFailed": "ଏଥର ଉତ୍ତୀର୍ଣ୍ଣ ହୋଇନାହାନ୍ତି।",
+  "assess.resultScore": "ଆପଣ {total}ଟି ମଧ୍ୟରୁ {correct}ଟି ଠିକ୍ ଉତ୍ତର ଦେଇଛନ୍ତି — {percent}%।",
+  "assess.previousResult": "ଆପଣଙ୍କ ଗତ ପ୍ରୟାସରେ {percent}% ଥିଲା। ପୁଣି ଉତ୍ତର ଦେଲେ ତାହା ବଦଳିଯିବ।",
+  "assess.unavailableTitle": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଦକ୍ଷତା ଯାଞ୍ଚ ନାହିଁ",
+  "assess.unavailableBody":
+    "ଆପଣଙ୍କ କୌଣସି ଦକ୍ଷତା ପାଇଁ ଏପର୍ଯ୍ୟନ୍ତ ଯାଞ୍ଚ ନାହିଁ। ସମ୍ପୂର୍ଣ୍ଣ କରିଥିବା କାମ ଏବଂ ନିଯୁକ୍ତିଦାତା ମୂଲ୍ୟାଙ୍କନରୁ ଆପଣଙ୍କ ସ୍ତର ତିଆରି ହେଉଥିବ।",
+  "assess.addSkillsFirst": "ପ୍ରଥମେ ପ୍ରୋଫାଇଲରେ ଆପଣଙ୍କ ଦକ୍ଷତା ଯୋଡ଼ନ୍ତୁ, ତା’ପରେ ସେଗୁଡ଼ିକ ଯାଞ୍ଚ କରିବାକୁ ଏଠାକୁ ଆସନ୍ତୁ।",
 };
 
 export default or;

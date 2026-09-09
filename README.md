@@ -73,7 +73,7 @@ would try to compile; use a machine on the list above, or WSL.
 | `npm run dev` | Development server with hot reload |
 | `npm run build && npm start` | Production build, then serve it |
 | `npm run setup -- --reseed` | Rebuild the demo data |
-| `npm run verify:all` | Typecheck, lint, and both invariant suites |
+| `npm run verify:all` | Typecheck, lint, and the offline invariant suites |
 | `npm run db:studio` | Browse the database in Prisma Studio |
 
 ### Sharing a running instance
@@ -123,6 +123,8 @@ Other seeded workers: `9800000002` … `9800000006`. Employer `9800000012`.
 | `npm run db:seed`    | Reseed demo data (wipes and rebuilds)           |
 | `npm run db:reset`   | Reset the database and reseed                   |
 | `npm run db:studio`  | Prisma Studio                                   |
+| `npm run verify:trust` | Skill-trust ladder and question bank          |
+| `npm run verify:skillcheck` | Skill check over HTTP (app must be running) |
 
 ---
 
@@ -180,6 +182,12 @@ be reversed.
 **Reliability is derived, never an input to a money decision.** A low score
 costs a worker ranking, never earned wages.
 
+**A claim is never a credential.** A worker can set their proficiency to Expert
+in a dropdown in ten seconds, and for a while the employer's page printed that
+word as a badge with nothing behind it. Standing now comes only from things
+somebody else can corroborate, and the claim is still shown - labelled as a
+claim, beside the evidence. See below.
+
 ---
 
 ## The two AI/ML surfaces
@@ -219,6 +227,49 @@ weight:
 Score ≥ 20 flags the day for human review; ≥ 50 is high risk. Flags at MEDIUM or
 HIGH severity also open a `FraudAlert` in the admin queue. The engine only ever
 annotates — a human still approves or rejects.
+
+---
+
+## Skill trust — `src/lib/skill-trust.ts`
+
+Four rungs, weakest to strongest, and every one names what it requires:
+
+| Level | What it means |
+| --- | --- |
+| **Self-declared** | The worker added the skill. Nothing corroborates it yet. |
+| **Skill check passed** | They sat the trade check and scored 60% or better. |
+| **Verified** | That, plus two completed jobs that used the skill. |
+| **Expert** | 80%+ on the check, five completed jobs, and a 4.2/5 average from at least three employers, with 85% of assignments finished. |
+
+Deliberately a ladder rather than a weighted score: a number invites comparing a
+71 to a 68 as though the gap meant something, where a rung with stated
+requirements can be explained to the worker standing on it. Every level returns
+its `basis` (why they are here) and `nextStep` (what would move them up), both
+as catalogue keys so a worker reads them in their own language.
+
+`WorkerSkill.proficiency` and `yearsExperience` stay in the schema — job
+matching reads them — but nothing in the ladder does. The suite asserts that by
+exhaustion: across seven evidence shapes, three claimed levels and three claimed
+year counts, the claim never moves the level.
+
+**What it is not.** Five multiple-choice questions cannot certify a
+tradesperson, and the UI never says otherwise: the wording is "skill check", not
+"certified", and both the panel and the check itself carry a line saying these
+levels describe the evidence held, not a guarantee about a person. The
+thresholds are prototype figures chosen to be reachable with the seeded data,
+not values derived from real hiring outcomes.
+
+The question bank ([`src/lib/skill-questions.ts`](src/lib/skill-questions.ts))
+covers four trades — electrical, plumbing, carpentry, masonry — with five
+practical questions each, favouring safety and judgement over recall. The answer
+key never reaches the browser: questions are sent through `publicQuestionsFor`,
+which builds the payload by naming the fields to keep, and marking happens in
+the Server Action. A skill with no bank simply has no check, and its workers
+stay Self-declared, which is honest.
+
+Run `npm run verify:trust` for the ladder and the bank, and
+`npm run verify:skillcheck` (needs the app running) for the rendered pages, the
+no-JavaScript submission, and a forged-score attempt.
 
 ---
 

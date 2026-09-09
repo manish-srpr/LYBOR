@@ -394,6 +394,68 @@ const ml: PartialMessages = {
   "nav.attendanceApprovals": "ഹാജരും അനുമതികളും",
   "att.todaysShift": "ഇന്നത്തെ ഷിഫ്റ്റ്",
   "att.viewFullDay": "മുഴുവൻ ദിവസം കാണുക",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "വൈദഗ്ധ്യവും തെളിവും",
+  "trust.sectionIntro": "തൊഴിലാളി ഓരോ വൈദഗ്ധ്യത്തെക്കുറിച്ചും എന്തു പറയുന്നു, LYBOR-ന് എന്തു പരിശോധിക്കാനായി — ഒപ്പത്തിനൊപ്പം.",
+  "trust.selfDeclaredHeading": "സ്വയം പ്രഖ്യാപിച്ചത്",
+  "trust.verifiedHeading": "പരിശോധിച്ച തെളിവ്",
+  "trust.noSkills": "ഇതുവരെ വൈദഗ്ധ്യങ്ങൾ ചേർത്തിട്ടില്ല.",
+  "trust.basisLabel": "അടിസ്ഥാനം",
+  "trust.nextStepLabel": "മുന്നോട്ട് പോകാൻ",
+  "trust.levelSelfDeclared": "സ്വയം പ്രഖ്യാപിച്ചത്",
+  "trust.levelSkilled": "വൈദഗ്ധ്യ പരിശോധന വിജയിച്ചു",
+  "trust.levelVerified": "പരിശോധിച്ചത്",
+  "trust.levelExpert": "വിദഗ്ധൻ",
+  "trust.proficiencyBeginner": "തുടക്കക്കാരൻ",
+  "trust.proficiencyIntermediate": "ഇടത്തരം",
+  "trust.proficiencyExpert": "വിദഗ്ധൻ",
+  "trust.selfDeclaredYears_one": "{count} വർഷം എന്ന് അവകാശപ്പെടുന്നു",
+  "trust.selfDeclaredYears_other": "{count} വർഷം എന്ന് അവകാശപ്പെടുന്നു",
+  "trust.checkNotTaken": "വൈദഗ്ധ്യ പരിശോധന എടുത്തിട്ടില്ല",
+  "trust.checkScore": "വൈദഗ്ധ്യ പരിശോധന {percent}%",
+  "trust.verifiedJobs_one": "ഈ വൈദഗ്ധ്യത്തിൽ {count} ജോലി പൂർത്തിയാക്കി",
+  "trust.verifiedJobs_other": "ഈ വൈദഗ്ധ്യത്തിൽ {count} ജോലികൾ പൂർത്തിയാക്കി",
+  "trust.fromEmployers_one": "{count} തൊഴിലുടമയിൽ നിന്ന്",
+  "trust.fromEmployers_other": "{count} തൊഴിലുടമകളിൽ നിന്ന്",
+  "trust.basisExpert":
+    "വൈദഗ്ധ്യ പരിശോധനയിൽ {percent}% മാർക്കോടെ വിജയിച്ചു, ഈ വൈദഗ്ധ്യത്തിൽ {jobs} പരിശോധിച്ച ജോലികൾ പൂർത്തിയാക്കി, കൂടാതെ {raters} തൊഴിലുടമകളിൽ നിന്ന് ശരാശരി {rating}/5.",
+  "trust.basisVerified":
+    "വൈദഗ്ധ്യ പരിശോധനയിൽ {percent}% മാർക്കോടെ വിജയിച്ചു, ഈ വൈദഗ്ധ്യത്തിൽ {jobs} പരിശോധിച്ച ജോലികൾ പൂർത്തിയാക്കി.",
+  "trust.basisSkilled":
+    "വൈദഗ്ധ്യ പരിശോധനയിൽ {percent}% മാർക്കോടെ വിജയിച്ചു. ഈ വൈദഗ്ധ്യത്തിൽ ഇതുവരെ ജോലികൾ പൂർത്തിയാക്കിയിട്ടില്ല.",
+  "trust.basisSkilledSomeJobs":
+    "വൈദഗ്ധ്യ പരിശോധനയിൽ {percent}% മാർക്കോടെ വിജയിച്ചു, ഈ വൈദഗ്ധ്യത്തിൽ {jobs} പരിശോധിച്ച ജോലികൾ പൂർത്തിയാക്കി.",
+  "trust.basisJobsNoCheck":
+    "തൊഴിലാളി തന്നെ ചേർത്തത്. ഈ വൈദഗ്ധ്യത്തിൽ {jobs} ജോലികൾ പൂർത്തിയാക്കി, പക്ഷേ വൈദഗ്ധ്യ പരിശോധന എടുത്തിട്ടില്ല.",
+  "trust.basisFailed":
+    "വൈദഗ്ധ്യ പരിശോധനയിൽ {percent}% മാർക്ക്, {pass}% വിജയ മാർക്കിൽ കുറവ്. ഇത് വീണ്ടും എടുക്കാം.",
+  "trust.basisNone":
+    "തൊഴിലാളി തന്നെ ചേർത്തത്. വൈദഗ്ധ്യ പരിശോധന എടുത്തിട്ടില്ല, ഈ വൈദഗ്ധ്യത്തിൽ ജോലികൾ പൂർത്തിയാക്കിയിട്ടുമില്ല.",
+  "trust.nextExpertJobs":
+    "വിദഗ്ധ നിലയ്ക്ക് ഇനിയും {jobs} പരിശോധിച്ച ജോലികളും തൊഴിലുടമകളിൽ നിന്ന് {rating}/5 ശരാശരിയും.",
+  "trust.nextExpertRating": "വിദഗ്ധ നിലയ്ക്ക് തൊഴിലുടമ റേറ്റിംഗ് {rating}/5 അല്ലെങ്കിൽ അതിനു മുകളിൽ നിലനിർത്തുക.",
+  "trust.nextVerifiedJobs": "പരിശോധിച്ച നിലയ്ക്ക് ഈ വൈദഗ്ധ്യത്തിൽ {jobs} ജോലികൾ പൂർത്തിയാക്കുക.",
+  "trust.nextSkilled": "“വൈദഗ്ധ്യ പരിശോധന വിജയിച്ചു” എന്നതിന് പരിശോധനയിൽ {pass}% അല്ലെങ്കിൽ കൂടുതൽ മാർക്ക് നേടുക.",
+  "trust.disclaimer":
+    "ഈ നിലകൾ LYBOR-ന്റെ പക്കലുള്ള തെളിവുകളെ സൂചിപ്പിക്കുന്നു — ഒരു വ്യക്തിയെക്കുറിച്ചുള്ള ഉറപ്പല്ല. ഒരു ചെറിയ വൈദഗ്ധ്യ പരിശോധനയും കുറച്ച് തൊഴിലുടമ റേറ്റിംഗുകളും ഒരു തുടക്കം മാത്രമാണ്, തൊഴിൽ സർട്ടിഫിക്കറ്റ് അല്ല — ജോലിക്ക് എടുക്കുന്നതിനു മുൻപ് നിങ്ങൾ തന്നെ വിലയിരുത്തുക.",
+  "assess.title": "വൈദഗ്ധ്യ പരിശോധന",
+  "assess.intro":
+    "ഓരോ തൊഴിലിനും കുറച്ച് പ്രായോഗിക ചോദ്യങ്ങൾ. വിജയിച്ചാൽ ആ വൈദഗ്ധ്യം സ്വയം പ്രഖ്യാപിച്ചതിൽ നിന്ന് “വൈദഗ്ധ്യ പരിശോധന വിജയിച്ചു” ആകും.",
+  "assess.chooseSkill": "ഏത് വൈദഗ്ധ്യം?",
+  "assess.passMark": "വിജയ മാർക്ക് {percent}%",
+  "assess.notCertification": "ഇത് ഒരു ചെറിയ അറിവ് പരിശോധനയാണ് — സർട്ടിഫിക്കറ്റോ തൊഴിൽ ലൈസൻസോ അല്ല.",
+  "assess.questionNumber": "ചോദ്യം {index} / {total}",
+  "assess.submit": "ഉത്തരങ്ങൾ അയയ്ക്കുക",
+  "assess.retake": "പരിശോധന വീണ്ടും എടുക്കുക",
+  "assess.backToProfile": "പ്രൊഫൈലിലേക്ക് മടങ്ങുക",
+  "assess.resultPassed": "വിജയിച്ചു.",
+  "assess.resultFailed": "ഇത്തവണ വിജയിച്ചില്ല.",
+  "assess.resultScore": "{total}-ൽ {correct} ഉത്തരങ്ങൾ ശരി — {percent}%.",
+  "assess.previousResult": "നിങ്ങളുടെ കഴിഞ്ഞ ശ്രമത്തിൽ {percent}% മാർക്ക്. വീണ്ടും ഉത്തരം നൽകിയാൽ അത് മാറും.",
+  "assess.unavailableTitle": "ഇതുവരെ വൈദഗ്ധ്യ പരിശോധന ലഭ്യമല്ല",
+  "assess.unavailableBody":
+    "നിങ്ങളുടെ ഒരു വൈദഗ്ധ്യത്തിനും ഇതുവരെ പരിശോധനയില്ല. പൂർത്തിയാക്കിയ ജോലികളിൽ നിന്നും തൊഴിലുടമ റേറ്റിംഗുകളിൽ നിന്നും നിങ്ങളുടെ നില വളർന്നുകൊണ്ടിരിക്കും.",
+  "assess.addSkillsFirst": "ആദ്യം നിങ്ങളുടെ പ്രൊഫൈലിൽ വൈദഗ്ധ്യങ്ങൾ ചേർക്കുക, പിന്നീട് അവ പരിശോധിക്കാൻ ഇവിടെ വരുക.",
 };
 
 export default ml;

@@ -392,6 +392,68 @@ const hi: PartialMessages = {
   "nav.attendanceApprovals": "उपस्थिति और स्वीकृतियाँ",
   "att.todaysShift": "आज की शिफ्ट",
   "att.viewFullDay": "पूरा दिन देखें",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "कौशल और प्रमाण",
+  "trust.sectionIntro": "श्रमिक हर कौशल के बारे में क्या कहता है, और LYBOR क्या सत्यापित कर सका — साथ-साथ।",
+  "trust.selfDeclaredHeading": "स्वयं-घोषित",
+  "trust.verifiedHeading": "सत्यापित प्रमाण",
+  "trust.noSkills": "अभी कोई कौशल नहीं जोड़ा गया।",
+  "trust.basisLabel": "आधार",
+  "trust.nextStepLabel": "आगे बढ़ने के लिए",
+  "trust.levelSelfDeclared": "स्वयं-घोषित",
+  "trust.levelSkilled": "कौशल जाँच उत्तीर्ण",
+  "trust.levelVerified": "सत्यापित",
+  "trust.levelExpert": "निपुण",
+  "trust.proficiencyBeginner": "शुरुआती",
+  "trust.proficiencyIntermediate": "मध्यम",
+  "trust.proficiencyExpert": "निपुण",
+  "trust.selfDeclaredYears_one": "{count} वर्ष का दावा",
+  "trust.selfDeclaredYears_other": "{count} वर्षों का दावा",
+  "trust.checkNotTaken": "कौशल जाँच नहीं दी गई",
+  "trust.checkScore": "कौशल जाँच {percent}%",
+  "trust.verifiedJobs_one": "इस कौशल से {count} काम पूरा किया",
+  "trust.verifiedJobs_other": "इस कौशल से {count} काम पूरे किए",
+  "trust.fromEmployers_one": "{count} नियोक्ता से",
+  "trust.fromEmployers_other": "{count} नियोक्ताओं से",
+  "trust.basisExpert":
+    "कौशल जाँच {percent}% अंकों से उत्तीर्ण, इस कौशल से {jobs} सत्यापित काम पूरे किए, और {raters} नियोक्ताओं से औसत {rating}/5।",
+  "trust.basisVerified":
+    "कौशल जाँच {percent}% अंकों से उत्तीर्ण और इस कौशल से {jobs} सत्यापित काम पूरे किए।",
+  "trust.basisSkilled":
+    "कौशल जाँच {percent}% अंकों से उत्तीर्ण। इस कौशल से अभी कोई काम पूरा नहीं किया।",
+  "trust.basisSkilledSomeJobs":
+    "कौशल जाँच {percent}% अंकों से उत्तीर्ण और इस कौशल से {jobs} सत्यापित काम पूरे किए।",
+  "trust.basisJobsNoCheck":
+    "श्रमिक द्वारा जोड़ा गया। इस कौशल से {jobs} काम पूरे किए, लेकिन कौशल जाँच नहीं दी गई।",
+  "trust.basisFailed":
+    "कौशल जाँच में {percent}% अंक मिले, जो {pass}% उत्तीर्ण अंक से कम हैं। इसे दोबारा दिया जा सकता है।",
+  "trust.basisNone":
+    "श्रमिक द्वारा जोड़ा गया। न कोई कौशल जाँच दी गई है और न ही इस कौशल से कोई काम पूरा हुआ है।",
+  "trust.nextExpertJobs":
+    "निपुण के लिए {jobs} और सत्यापित काम तथा नियोक्ताओं से {rating}/5 का औसत।",
+  "trust.nextExpertRating": "निपुण के लिए नियोक्ता रेटिंग {rating}/5 या उससे ऊपर बनाए रखें।",
+  "trust.nextVerifiedJobs": "सत्यापित के लिए इस कौशल से {jobs} सत्यापित काम।",
+  "trust.nextSkilled": "“कौशल जाँच उत्तीर्ण” के लिए जाँच में {pass}% या अधिक अंक लाएँ।",
+  "trust.disclaimer":
+    "ये स्तर बताते हैं कि LYBOR के पास कौन-से प्रमाण हैं — ये किसी व्यक्ति की गारंटी नहीं हैं। एक छोटी कौशल जाँच और कुछ नियोक्ता रेटिंग शुरुआत हैं, कोई व्यावसायिक प्रमाणपत्र नहीं — काम पर रखने से पहले स्वयं भी परखें।",
+  "assess.title": "कौशल जाँच",
+  "assess.intro":
+    "हर काम के लिए कुछ व्यावहारिक प्रश्न। उत्तीर्ण होने पर वह कौशल स्वयं-घोषित से “कौशल जाँच उत्तीर्ण” हो जाता है।",
+  "assess.chooseSkill": "कौन-सा कौशल?",
+  "assess.passMark": "उत्तीर्ण अंक {percent}%",
+  "assess.notCertification": "यह एक छोटी ज्ञान जाँच है — कोई प्रमाणपत्र या व्यावसायिक लाइसेंस नहीं।",
+  "assess.questionNumber": "प्रश्न {index} / {total}",
+  "assess.submit": "उत्तर जमा करें",
+  "assess.retake": "जाँच दोबारा दें",
+  "assess.backToProfile": "प्रोफ़ाइल पर लौटें",
+  "assess.resultPassed": "उत्तीर्ण।",
+  "assess.resultFailed": "इस बार उत्तीर्ण नहीं हुए।",
+  "assess.resultScore": "आपने {total} में से {correct} उत्तर सही दिए — {percent}%।",
+  "assess.previousResult": "आपके पिछले प्रयास में {percent}% अंक थे। दोबारा उत्तर देने पर वह बदल जाएगा।",
+  "assess.unavailableTitle": "अभी कोई कौशल जाँच उपलब्ध नहीं",
+  "assess.unavailableBody":
+    "आपके किसी कौशल के लिए अभी जाँच उपलब्ध नहीं है। आपका स्तर पूरे किए गए काम और नियोक्ता रेटिंग से बनता रहेगा।",
+  "assess.addSkillsFirst": "पहले अपनी प्रोफ़ाइल में कौशल जोड़ें, फिर उन्हें जाँचने के लिए यहाँ आएँ।",
 };
 
 export default hi;

@@ -5,13 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataRow, EmptyState, PageHeader, Stat } from "@/components/ui/misc";
 import { ReliabilityPanel } from "@/components/app/reliability-panel";
+import { SkillTrustPanel } from "@/components/app/skill-trust-panel";
 import { StatusBadge } from "@/components/app/status-badge";
 import { prisma } from "@/lib/db";
 import { requireEmployerProfile } from "@/lib/auth";
 import { getTranslator } from "@/lib/lang";
+import type { MessageKey } from "@/lib/i18n";
 import { formatDateRange, plural } from "@/lib/format";
 import { formatMinutes, formatPaise } from "@/lib/money";
 import { computeReliability } from "@/lib/reliability";
+import { getWorkerTrust } from "@/lib/skill-evidence";
+import { TRUST_LEVEL_META } from "@/lib/skill-trust";
 
 function parseSkills(json: string): string[] {
   try {
@@ -47,7 +51,10 @@ export default async function EmployerWorkerProfile(
   });
   if (connected === 0) notFound();
 
-  const reliability = await computeReliability(id);
+  const [reliability, trust] = await Promise.all([
+    computeReliability(id),
+    getWorkerTrust(id),
+  ]);
 
   const ratings = worker.workHistory
     .map((h) => h.employerRating)
@@ -74,6 +81,15 @@ export default async function EmployerWorkerProfile(
         }`}
         action={
           <div className="flex flex-wrap gap-1.5">
+            {/*
+              The strongest level the worker has actually earned, so the
+              headline is evidence-led rather than the first skill in the list.
+            */}
+            {trust.headline ? (
+              <Badge variant={TRUST_LEVEL_META[trust.headline.level].tone}>
+                {t(TRUST_LEVEL_META[trust.headline.level].labelKey as MessageKey)}
+              </Badge>
+            ) : null}
             {worker.kycStatus === "VERIFIED" ? (
               <Badge variant="success">
                 <BadgeCheck className="size-3" aria-hidden />
@@ -111,50 +127,29 @@ export default async function EmployerWorkerProfile(
         />
       </div>
 
+      {/*
+        This replaced a list that printed WorkerSkill.proficiency as a bare
+        badge - a word the worker had picked in a dropdown, shown to an employer
+        with nothing to say so. The panel keeps the claim visible but puts the
+        evidence, or its absence, right beside it.
+      */}
+      <SkillTrustPanel skills={trust.skills} lang={lang} />
+
       <Card>
         <CardHeader>
-          <CardTitle>{isHi ? "कौशल" : "Skills"}</CardTitle>
+          <CardTitle>{isHi ? "काम की पसंद" : "Work preferences"}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {worker.skills.length === 0 ? (
-            <p className="text-sm text-[var(--muted-foreground)]">
-              {isHi ? "कोई कौशल दर्ज नहीं।" : "No skills recorded."}
-            </p>
-          ) : (
-            <ul className="divide-y divide-[var(--border)]">
-              {worker.skills.map((s) => (
-                <li
-                  key={s.id}
-                  className="flex items-center justify-between gap-3 py-2 text-sm"
-                >
-                  <span className="font-medium">
-                    {isHi ? s.skill.nameHi : s.skill.nameEn}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Badge variant="outline">{s.proficiency}</Badge>
-                    <span className="text-xs tabular-nums text-[var(--muted-foreground)]">
-                      {isHi
-                        ? `${s.yearsExperience} वर्ष`
-                        : plural(s.yearsExperience, "yr")}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="divide-y divide-[var(--border)] border-t border-[var(--border)] pt-2">
+        <CardContent className="divide-y divide-[var(--border)]">
+          <DataRow
+            label={isHi ? "यात्रा सीमा" : "Travel radius"}
+            value={`${worker.travelRadiusKm} km`}
+          />
+          {worker.preferredWageMinPaise ? (
             <DataRow
-              label={isHi ? "यात्रा सीमा" : "Travel radius"}
-              value={`${worker.travelRadiusKm} km`}
+              label={isHi ? "अपेक्षित न्यूनतम" : "Expected minimum"}
+              value={`${formatPaise(worker.preferredWageMinPaise)}/hr`}
             />
-            {worker.preferredWageMinPaise ? (
-              <DataRow
-                label={isHi ? "अपेक्षित न्यूनतम" : "Expected minimum"}
-                value={`${formatPaise(worker.preferredWageMinPaise)}/hr`}
-              />
-            ) : null}
-          </div>
+          ) : null}
         </CardContent>
       </Card>
 

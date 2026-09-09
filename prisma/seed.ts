@@ -16,6 +16,7 @@ import { assessAttendanceRisk, renderRiskDetail, renderRiskTitle } from "../src/
 import { calculateWage } from "../src/lib/wages";
 import { computeMatch, type MatchJob } from "../src/lib/matching";
 import { rupeesToPaise } from "../src/lib/money";
+import { TRUST_THRESHOLDS } from "../src/lib/skill-trust";
 
 const PASSWORD_HASH = hashSync("lybor123", 10);
 
@@ -83,6 +84,7 @@ async function reset() {
   await prisma.jobApplication.deleteMany();
   await prisma.jobSkill.deleteMany();
   await prisma.job.deleteMany();
+  await prisma.skillAssessment.deleteMany();
   await prisma.workerSkill.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.kYCRecord.deleteMany();
@@ -129,6 +131,14 @@ async function main() {
       minWage: 140,
       kyc: "VERIFIED" as const,
       skills: ["MASONRY", "CARPENTRY", "PAINTING"],
+      // Masonry: a strong pass plus a real body of rated work, which is what
+      // EXPERT costs. Carpentry: a bare pass and fewer jobs, so VERIFIED. His
+      // self-declared PAINTING level has no check available at all, so it
+      // stays a claim - three different answers on one profile.
+      skillChecks: [
+        { code: "MASONRY", percent: 100 },
+        { code: "CARPENTRY", percent: 60 },
+      ],
       bio: "Eight years on residential sites. Comfortable leading a small crew.",
     },
     {
@@ -142,6 +152,9 @@ async function main() {
       minWage: 110,
       kyc: "VERIFIED" as const,
       skills: ["HOUSEKEEPING", "PACKAGING"],
+      // Neither trade has a check yet - deliberately left as the case where
+      // no assessment exists, which must read as unproven rather than broken.
+      skillChecks: [],
       bio: "Reliable housekeeping and packing work. Prefers day shifts.",
     },
     {
@@ -154,7 +167,14 @@ async function main() {
       travelRadiusKm: 25,
       minWage: 160,
       kyc: "PENDING" as const,
-      skills: ["WELDING", "ELECTRICAL"],
+      skills: ["WELDING", "ELECTRICAL", "PLUMBING"],
+      // A clear pass on electrical with no completed electrical jobs yet: the
+      // SKILLED rung, which is the whole reason that rung exists. Plumbing was
+      // attempted and failed, which the profile shows rather than hides.
+      skillChecks: [
+        { code: "ELECTRICAL", percent: 80 },
+        { code: "PLUMBING", percent: 40 },
+      ],
       bio: "Certified welder, also handles basic site wiring.",
     },
     {
@@ -168,6 +188,7 @@ async function main() {
       minWage: 100,
       kyc: "NOT_SUBMITTED" as const,
       skills: ["LOADING", "PACKAGING"],
+      skillChecks: [],
       bio: "Warehouse loader, quick learner, available at short notice.",
     },
     {
@@ -181,6 +202,7 @@ async function main() {
       minWage: 175,
       kyc: "VERIFIED" as const,
       skills: ["FORKLIFT", "LOADING", "DRIVING"],
+      skillChecks: [],
       bio: "Licensed forklift operator with warehouse and logistics experience.",
     },
     {
@@ -194,6 +216,7 @@ async function main() {
       minWage: 120,
       kyc: "PENDING" as const,
       skills: ["COOKING", "HOUSEKEEPING"],
+      skillChecks: [],
       bio: "Cooking and housekeeping for canteens and guest houses.",
     },
   ];
@@ -235,6 +258,23 @@ async function main() {
       },
       include: { workerProfile: true },
     });
+
+    // Skill-check results. The pass mark lives in one place - importing it
+    // here rather than restating 60 keeps the seed honest if it ever moves.
+    for (const check of spec.skillChecks) {
+      const questionCount = 5;
+      const correctCount = Math.round((check.percent / 100) * questionCount);
+      await prisma.skillAssessment.create({
+        data: {
+          workerProfileId: user.workerProfile!.id,
+          skillId: skillId(check.code),
+          scorePercent: check.percent,
+          correctCount,
+          questionCount,
+          passed: check.percent >= TRUST_THRESHOLDS.assessmentPassPercent,
+        },
+      });
+    }
 
     if (spec.kyc !== "NOT_SUBMITTED") {
       await prisma.kYCRecord.create({
@@ -897,6 +937,122 @@ async function main() {
       availability: "AVAILABLE",
     },
   });
+
+  // ---------------------------------------------------------------------
+  // Trade work history, so the trust ladder has something to stand on.
+  //
+  // Without this every worker sits at SKILLED at best, and a judge opening the
+  // app would see a four-level system demonstrating one level. Each entry
+  // records the skill it used in `skillsUsed` by English name, which is how
+  // src/lib/skill-evidence.ts counts verified jobs per skill.
+  // ---------------------------------------------------------------------
+  console.log("Seeding trade work history...");
+  const tradeHistory = [
+    // Masonry x5 with strong ratings: enough for EXPERT.
+    { worker: 0, skill: "Masonry", title: "Boundary wall, Phase 2", days: 12, rating: 5, review: "Straight courses, no rework needed." },
+    { worker: 0, skill: "Masonry", title: "Brickwork for two duplexes", days: 18, rating: 4, review: "Good work, occasionally needed chasing on cleanup." },
+    { worker: 0, skill: "Masonry", title: "Plinth and column casing", days: 9, rating: 5, review: "Led a crew of three without supervision." },
+    { worker: 0, skill: "Masonry", title: "Compound wall repair", days: 6, rating: 5, review: "Matched the existing bond exactly." },
+    { worker: 0, skill: "Masonry", title: "Retaining wall, hill plot", days: 14, rating: 4, review: "Solid job on difficult ground." },
+    // Carpentry x2: enough for VERIFIED, not for EXPERT.
+    { worker: 0, skill: "Carpentry", title: "Door frames, eight units", days: 7, rating: 4, review: "Frames true and square." },
+    { worker: 0, skill: "Carpentry", title: "Shuttering for first floor slab", days: 5, rating: 4, review: "Careful with levels." },
+  ];
+
+  let historyDayOffset = 300;
+  for (const entry of tradeHistory) {
+    const worker = workers[entry.worker];
+    const employer = employers[0];
+    historyDayOffset -= entry.days + 5;
+
+    const start = dateOnly(-historyDayOffset - entry.days);
+    const end = dateOnly(-historyDayOffset);
+    const dailyPaise = rupeesToPaise(900);
+
+    const job = await prisma.job.create({
+      data: {
+        employerProfileId: employer.profile.id,
+        title: entry.title,
+        description: `${entry.skill} work, completed and signed off.`,
+        category: "Construction",
+        addressLine: "Bengaluru site",
+        city: "Bengaluru",
+        state: "Karnataka",
+        pincode: "560001",
+        latitude: BENGALURU.latitude,
+        longitude: BENGALURU.longitude,
+        checkInRadiusMeters: 250,
+        wageType: "DAILY",
+        wageRatePaise: dailyPaise,
+        startDate: start,
+        endDate: end,
+        shiftStart: "09:00",
+        shiftEnd: "18:00",
+        expectedHoursPerDay: 8,
+        workersRequired: 1,
+        workersAssigned: 1,
+        status: "COMPLETED",
+      },
+    });
+
+    const assignment = await prisma.jobAssignment.create({
+      data: {
+        jobId: job.id,
+        workerProfileId: worker.profile.id,
+        status: "COMPLETED",
+        agreedWageType: "DAILY",
+        agreedWageRatePaise: dailyPaise,
+        expectedHoursPerDay: 8,
+        startDate: start,
+        endDate: end,
+        completedAt: end,
+      },
+    });
+
+    await prisma.workHistory.create({
+      data: {
+        workerProfileId: worker.profile.id,
+        jobId: job.id,
+        assignmentId: assignment.id,
+        employerProfileId: employer.profile.id,
+        jobTitle: entry.title,
+        category: "Construction",
+        employerName: employer.profile.companyName,
+        skillsUsed: JSON.stringify([entry.skill]),
+        startDate: start,
+        endDate: end,
+        totalVerifiedMinutes: entry.days * 480,
+        totalDaysWorked: entry.days,
+        totalEarningsPaise: dailyPaise * entry.days,
+        employerRating: entry.rating,
+        employerReview: entry.review,
+        completionStatus: "COMPLETED",
+      },
+    });
+
+    await prisma.workerProfile.update({
+      where: { id: worker.profile.id },
+      data: {
+        totalJobsCompleted: { increment: 1 },
+        totalMinutesWorked: { increment: entry.days * 480 },
+        totalEarningsPaise: { increment: dailyPaise * entry.days },
+      },
+    });
+  }
+
+  // Recomputed from the entries just written rather than hardcoded, so the
+  // headline rating cannot drift from the reviews underneath it.
+  for (const index of new Set(tradeHistory.map((e) => e.worker))) {
+    const rated = await prisma.workHistory.findMany({
+      where: { workerProfileId: workers[index].profile.id, employerRating: { not: null } },
+      select: { employerRating: true },
+    });
+    const sum = rated.reduce((total, row) => total + (row.employerRating ?? 0), 0);
+    await prisma.workerProfile.update({
+      where: { id: workers[index].profile.id },
+      data: { averageRating: rated.length === 0 ? 0 : sum / rated.length },
+    });
+  }
 
   console.log("Recomputing reliability scores...");
   const allWorkers = await prisma.workerProfile.findMany({ select: { id: true } });

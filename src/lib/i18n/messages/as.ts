@@ -394,6 +394,68 @@ const as: PartialMessages = {
   "nav.attendanceApprovals": "উপস্থিতি আৰু অনুমোদন",
   "att.todaysShift": "আজিৰ শিফ্ট",
   "att.viewFullDay": "সম্পূৰ্ণ দিন চাওক",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "দক্ষতা আৰু প্ৰমাণ",
+  "trust.sectionIntro": "শ্ৰমিকে প্ৰতিটো দক্ষতাৰ বিষয়ে কি কয়, আৰু LYBOR-এ কি পৰীক্ষা কৰিব পাৰিলে — কাষে কাষে।",
+  "trust.selfDeclaredHeading": "নিজে ঘোষণা কৰা",
+  "trust.verifiedHeading": "পৰীক্ষিত প্ৰমাণ",
+  "trust.noSkills": "এতিয়াও কোনো দক্ষতা যোগ কৰা হোৱা নাই।",
+  "trust.basisLabel": "আধাৰ",
+  "trust.nextStepLabel": "আগবাঢ়িবলৈ",
+  "trust.levelSelfDeclared": "নিজে ঘোষণা কৰা",
+  "trust.levelSkilled": "দক্ষতা পৰীক্ষাত উত্তীৰ্ণ",
+  "trust.levelVerified": "পৰীক্ষিত",
+  "trust.levelExpert": "বিশেষজ্ঞ",
+  "trust.proficiencyBeginner": "নতুন",
+  "trust.proficiencyIntermediate": "মধ্যম",
+  "trust.proficiencyExpert": "বিশেষজ্ঞ",
+  "trust.selfDeclaredYears_one": "{count} বছৰৰ দাবী",
+  "trust.selfDeclaredYears_other": "{count} বছৰৰ দাবী",
+  "trust.checkNotTaken": "দক্ষতা পৰীক্ষা দিয়া হোৱা নাই",
+  "trust.checkScore": "দক্ষতা পৰীক্ষা {percent}%",
+  "trust.verifiedJobs_one": "এই দক্ষতাৰে {count}টা কাম সম্পূৰ্ণ",
+  "trust.verifiedJobs_other": "এই দক্ষতাৰে {count}টা কাম সম্পূৰ্ণ",
+  "trust.fromEmployers_one": "{count} জন নিয়োগকৰ্তাৰ পৰা",
+  "trust.fromEmployers_other": "{count} জন নিয়োগকৰ্তাৰ পৰা",
+  "trust.basisExpert":
+    "দক্ষতা পৰীক্ষাত {percent}% নম্বৰ লৈ উত্তীৰ্ণ, এই দক্ষতাৰে {jobs}টা পৰীক্ষিত কাম সম্পূৰ্ণ, আৰু {raters} জন নিয়োগকৰ্তাৰ পৰা গড়ে {rating}/5।",
+  "trust.basisVerified":
+    "দক্ষতা পৰীক্ষাত {percent}% নম্বৰ লৈ উত্তীৰ্ণ আৰু এই দক্ষতাৰে {jobs}টা পৰীক্ষিত কাম সম্পূৰ্ণ।",
+  "trust.basisSkilled":
+    "দক্ষতা পৰীক্ষাত {percent}% নম্বৰ লৈ উত্তীৰ্ণ। এই দক্ষতাৰে এতিয়াও কোনো কাম সম্পূৰ্ণ হোৱা নাই।",
+  "trust.basisSkilledSomeJobs":
+    "দক্ষতা পৰীক্ষাত {percent}% নম্বৰ লৈ উত্তীৰ্ণ আৰু এই দক্ষতাৰে {jobs}টা পৰীক্ষিত কাম সম্পূৰ্ণ।",
+  "trust.basisJobsNoCheck":
+    "শ্ৰমিকে নিজে যোগ কৰিছে। এই দক্ষতাৰে {jobs}টা কাম সম্পূৰ্ণ, কিন্তু দক্ষতা পৰীক্ষা দিয়া হোৱা নাই।",
+  "trust.basisFailed":
+    "দক্ষতা পৰীক্ষাত {percent}% নম্বৰ, যি {pass}% উত্তীৰ্ণ নম্বৰৰ কম। ইয়াক পুনৰ দিব পাৰি।",
+  "trust.basisNone":
+    "শ্ৰমিকে নিজে যোগ কৰিছে। কোনো দক্ষতা পৰীক্ষা দিয়া হোৱা নাই আৰু এই দক্ষতাৰে কোনো কাম সম্পূৰ্ণ হোৱা নাই।",
+  "trust.nextExpertJobs":
+    "বিশেষজ্ঞ হ’বলৈ আৰু {jobs}টা পৰীক্ষিত কাম আৰু নিয়োগকৰ্তাসকলৰ পৰা {rating}/5 গড়।",
+  "trust.nextExpertRating": "বিশেষজ্ঞ হ’বলৈ নিয়োগকৰ্তাৰ মূল্যায়ন {rating}/5 বা তাৰ ওপৰত ৰাখক।",
+  "trust.nextVerifiedJobs": "পৰীক্ষিত হ’বলৈ এই দক্ষতাৰে {jobs}টা কাম সম্পূৰ্ণ কৰক।",
+  "trust.nextSkilled": "“দক্ষতা পৰীক্ষাত উত্তীৰ্ণ” হ’বলৈ পৰীক্ষাত {pass}% বা অধিক নম্বৰ লাভ কৰক।",
+  "trust.disclaimer":
+    "এই স্তৰবোৰে LYBOR-ৰ হাতত থকা প্ৰমাণ বুজায় — কোনো ব্যক্তিৰ বিষয়ে নিশ্চয়তা নহয়। এটা সৰু দক্ষতা পৰীক্ষা আৰু কিছু নিয়োগকৰ্তাৰ মূল্যায়ন আৰম্ভণিৰ পদক্ষেপ, পেশাদাৰী প্ৰমাণপত্ৰ নহয় — কামত লোৱাৰ আগতে নিজেও চাই লওক।",
+  "assess.title": "দক্ষতা পৰীক্ষা",
+  "assess.intro":
+    "প্ৰতিটো কামৰ বাবে কিছু ব্যৱহাৰিক প্ৰশ্ন। উত্তীৰ্ণ হ’লে সেই দক্ষতা নিজে ঘোষণা কৰাৰ পৰা “দক্ষতা পৰীক্ষাত উত্তীৰ্ণ” হৈ যায়।",
+  "assess.chooseSkill": "কোনটো দক্ষতা?",
+  "assess.passMark": "উত্তীৰ্ণ নম্বৰ {percent}%",
+  "assess.notCertification": "এইটো এটা সৰু জ্ঞান পৰীক্ষা — কোনো প্ৰমাণপত্ৰ বা পেশাদাৰী অনুজ্ঞাপত্ৰ নহয়।",
+  "assess.questionNumber": "প্ৰশ্ন {index} / {total}",
+  "assess.submit": "উত্তৰ জমা দিয়ক",
+  "assess.retake": "পুনৰ পৰীক্ষা দিয়ক",
+  "assess.backToProfile": "প্ৰফাইললৈ উভতি যাওক",
+  "assess.resultPassed": "উত্তীৰ্ণ।",
+  "assess.resultFailed": "এইবাৰ উত্তীৰ্ণ হোৱা নাই।",
+  "assess.resultScore": "আপুনি {total}টাৰ ভিতৰত {correct}টা শুদ্ধ উত্তৰ দিছে — {percent}%।",
+  "assess.previousResult": "আপোনাৰ যোৱাবাৰৰ চেষ্টাত {percent}% আছিল। পুনৰ উত্তৰ দিলে সেইটো সলনি হ’ব।",
+  "assess.unavailableTitle": "এতিয়াও কোনো দক্ষতা পৰীক্ষা নাই",
+  "assess.unavailableBody":
+    "আপোনাৰ কোনো দক্ষতাৰ বাবে এতিয়াও পৰীক্ষা নাই। সম্পূৰ্ণ কৰা কাম আৰু নিয়োগকৰ্তাৰ মূল্যায়নৰ পৰা আপোনাৰ স্তৰ গঢ় লৈ থাকিব।",
+  "assess.addSkillsFirst": "প্ৰথমে প্ৰফাইলত আপোনাৰ দক্ষতা যোগ কৰক, তাৰ পিছত সেইবোৰ পৰীক্ষা কৰিবলৈ ইয়ালৈ আহক।",
 };
 
 export default as;

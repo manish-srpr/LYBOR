@@ -19,12 +19,14 @@
     "verify:i18n": "tsx scripts/verify-i18n-http.mts",
     "verify:language": "tsx scripts/verify-language-flow.mts",
     "setup": "node scripts/setup.mjs",
-    "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n",
+    "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n && npm run verify:trust",
     "verify:session": "tsx scripts/verify-stale-session.mts",
     "verify:gps": "tsx scripts/verify-gps-attendance.mts",
     "verify:flow": "tsx scripts/verify-work-flow.mts",
     "verify:login": "tsx scripts/verify-login-location.mts",
-    "verify:loctiming": "tsx scripts/verify-location-timing.mts"
+    "verify:loctiming": "tsx scripts/verify-location-timing.mts",
+    "verify:trust": "tsx scripts/verify-skill-trust.mts",
+    "verify:skillcheck": "tsx scripts/verify-skill-check-http.mts"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",

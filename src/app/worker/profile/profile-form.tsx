@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useActionState, useState } from "react";
+import Link from "next/link";
+import { ClipboardCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { Alert } from "@/components/ui/misc";
@@ -12,15 +14,20 @@ import { cn } from "@/lib/utils";
 
 export type SkillOption = { id: string; nameEn: string; nameHi: string; category: string };
 
+export type Proficiency = "BEGINNER" | "INTERMEDIATE" | "EXPERT";
+
 export function ProfileForm({
   lang,
   skills,
   selectedSkillIds,
+  skillLevels,
   profile,
 }: {
   lang: Lang;
   skills: SkillOption[];
   selectedSkillIds: string[];
+  /** The worker's own current claim per skill. */
+  skillLevels: Record<string, Proficiency>;
   profile: {
     bio: string | null;
     experienceYears: number;
@@ -32,9 +39,15 @@ export function ProfileForm({
   };
 }) {
   const isHi = lang === "hi";
-  const [pending, startTransition] = useTransition();
-  const [result, setResult] = useState<ActionResult | null>(null);
+  const [result, formAction, pending] = useActionState<ActionResult | null, FormData>(
+    updateWorkerProfileAction,
+    null,
+  );
   const [selected, setSelected] = useState<Set<string>>(new Set(selectedSkillIds));
+
+  // Order follows the chip list, so the level rows appear in the same order
+  // the skills were ticked in.
+  const chosen = skills.filter((skill) => selected.has(skill.id));
 
   function toggle(id: string) {
     setSelected((current) => {
@@ -46,14 +59,7 @@ export function ProfileForm({
   }
 
   return (
-    <form
-      className="space-y-5"
-      action={(formData) => {
-        startTransition(async () => {
-          setResult(await updateWorkerProfileAction(formData));
-        });
-      }}
-    >
+    <form className="space-y-5" action={formAction}>
       {result ? (
         <Alert tone={result.ok ? "success" : "destructive"}>{result.message}</Alert>
       ) : null}
@@ -108,6 +114,55 @@ export function ProfileForm({
           })}
         </div>
       </fieldset>
+
+      {/*
+        The level per chosen skill, and the honesty about what it is worth. This
+        used to be invisible: the save wrote INTERMEDIATE for every skill and
+        the employer's page printed that word as a badge, so a value nobody had
+        chosen read as a credential. Now the worker sets it and the label says,
+        to their face, that it is their own description.
+      */}
+      {chosen.length > 0 ? (
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium">
+            {isHi ? "आप अपने स्तर को कैसे बताएँगे?" : "How would you describe your level?"}
+          </legend>
+          <p className="text-xs text-[var(--muted-foreground)]">
+            {isHi
+              ? "यह आपका स्वयं का कथन है। नियोक्ता इसे “स्वयं-घोषित” के रूप में देखते हैं। सत्यापित स्तर कौशल जाँच और पूरे किए गए काम से बनता है।"
+              : "This is your own statement. Employers see it labelled self-declared. Verified standing comes from the skill check and completed jobs."}
+          </p>
+          <div className="space-y-2">
+            {chosen.map((skill) => (
+              <div
+                key={skill.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[var(--border)] p-2.5"
+              >
+                <span className="text-sm">{isHi ? skill.nameHi : skill.nameEn}</span>
+                <Select
+                  name={`skillLevel:${skill.id}`}
+                  aria-label={`${isHi ? skill.nameHi : skill.nameEn} — ${
+                    isHi ? "स्वयं-घोषित स्तर" : "self-declared level"
+                  }`}
+                  defaultValue={skillLevels[skill.id] ?? "INTERMEDIATE"}
+                  className="w-auto"
+                >
+                  <option value="BEGINNER">{isHi ? "शुरुआती" : "Beginner"}</option>
+                  <option value="INTERMEDIATE">{isHi ? "मध्यम" : "Intermediate"}</option>
+                  <option value="EXPERT">{isHi ? "निपुण" : "Expert"}</option>
+                </Select>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/worker/profile/skill-check"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--primary)]"
+          >
+            <ClipboardCheck className="size-4" aria-hidden />
+            {isHi ? "कौशल जाँच दें" : "Take the skill check"}
+          </Link>
+        </fieldset>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label={isHi ? "अनुभव (वर्ष)" : "Experience (years)"} htmlFor="experienceYears">

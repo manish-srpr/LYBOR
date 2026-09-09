@@ -394,6 +394,68 @@ const ur: PartialMessages = {
   "nav.attendanceApprovals": "حاضری اور منظوریاں",
   "att.todaysShift": "آج کی شفٹ",
   "att.viewFullDay": "پورا دن دیکھیں",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "ہنر اور ثبوت",
+  "trust.sectionIntro": "مزدور ہر ہنر کے بارے میں کیا کہتا ہے، اور LYBOR کیا تصدیق کر سکا — ساتھ ساتھ۔",
+  "trust.selfDeclaredHeading": "خود بیان کردہ",
+  "trust.verifiedHeading": "تصدیق شدہ ثبوت",
+  "trust.noSkills": "ابھی کوئی ہنر شامل نہیں کیا گیا۔",
+  "trust.basisLabel": "بنیاد",
+  "trust.nextStepLabel": "آگے بڑھنے کے لیے",
+  "trust.levelSelfDeclared": "خود بیان کردہ",
+  "trust.levelSkilled": "ہنر جانچ پاس",
+  "trust.levelVerified": "تصدیق شدہ",
+  "trust.levelExpert": "ماہر",
+  "trust.proficiencyBeginner": "ابتدائی",
+  "trust.proficiencyIntermediate": "درمیانی",
+  "trust.proficiencyExpert": "ماہر",
+  "trust.selfDeclaredYears_one": "{count} سال کا دعویٰ",
+  "trust.selfDeclaredYears_other": "{count} سال کا دعویٰ",
+  "trust.checkNotTaken": "ہنر جانچ نہیں دی گئی",
+  "trust.checkScore": "ہنر جانچ {percent}%",
+  "trust.verifiedJobs_one": "اس ہنر سے {count} کام مکمل کیا",
+  "trust.verifiedJobs_other": "اس ہنر سے {count} کام مکمل کیے",
+  "trust.fromEmployers_one": "{count} آجر کی طرف سے",
+  "trust.fromEmployers_other": "{count} آجروں کی طرف سے",
+  "trust.basisExpert":
+    "ہنر جانچ {percent}% نمبروں سے پاس، اس ہنر سے {jobs} تصدیق شدہ کام مکمل کیے، اور {raters} آجروں کی طرف سے اوسط {rating}/5۔",
+  "trust.basisVerified":
+    "ہنر جانچ {percent}% نمبروں سے پاس اور اس ہنر سے {jobs} تصدیق شدہ کام مکمل کیے۔",
+  "trust.basisSkilled":
+    "ہنر جانچ {percent}% نمبروں سے پاس۔ اس ہنر سے ابھی کوئی کام مکمل نہیں کیا۔",
+  "trust.basisSkilledSomeJobs":
+    "ہنر جانچ {percent}% نمبروں سے پاس اور اس ہنر سے {jobs} تصدیق شدہ کام مکمل کیے۔",
+  "trust.basisJobsNoCheck":
+    "مزدور نے خود شامل کیا۔ اس ہنر سے {jobs} کام مکمل کیے، مگر ہنر جانچ نہیں دی گئی۔",
+  "trust.basisFailed":
+    "ہنر جانچ میں {percent}% نمبر ملے، جو {pass}% پاس نمبروں سے کم ہیں۔ یہ دوبارہ دی جا سکتی ہے۔",
+  "trust.basisNone":
+    "مزدور نے خود شامل کیا۔ نہ کوئی ہنر جانچ دی گئی ہے اور نہ اس ہنر سے کوئی کام مکمل ہوا ہے۔",
+  "trust.nextExpertJobs":
+    "ماہر کے لیے {jobs} مزید تصدیق شدہ کام اور آجروں کی طرف سے {rating}/5 کی اوسط۔",
+  "trust.nextExpertRating": "ماہر کے لیے آجر کی درجہ بندی {rating}/5 یا اس سے اوپر رکھیں۔",
+  "trust.nextVerifiedJobs": "تصدیق شدہ درجے کے لیے اس ہنر سے {jobs} کام مکمل کریں۔",
+  "trust.nextSkilled": "“ہنر جانچ پاس” کے لیے جانچ میں {pass}% یا زیادہ نمبر لائیں۔",
+  "trust.disclaimer":
+    "یہ درجے بتاتے ہیں کہ LYBOR کے پاس کون سے ثبوت ہیں — یہ کسی شخص کے بارے میں ضمانت نہیں ہیں۔ ایک مختصر ہنر جانچ اور چند آجر درجہ بندیاں ایک آغاز ہیں، پیشہ ورانہ سند نہیں — کام پر رکھنے سے پہلے خود بھی پرکھیں۔",
+  "assess.title": "ہنر جانچ",
+  "assess.intro":
+    "ہر کام کے لیے چند عملی سوالات۔ پاس ہونے پر وہ ہنر خود بیان کردہ سے “ہنر جانچ پاس” ہو جاتا ہے۔",
+  "assess.chooseSkill": "کون سا ہنر؟",
+  "assess.passMark": "پاس نمبر {percent}%",
+  "assess.notCertification": "یہ ایک مختصر معلوماتی جانچ ہے — کوئی سند یا پیشہ ورانہ لائسنس نہیں۔",
+  "assess.questionNumber": "سوال {index} / {total}",
+  "assess.submit": "جوابات جمع کریں",
+  "assess.retake": "جانچ دوبارہ دیں",
+  "assess.backToProfile": "پروفائل پر واپس",
+  "assess.resultPassed": "پاس۔",
+  "assess.resultFailed": "اس بار پاس نہیں ہوئے۔",
+  "assess.resultScore": "آپ نے {total} میں سے {correct} جوابات درست دیے — {percent}%۔",
+  "assess.previousResult": "آپ کی پچھلی کوشش میں {percent}% نمبر تھے۔ دوبارہ جواب دینے پر وہ بدل جائے گا۔",
+  "assess.unavailableTitle": "ابھی کوئی ہنر جانچ دستیاب نہیں",
+  "assess.unavailableBody":
+    "آپ کے کسی ہنر کے لیے ابھی جانچ نہیں ہے۔ آپ کا درجہ مکمل کیے گئے کاموں اور آجر درجہ بندیوں سے بنتا رہے گا۔",
+  "assess.addSkillsFirst": "پہلے اپنی پروفائل میں ہنر شامل کریں، پھر انہیں جانچنے کے لیے یہاں آئیں۔",
 };
 
 export default ur;

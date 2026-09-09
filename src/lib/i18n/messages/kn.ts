@@ -394,6 +394,68 @@ const kn: PartialMessages = {
   "nav.attendanceApprovals": "ಹಾಜರಾತಿ ಮತ್ತು ಅನುಮೋದನೆಗಳು",
   "att.todaysShift": "ಇಂದಿನ ಶಿಫ್ಟ್",
   "att.viewFullDay": "ಪೂರ್ಣ ದಿನ ನೋಡಿ",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "ಕೌಶಲಗಳು ಮತ್ತು ಸಾಕ್ಷ್ಯ",
+  "trust.sectionIntro": "ಕಾರ್ಮಿಕ ಪ್ರತಿ ಕೌಶಲದ ಬಗ್ಗೆ ಏನು ಹೇಳುತ್ತಾರೆ, ಮತ್ತು LYBOR ಏನನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಯಿತು — ಅಕ್ಕಪಕ್ಕದಲ್ಲಿ.",
+  "trust.selfDeclaredHeading": "ಸ್ವಯಂ ಘೋಷಿತ",
+  "trust.verifiedHeading": "ಪರಿಶೀಲಿಸಿದ ಸಾಕ್ಷ್ಯ",
+  "trust.noSkills": "ಇನ್ನೂ ಯಾವುದೇ ಕೌಶಲ ಸೇರಿಸಿಲ್ಲ.",
+  "trust.basisLabel": "ಆಧಾರ",
+  "trust.nextStepLabel": "ಮೇಲೇರಲು",
+  "trust.levelSelfDeclared": "ಸ್ವಯಂ ಘೋಷಿತ",
+  "trust.levelSkilled": "ಕೌಶಲ ಪರೀಕ್ಷೆ ಉತ್ತೀರ್ಣ",
+  "trust.levelVerified": "ಪರಿಶೀಲಿಸಿದ",
+  "trust.levelExpert": "ಪ್ರವೀಣ",
+  "trust.proficiencyBeginner": "ಆರಂಭಿಕ",
+  "trust.proficiencyIntermediate": "ಮಧ್ಯಮ",
+  "trust.proficiencyExpert": "ಪ್ರವೀಣ",
+  "trust.selfDeclaredYears_one": "{count} ವರ್ಷ ಎಂದು ಹೇಳಿಕೆ",
+  "trust.selfDeclaredYears_other": "{count} ವರ್ಷಗಳು ಎಂದು ಹೇಳಿಕೆ",
+  "trust.checkNotTaken": "ಕೌಶಲ ಪರೀಕ್ಷೆ ತೆಗೆದುಕೊಂಡಿಲ್ಲ",
+  "trust.checkScore": "ಕೌಶಲ ಪರೀಕ್ಷೆ {percent}%",
+  "trust.verifiedJobs_one": "ಈ ಕೌಶಲದಿಂದ {count} ಕೆಲಸ ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ",
+  "trust.verifiedJobs_other": "ಈ ಕೌಶಲದಿಂದ {count} ಕೆಲಸಗಳು ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ",
+  "trust.fromEmployers_one": "{count} ಉದ್ಯೋಗದಾತರಿಂದ",
+  "trust.fromEmployers_other": "{count} ಉದ್ಯೋಗದಾತರಿಂದ",
+  "trust.basisExpert":
+    "ಕೌಶಲ ಪರೀಕ್ಷೆಯಲ್ಲಿ {percent}% ಅಂಕಗಳೊಂದಿಗೆ ಉತ್ತೀರ್ಣ, ಈ ಕೌಶಲದಿಂದ {jobs} ಪರಿಶೀಲಿಸಿದ ಕೆಲಸಗಳು ಪೂರ್ಣ, ಮತ್ತು {raters} ಉದ್ಯೋಗದಾತರಿಂದ ಸರಾಸರಿ {rating}/5.",
+  "trust.basisVerified":
+    "ಕೌಶಲ ಪರೀಕ್ಷೆಯಲ್ಲಿ {percent}% ಅಂಕಗಳೊಂದಿಗೆ ಉತ್ತೀರ್ಣ ಮತ್ತು ಈ ಕೌಶಲದಿಂದ {jobs} ಪರಿಶೀಲಿಸಿದ ಕೆಲಸಗಳು ಪೂರ್ಣ.",
+  "trust.basisSkilled":
+    "ಕೌಶಲ ಪರೀಕ್ಷೆಯಲ್ಲಿ {percent}% ಅಂಕಗಳೊಂದಿಗೆ ಉತ್ತೀರ್ಣ. ಈ ಕೌಶಲದಿಂದ ಇನ್ನೂ ಯಾವುದೇ ಕೆಲಸ ಪೂರ್ಣಗೊಂಡಿಲ್ಲ.",
+  "trust.basisSkilledSomeJobs":
+    "ಕೌಶಲ ಪರೀಕ್ಷೆಯಲ್ಲಿ {percent}% ಅಂಕಗಳೊಂದಿಗೆ ಉತ್ತೀರ್ಣ ಮತ್ತು ಈ ಕೌಶಲದಿಂದ {jobs} ಪರಿಶೀಲಿಸಿದ ಕೆಲಸಗಳು ಪೂರ್ಣ.",
+  "trust.basisJobsNoCheck":
+    "ಕಾರ್ಮಿಕರೇ ಸೇರಿಸಿದ್ದಾರೆ. ಈ ಕೌಶಲದಿಂದ {jobs} ಕೆಲಸಗಳು ಪೂರ್ಣ, ಆದರೆ ಕೌಶಲ ಪರೀಕ್ಷೆ ತೆಗೆದುಕೊಂಡಿಲ್ಲ.",
+  "trust.basisFailed":
+    "ಕೌಶಲ ಪರೀಕ್ಷೆಯಲ್ಲಿ {percent}% ಅಂಕಗಳು, ಇದು {pass}% ಉತ್ತೀರ್ಣ ಅಂಕಗಳಿಗಿಂತ ಕಡಿಮೆ. ಇದನ್ನು ಮತ್ತೆ ತೆಗೆದುಕೊಳ್ಳಬಹುದು.",
+  "trust.basisNone":
+    "ಕಾರ್ಮಿಕರೇ ಸೇರಿಸಿದ್ದಾರೆ. ಕೌಶಲ ಪರೀಕ್ಷೆ ತೆಗೆದುಕೊಂಡಿಲ್ಲ ಮತ್ತು ಈ ಕೌಶಲದಿಂದ ಯಾವುದೇ ಕೆಲಸ ಪೂರ್ಣಗೊಂಡಿಲ್ಲ.",
+  "trust.nextExpertJobs":
+    "ಪ್ರವೀಣ ಮಟ್ಟಕ್ಕೆ ಇನ್ನೂ {jobs} ಪರಿಶೀಲಿಸಿದ ಕೆಲಸಗಳು ಮತ್ತು ಉದ್ಯೋಗದಾತರಿಂದ {rating}/5 ಸರಾಸರಿ.",
+  "trust.nextExpertRating": "ಪ್ರವೀಣ ಮಟ್ಟಕ್ಕೆ ಉದ್ಯೋಗದಾತ ರೇಟಿಂಗ್ {rating}/5 ಅಥವಾ ಹೆಚ್ಚು ಇರಿಸಿ.",
+  "trust.nextVerifiedJobs": "ಪರಿಶೀಲಿಸಿದ ಮಟ್ಟಕ್ಕೆ ಈ ಕೌಶಲದಿಂದ {jobs} ಕೆಲಸಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.",
+  "trust.nextSkilled": "“ಕೌಶಲ ಪರೀಕ್ಷೆ ಉತ್ತೀರ್ಣ” ಪಡೆಯಲು ಪರೀಕ್ಷೆಯಲ್ಲಿ {pass}% ಅಥವಾ ಹೆಚ್ಚು ಅಂಕ ಗಳಿಸಿ.",
+  "trust.disclaimer":
+    "ಈ ಮಟ್ಟಗಳು LYBOR ಬಳಿ ಇರುವ ಸಾಕ್ಷ್ಯವನ್ನು ಸೂಚಿಸುತ್ತವೆ — ಒಬ್ಬ ವ್ಯಕ್ತಿಯ ಬಗ್ಗೆ ಖಾತರಿಯಲ್ಲ. ಒಂದು ಸಣ್ಣ ಕೌಶಲ ಪರೀಕ್ಷೆ ಮತ್ತು ಕೆಲವು ಉದ್ಯೋಗದಾತ ರೇಟಿಂಗ್‌ಗಳು ಒಂದು ಆರಂಭ ಮಾತ್ರ, ವೃತ್ತಿ ಪ್ರಮಾಣಪತ್ರವಲ್ಲ — ಕೆಲಸಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳುವ ಮೊದಲು ನೀವೇ ಪರಿಶೀಲಿಸಿ.",
+  "assess.title": "ಕೌಶಲ ಪರೀಕ್ಷೆ",
+  "assess.intro":
+    "ಪ್ರತಿ ಕೆಲಸಕ್ಕೆ ಕೆಲವು ಪ್ರಾಯೋಗಿಕ ಪ್ರಶ್ನೆಗಳು. ಉತ್ತೀರ್ಣರಾದರೆ ಆ ಕೌಶಲ ಸ್ವಯಂ ಘೋಷಿತದಿಂದ “ಕೌಶಲ ಪರೀಕ್ಷೆ ಉತ್ತೀರ್ಣ” ಆಗುತ್ತದೆ.",
+  "assess.chooseSkill": "ಯಾವ ಕೌಶಲ?",
+  "assess.passMark": "ಉತ್ತೀರ್ಣ ಅಂಕ {percent}%",
+  "assess.notCertification": "ಇದು ಒಂದು ಸಣ್ಣ ಜ್ಞಾನ ಪರೀಕ್ಷೆ — ಪ್ರಮಾಣಪತ್ರ ಅಥವಾ ವೃತ್ತಿ ಪರವಾನಗಿ ಅಲ್ಲ.",
+  "assess.questionNumber": "ಪ್ರಶ್ನೆ {index} / {total}",
+  "assess.submit": "ಉತ್ತರಗಳನ್ನು ಕಳುಹಿಸಿ",
+  "assess.retake": "ಪರೀಕ್ಷೆ ಮತ್ತೆ ತೆಗೆದುಕೊಳ್ಳಿ",
+  "assess.backToProfile": "ಪ್ರೊಫೈಲ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+  "assess.resultPassed": "ಉತ್ತೀರ್ಣ.",
+  "assess.resultFailed": "ಈ ಬಾರಿ ಉತ್ತೀರ್ಣರಾಗಿಲ್ಲ.",
+  "assess.resultScore": "{total}ರಲ್ಲಿ {correct} ಉತ್ತರಗಳು ಸರಿ — {percent}%.",
+  "assess.previousResult": "ನಿಮ್ಮ ಹಿಂದಿನ ಪ್ರಯತ್ನದಲ್ಲಿ {percent}% ಅಂಕ. ಮತ್ತೆ ಉತ್ತರಿಸಿದರೆ ಅದು ಬದಲಾಗುತ್ತದೆ.",
+  "assess.unavailableTitle": "ಇನ್ನೂ ಕೌಶಲ ಪರೀಕ್ಷೆ ಲಭ್ಯವಿಲ್ಲ",
+  "assess.unavailableBody":
+    "ನಿಮ್ಮ ಯಾವುದೇ ಕೌಶಲಕ್ಕೆ ಇನ್ನೂ ಪರೀಕ್ಷೆ ಇಲ್ಲ. ಪೂರ್ಣಗೊಳಿಸಿದ ಕೆಲಸಗಳು ಮತ್ತು ಉದ್ಯೋಗದಾತ ರೇಟಿಂಗ್‌ಗಳಿಂದ ನಿಮ್ಮ ಮಟ್ಟ ಬೆಳೆಯುತ್ತಿರುತ್ತದೆ.",
+  "assess.addSkillsFirst": "ಮೊದಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ಕೌಶಲಗಳನ್ನು ಸೇರಿಸಿ, ನಂತರ ಅವುಗಳನ್ನು ಪರೀಕ್ಷಿಸಲು ಇಲ್ಲಿಗೆ ಬನ್ನಿ.",
 };
 
 export default kn;

@@ -394,6 +394,68 @@ const mr: PartialMessages = {
   "nav.attendanceApprovals": "हजेरी व मंजुऱ्या",
   "att.todaysShift": "आजची शिफ्ट",
   "att.viewFullDay": "संपूर्ण दिवस पहा",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "कौशल्ये आणि पुरावा",
+  "trust.sectionIntro": "कामगार प्रत्येक कौशल्याबद्दल काय सांगतो, आणि LYBOR ला काय पडताळता आले — एकाच ठिकाणी.",
+  "trust.selfDeclaredHeading": "स्वयं-घोषित",
+  "trust.verifiedHeading": "पडताळलेला पुरावा",
+  "trust.noSkills": "अजून कोणतेही कौशल्य जोडलेले नाही.",
+  "trust.basisLabel": "आधार",
+  "trust.nextStepLabel": "पुढे जाण्यासाठी",
+  "trust.levelSelfDeclared": "स्वयं-घोषित",
+  "trust.levelSkilled": "कौशल्य चाचणी उत्तीर्ण",
+  "trust.levelVerified": "पडताळलेले",
+  "trust.levelExpert": "निष्णात",
+  "trust.proficiencyBeginner": "नवशिका",
+  "trust.proficiencyIntermediate": "मध्यम",
+  "trust.proficiencyExpert": "निष्णात",
+  "trust.selfDeclaredYears_one": "{count} वर्षाचा दावा",
+  "trust.selfDeclaredYears_other": "{count} वर्षांचा दावा",
+  "trust.checkNotTaken": "कौशल्य चाचणी दिली नाही",
+  "trust.checkScore": "कौशल्य चाचणी {percent}%",
+  "trust.verifiedJobs_one": "या कौशल्याने {count} काम पूर्ण केले",
+  "trust.verifiedJobs_other": "या कौशल्याने {count} कामे पूर्ण केली",
+  "trust.fromEmployers_one": "{count} नियोक्त्याकडून",
+  "trust.fromEmployers_other": "{count} नियोक्त्यांकडून",
+  "trust.basisExpert":
+    "कौशल्य चाचणी {percent}% गुणांनी उत्तीर्ण, या कौशल्याने {jobs} पडताळलेली कामे पूर्ण केली, आणि {raters} नियोक्त्यांकडून सरासरी {rating}/5.",
+  "trust.basisVerified":
+    "कौशल्य चाचणी {percent}% गुणांनी उत्तीर्ण आणि या कौशल्याने {jobs} पडताळलेली कामे पूर्ण केली.",
+  "trust.basisSkilled":
+    "कौशल्य चाचणी {percent}% गुणांनी उत्तीर्ण. या कौशल्याने अजून कोणतेही काम पूर्ण केलेले नाही.",
+  "trust.basisSkilledSomeJobs":
+    "कौशल्य चाचणी {percent}% गुणांनी उत्तीर्ण आणि या कौशल्याने {jobs} पडताळलेली कामे पूर्ण केली.",
+  "trust.basisJobsNoCheck":
+    "कामगाराने जोडलेले. या कौशल्याने {jobs} कामे पूर्ण केली, पण कौशल्य चाचणी दिलेली नाही.",
+  "trust.basisFailed":
+    "कौशल्य चाचणीत {percent}% गुण मिळाले, जे {pass}% उत्तीर्ण गुणांपेक्षा कमी आहेत. ती पुन्हा देता येईल.",
+  "trust.basisNone":
+    "कामगाराने जोडलेले. कौशल्य चाचणी दिलेली नाही आणि या कौशल्याने कोणतेही काम पूर्ण झालेले नाही.",
+  "trust.nextExpertJobs":
+    "निष्णात होण्यासाठी {jobs} अधिक पडताळलेली कामे आणि नियोक्त्यांकडून {rating}/5 सरासरी.",
+  "trust.nextExpertRating": "निष्णात होण्यासाठी नियोक्ता मानांकन {rating}/5 किंवा त्यावर ठेवा.",
+  "trust.nextVerifiedJobs": "पडताळलेले होण्यासाठी या कौशल्याने {jobs} पडताळलेली कामे.",
+  "trust.nextSkilled": "“कौशल्य चाचणी उत्तीर्ण” साठी चाचणीत {pass}% किंवा अधिक गुण मिळवा.",
+  "trust.disclaimer":
+    "हे स्तर LYBOR कडे असलेला पुरावा दर्शवतात — ती व्यक्तीबद्दलची हमी नाही. एक छोटी कौशल्य चाचणी आणि काही नियोक्ता मानांकने ही सुरुवात आहे, व्यावसायिक प्रमाणपत्र नाही — कामावर घेण्यापूर्वी स्वतः पडताळा.",
+  "assess.title": "कौशल्य चाचणी",
+  "assess.intro":
+    "प्रत्येक कामासाठी काही व्यावहारिक प्रश्न. उत्तीर्ण झाल्यास ते कौशल्य स्वयं-घोषित वरून “कौशल्य चाचणी उत्तीर्ण” होते.",
+  "assess.chooseSkill": "कोणते कौशल्य?",
+  "assess.passMark": "उत्तीर्ण गुण {percent}%",
+  "assess.notCertification": "ही एक छोटी ज्ञान चाचणी आहे — प्रमाणपत्र किंवा व्यावसायिक परवाना नाही.",
+  "assess.questionNumber": "प्रश्न {index} / {total}",
+  "assess.submit": "उत्तरे पाठवा",
+  "assess.retake": "चाचणी पुन्हा द्या",
+  "assess.backToProfile": "प्रोफाइलवर परत",
+  "assess.resultPassed": "उत्तीर्ण.",
+  "assess.resultFailed": "यावेळी उत्तीर्ण नाही.",
+  "assess.resultScore": "तुम्ही {total} पैकी {correct} उत्तरे बरोबर दिली — {percent}%.",
+  "assess.previousResult": "तुमच्या मागील प्रयत्नात {percent}% गुण होते. पुन्हा उत्तर दिल्यास ते बदलेल.",
+  "assess.unavailableTitle": "अजून कोणतीही कौशल्य चाचणी उपलब्ध नाही",
+  "assess.unavailableBody":
+    "तुमच्या कोणत्याही कौशल्यासाठी अजून चाचणी नाही. तुमचा स्तर पूर्ण केलेली कामे आणि नियोक्ता मानांकनांतून तयार होत राहील.",
+  "assess.addSkillsFirst": "आधी तुमच्या प्रोफाइलमध्ये कौशल्ये जोडा, मग ती तपासण्यासाठी येथे या.",
 };
 
 export default mr;

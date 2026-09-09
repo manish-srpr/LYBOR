@@ -394,6 +394,68 @@ const ta: PartialMessages = {
   "nav.attendanceApprovals": "வருகை & ஒப்புதல்கள்",
   "att.todaysShift": "இன்றைய பணிமுறை",
   "att.viewFullDay": "முழு நாளைப் பார்",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "திறன்கள் மற்றும் சான்று",
+  "trust.sectionIntro": "தொழிலாளி ஒவ்வொரு திறனைப் பற்றி என்ன கூறுகிறார், LYBOR என்ன சரிபார்க்க முடிந்தது — இரண்டும் அருகருகே.",
+  "trust.selfDeclaredHeading": "தானே கூறியது",
+  "trust.verifiedHeading": "சரிபார்க்கப்பட்ட சான்று",
+  "trust.noSkills": "இன்னும் எந்த திறனும் சேர்க்கப்படவில்லை.",
+  "trust.basisLabel": "அடிப்படை",
+  "trust.nextStepLabel": "மேலே செல்ல",
+  "trust.levelSelfDeclared": "தானே கூறியது",
+  "trust.levelSkilled": "திறன் சோதனையில் தேர்ச்சி",
+  "trust.levelVerified": "சரிபார்க்கப்பட்டது",
+  "trust.levelExpert": "நிபுணர்",
+  "trust.proficiencyBeginner": "தொடக்க நிலை",
+  "trust.proficiencyIntermediate": "இடைநிலை",
+  "trust.proficiencyExpert": "நிபுணர்",
+  "trust.selfDeclaredYears_one": "{count} ஆண்டு எனக் கூறியுள்ளார்",
+  "trust.selfDeclaredYears_other": "{count} ஆண்டுகள் எனக் கூறியுள்ளார்",
+  "trust.checkNotTaken": "திறன் சோதனை எழுதவில்லை",
+  "trust.checkScore": "திறன் சோதனை {percent}%",
+  "trust.verifiedJobs_one": "இந்த திறனில் {count} வேலை முடித்துள்ளார்",
+  "trust.verifiedJobs_other": "இந்த திறனில் {count} வேலைகள் முடித்துள்ளார்",
+  "trust.fromEmployers_one": "{count} முதலாளியிடமிருந்து",
+  "trust.fromEmployers_other": "{count} முதலாளிகளிடமிருந்து",
+  "trust.basisExpert":
+    "திறன் சோதனையில் {percent}% மதிப்பெண்ணுடன் தேர்ச்சி, இந்த திறனில் {jobs} சரிபார்க்கப்பட்ட வேலைகள் முடிந்தது, மற்றும் {raters} முதலாளிகளிடமிருந்து சராசரி {rating}/5.",
+  "trust.basisVerified":
+    "திறன் சோதனையில் {percent}% மதிப்பெண்ணுடன் தேர்ச்சி மற்றும் இந்த திறனில் {jobs} சரிபார்க்கப்பட்ட வேலைகள் முடிந்தது.",
+  "trust.basisSkilled":
+    "திறன் சோதனையில் {percent}% மதிப்பெண்ணுடன் தேர்ச்சி. இந்த திறனில் இன்னும் எந்த வேலையும் முடிக்கப்படவில்லை.",
+  "trust.basisSkilledSomeJobs":
+    "திறன் சோதனையில் {percent}% மதிப்பெண்ணுடன் தேர்ச்சி மற்றும் இந்த திறனில் {jobs} சரிபார்க்கப்பட்ட வேலைகள் முடிந்தது.",
+  "trust.basisJobsNoCheck":
+    "தொழிலாளியே சேர்த்தது. இந்த திறனில் {jobs} வேலைகள் முடிந்தது, ஆனால் திறன் சோதனை எழுதப்படவில்லை.",
+  "trust.basisFailed":
+    "திறன் சோதனையில் {percent}% மதிப்பெண், இது {pass}% தேர்ச்சி மதிப்பெண்ணுக்குக் குறைவு. மீண்டும் எழுதலாம்.",
+  "trust.basisNone":
+    "தொழிலாளியே சேர்த்தது. திறன் சோதனை எழுதப்படவில்லை, இந்த திறனில் எந்த வேலையும் முடிக்கப்படவில்லை.",
+  "trust.nextExpertJobs":
+    "நிபுணர் நிலைக்கு மேலும் {jobs} சரிபார்க்கப்பட்ட வேலைகள் மற்றும் முதலாளிகளிடமிருந்து {rating}/5 சராசரி.",
+  "trust.nextExpertRating": "நிபுணர் நிலைக்கு முதலாளி மதிப்பீட்டை {rating}/5 அல்லது அதற்கு மேல் வைக்கவும்.",
+  "trust.nextVerifiedJobs": "சரிபார்க்கப்பட்ட நிலைக்கு இந்த திறனில் {jobs} வேலைகளை முடிக்கவும்.",
+  "trust.nextSkilled": "“திறன் சோதனையில் தேர்ச்சி” பெற சோதனையில் {pass}% அல்லது அதற்கு மேல் மதிப்பெண் பெறவும்.",
+  "trust.disclaimer":
+    "இந்த நிலைகள் LYBOR-இடம் உள்ள சான்றுகளைக் குறிக்கின்றன — ஒரு நபரைப் பற்றிய உறுதிமொழி அல்ல. ஒரு சிறிய திறன் சோதனையும் சில முதலாளி மதிப்பீடுகளும் ஒரு தொடக்கம் மட்டுமே, தொழில் சான்றிதழ் அல்ல — வேலைக்கு எடுப்பதற்கு முன் நீங்களே சரிபார்க்கவும்.",
+  "assess.title": "திறன் சோதனை",
+  "assess.intro":
+    "ஒவ்வொரு தொழிலுக்கும் சில நடைமுறை கேள்விகள். தேர்ச்சி பெற்றால் அந்த திறன் தானே கூறியதிலிருந்து “திறன் சோதனையில் தேர்ச்சி” ஆகிறது.",
+  "assess.chooseSkill": "எந்த திறன்?",
+  "assess.passMark": "தேர்ச்சி மதிப்பெண் {percent}%",
+  "assess.notCertification": "இது ஒரு சிறிய அறிவுச் சோதனை — சான்றிதழோ தொழில் உரிமமோ அல்ல.",
+  "assess.questionNumber": "கேள்வி {index} / {total}",
+  "assess.submit": "பதில்களை அனுப்பு",
+  "assess.retake": "மீண்டும் சோதனை எழுது",
+  "assess.backToProfile": "சுயவிவரத்திற்குத் திரும்பு",
+  "assess.resultPassed": "தேர்ச்சி.",
+  "assess.resultFailed": "இம்முறை தேர்ச்சி இல்லை.",
+  "assess.resultScore": "{total}-இல் {correct} பதில்கள் சரி — {percent}%.",
+  "assess.previousResult": "உங்கள் கடந்த முயற்சியில் {percent}% மதிப்பெண். மீண்டும் எழுதினால் அது மாறும்.",
+  "assess.unavailableTitle": "இன்னும் திறன் சோதனை இல்லை",
+  "assess.unavailableBody":
+    "உங்கள் எந்த திறனுக்கும் இன்னும் சோதனை இல்லை. முடித்த வேலைகள் மற்றும் முதலாளி மதிப்பீடுகளிலிருந்து உங்கள் நிலை உருவாகும்.",
+  "assess.addSkillsFirst": "முதலில் உங்கள் சுயவிவரத்தில் திறன்களைச் சேர்க்கவும், பிறகு அவற்றைச் சோதிக்க இங்கு வரவும்.",
 };
 
 export default ta;

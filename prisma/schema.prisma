@@ -267,6 +267,7 @@ model WorkerProfile {
   assignments  JobAssignment[]
   workHistory  WorkHistory[]
   fraudAlerts  FraudAlert[]
+  assessments  SkillAssessment[]
 
   @@index([city])
   @@index([availability])
@@ -324,8 +325,9 @@ model Skill {
   category String
   icon     String?
 
-  workers WorkerSkill[]
-  jobs    JobSkill[]
+  workers     WorkerSkill[]
+  jobs        JobSkill[]
+  assessments SkillAssessment[]
 
   @@index([category])
 }
@@ -337,6 +339,10 @@ model WorkerSkill {
   skillId         String
   skill           Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
+  // Both of these are SELF-DECLARED. They are an input to job matching and a
+  // statement of what the worker claims - never evidence. Verified standing
+  // comes from SkillAssessment plus WorkHistory, combined in
+  // src/lib/skill-trust.ts.
   proficiency     Proficiency @default(INTERMEDIATE)
   yearsExperience Int         @default(0)
   createdAt       DateTime    @default(now())
@@ -663,6 +669,44 @@ model KYCRecord {
   @@index([status])
   @@index([userId])
   @@index([docNumberHash])
+}
+
+// ---------------------------------------------------------------------------
+// SKILL ASSESSMENT
+// ---------------------------------------------------------------------------
+
+// A worker's result on the skill check for one trade.
+//
+// Separate from WorkerSkill on purpose. WorkerSkill records what the worker
+// says about themselves; this records what they demonstrated. Collapsing the
+// two would lose exactly the distinction the trust profile exists to make -
+// and it is why an EXPERT proficiency on WorkerSkill must never, on its own,
+// show an employer a credential.
+model SkillAssessment {
+  id              String        @id @default(cuid())
+  workerProfileId String
+  worker          WorkerProfile @relation(fields: [workerProfileId], references: [id], onDelete: Cascade)
+  skillId         String
+  skill           Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  // 0..100. Stored rather than derived so a later change to the question set
+  // cannot silently rewrite a result somebody already earned.
+  scorePercent  Int
+  correctCount  Int
+  questionCount Int
+  passed        Boolean
+
+  // Which revision of the questions produced this, so a stale result can be
+  // identified if the bank is ever revised.
+  bankVersion Int @default(1)
+
+  takenAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One current result per skill. Retaking replaces it.
+  @@unique([workerProfileId, skillId])
+  @@index([skillId])
+  @@index([passed])
 }
 
 // ---------------------------------------------------------------------------

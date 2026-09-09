@@ -394,6 +394,68 @@ const bn: PartialMessages = {
   "nav.attendanceApprovals": "হাজিরা ও অনুমোদন",
   "att.todaysShift": "আজকের শিফট",
   "att.viewFullDay": "সম্পূর্ণ দিন দেখুন",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "দক্ষতা ও প্রমাণ",
+  "trust.sectionIntro": "শ্রমিক প্রতিটি দক্ষতা সম্পর্কে কী বলেন, আর LYBOR কী যাচাই করতে পেরেছে — পাশাপাশি।",
+  "trust.selfDeclaredHeading": "স্ব-ঘোষিত",
+  "trust.verifiedHeading": "যাচাই করা প্রমাণ",
+  "trust.noSkills": "এখনও কোনও দক্ষতা যোগ করা হয়নি।",
+  "trust.basisLabel": "ভিত্তি",
+  "trust.nextStepLabel": "উপরে উঠতে",
+  "trust.levelSelfDeclared": "স্ব-ঘোষিত",
+  "trust.levelSkilled": "দক্ষতা পরীক্ষায় উত্তীর্ণ",
+  "trust.levelVerified": "যাচাই করা",
+  "trust.levelExpert": "বিশেষজ্ঞ",
+  "trust.proficiencyBeginner": "নতুন",
+  "trust.proficiencyIntermediate": "মধ্যম",
+  "trust.proficiencyExpert": "বিশেষজ্ঞ",
+  "trust.selfDeclaredYears_one": "{count} বছরের দাবি",
+  "trust.selfDeclaredYears_other": "{count} বছরের দাবি",
+  "trust.checkNotTaken": "দক্ষতা পরীক্ষা দেওয়া হয়নি",
+  "trust.checkScore": "দক্ষতা পরীক্ষা {percent}%",
+  "trust.verifiedJobs_one": "এই দক্ষতায় {count}টি কাজ সম্পন্ন",
+  "trust.verifiedJobs_other": "এই দক্ষতায় {count}টি কাজ সম্পন্ন",
+  "trust.fromEmployers_one": "{count} জন নিয়োগকর্তার থেকে",
+  "trust.fromEmployers_other": "{count} জন নিয়োগকর্তার থেকে",
+  "trust.basisExpert":
+    "দক্ষতা পরীক্ষায় {percent}% নম্বর নিয়ে উত্তীর্ণ, এই দক্ষতায় {jobs}টি যাচাই করা কাজ সম্পন্ন, এবং {raters} জন নিয়োগকর্তার থেকে গড়ে {rating}/5।",
+  "trust.basisVerified":
+    "দক্ষতা পরীক্ষায় {percent}% নম্বর নিয়ে উত্তীর্ণ এবং এই দক্ষতায় {jobs}টি যাচাই করা কাজ সম্পন্ন।",
+  "trust.basisSkilled":
+    "দক্ষতা পরীক্ষায় {percent}% নম্বর নিয়ে উত্তীর্ণ। এই দক্ষতায় এখনও কোনও কাজ সম্পন্ন হয়নি।",
+  "trust.basisSkilledSomeJobs":
+    "দক্ষতা পরীক্ষায় {percent}% নম্বর নিয়ে উত্তীর্ণ এবং এই দক্ষতায় {jobs}টি যাচাই করা কাজ সম্পন্ন।",
+  "trust.basisJobsNoCheck":
+    "শ্রমিক নিজে যোগ করেছেন। এই দক্ষতায় {jobs}টি কাজ সম্পন্ন, তবে দক্ষতা পরীক্ষা দেওয়া হয়নি।",
+  "trust.basisFailed":
+    "দক্ষতা পরীক্ষায় {percent}% নম্বর, যা {pass}% উত্তীর্ণ নম্বরের কম। এটি আবার দেওয়া যাবে।",
+  "trust.basisNone":
+    "শ্রমিক নিজে যোগ করেছেন। কোনও দক্ষতা পরীক্ষা দেওয়া হয়নি এবং এই দক্ষতায় কোনও কাজ সম্পন্ন হয়নি।",
+  "trust.nextExpertJobs":
+    "বিশেষজ্ঞ হতে আরও {jobs}টি যাচাই করা কাজ এবং নিয়োগকর্তাদের থেকে {rating}/5 গড়।",
+  "trust.nextExpertRating": "বিশেষজ্ঞ হতে নিয়োগকর্তার রেটিং {rating}/5 বা তার উপরে রাখুন।",
+  "trust.nextVerifiedJobs": "যাচাই করা হতে এই দক্ষতায় {jobs}টি কাজ সম্পন্ন করুন।",
+  "trust.nextSkilled": "“দক্ষতা পরীক্ষায় উত্তীর্ণ” হতে পরীক্ষায় {pass}% বা তার বেশি নম্বর পান।",
+  "trust.disclaimer":
+    "এই স্তরগুলি LYBOR-এর কাছে থাকা প্রমাণ বোঝায় — কোনও ব্যক্তি সম্পর্কে নিশ্চয়তা নয়। একটি ছোট দক্ষতা পরীক্ষা আর কয়েকটি নিয়োগকর্তার রেটিং শুরুর ধাপ, পেশাদার সনদ নয় — কাজে নেওয়ার আগে নিজেও যাচাই করুন।",
+  "assess.title": "দক্ষতা পরীক্ষা",
+  "assess.intro":
+    "প্রতিটি কাজের জন্য কয়েকটি ব্যবহারিক প্রশ্ন। উত্তীর্ণ হলে সেই দক্ষতা স্ব-ঘোষিত থেকে “দক্ষতা পরীক্ষায় উত্তীর্ণ” হয়ে যায়।",
+  "assess.chooseSkill": "কোন দক্ষতা?",
+  "assess.passMark": "উত্তীর্ণ নম্বর {percent}%",
+  "assess.notCertification": "এটি একটি ছোট জ্ঞান পরীক্ষা — কোনও সনদ বা পেশাদার লাইসেন্স নয়।",
+  "assess.questionNumber": "প্রশ্ন {index} / {total}",
+  "assess.submit": "উত্তর জমা দিন",
+  "assess.retake": "আবার পরীক্ষা দিন",
+  "assess.backToProfile": "প্রোফাইলে ফিরুন",
+  "assess.resultPassed": "উত্তীর্ণ।",
+  "assess.resultFailed": "এবার উত্তীর্ণ হননি।",
+  "assess.resultScore": "আপনি {total}টির মধ্যে {correct}টি ঠিক উত্তর দিয়েছেন — {percent}%।",
+  "assess.previousResult": "আপনার আগের চেষ্টায় {percent}% ছিল। আবার উত্তর দিলে তা বদলে যাবে।",
+  "assess.unavailableTitle": "এখনও কোনও দক্ষতা পরীক্ষা নেই",
+  "assess.unavailableBody":
+    "আপনার কোনও দক্ষতার জন্য এখনও পরীক্ষা নেই। সম্পন্ন কাজ আর নিয়োগকর্তার রেটিং থেকে আপনার স্তর তৈরি হতে থাকবে।",
+  "assess.addSkillsFirst": "প্রথমে প্রোফাইলে আপনার দক্ষতা যোগ করুন, তারপর সেগুলি যাচাই করতে এখানে আসুন।",
 };
 
 export default bn;

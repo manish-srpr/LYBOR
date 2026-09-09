@@ -392,6 +392,68 @@ const pa: PartialMessages = {
   "nav.attendanceApprovals": "ਹਾਜ਼ਰੀ ਤੇ ਮਨਜ਼ੂਰੀਆਂ",
   "att.todaysShift": "ਅੱਜ ਦੀ ਸ਼ਿਫਟ",
   "att.viewFullDay": "ਪੂਰਾ ਦਿਨ ਵੇਖੋ",
+  // --- Skill trust and the skill check ---
+  "trust.sectionTitle": "ਹੁਨਰ ਅਤੇ ਸਬੂਤ",
+  "trust.sectionIntro": "ਮਜ਼ਦੂਰ ਹਰ ਹੁਨਰ ਬਾਰੇ ਕੀ ਕਹਿੰਦਾ ਹੈ, ਅਤੇ LYBOR ਕੀ ਤਸਦੀਕ ਕਰ ਸਕਿਆ — ਇੱਕੋ ਥਾਂ।",
+  "trust.selfDeclaredHeading": "ਆਪ-ਐਲਾਨਿਆ",
+  "trust.verifiedHeading": "ਤਸਦੀਕਸ਼ੁਦਾ ਸਬੂਤ",
+  "trust.noSkills": "ਹਾਲੇ ਕੋਈ ਹੁਨਰ ਨਹੀਂ ਜੋੜਿਆ ਗਿਆ।",
+  "trust.basisLabel": "ਆਧਾਰ",
+  "trust.nextStepLabel": "ਅਗਲਾ ਕਦਮ",
+  "trust.levelSelfDeclared": "ਆਪ-ਐਲਾਨਿਆ",
+  "trust.levelSkilled": "ਹੁਨਰ ਜਾਂਚ ਪਾਸ",
+  "trust.levelVerified": "ਤਸਦੀਕਸ਼ੁਦਾ",
+  "trust.levelExpert": "ਮਾਹਿਰ",
+  "trust.proficiencyBeginner": "ਸ਼ੁਰੂਆਤੀ",
+  "trust.proficiencyIntermediate": "ਵਿਚਕਾਰਲਾ",
+  "trust.proficiencyExpert": "ਮਾਹਿਰ",
+  "trust.selfDeclaredYears_one": "{count} ਸਾਲ ਦਾ ਦਾਅਵਾ",
+  "trust.selfDeclaredYears_other": "{count} ਸਾਲਾਂ ਦਾ ਦਾਅਵਾ",
+  "trust.checkNotTaken": "ਹੁਨਰ ਜਾਂਚ ਨਹੀਂ ਦਿੱਤੀ",
+  "trust.checkScore": "ਹੁਨਰ ਜਾਂਚ {percent}%",
+  "trust.verifiedJobs_one": "ਇਸ ਹੁਨਰ ਨਾਲ {count} ਕੰਮ ਪੂਰਾ ਕੀਤਾ",
+  "trust.verifiedJobs_other": "ਇਸ ਹੁਨਰ ਨਾਲ {count} ਕੰਮ ਪੂਰੇ ਕੀਤੇ",
+  "trust.fromEmployers_one": "{count} ਨਿਯੋਕਤਾ ਵੱਲੋਂ",
+  "trust.fromEmployers_other": "{count} ਨਿਯੋਕਤਿਆਂ ਵੱਲੋਂ",
+  "trust.basisExpert":
+    "ਹੁਨਰ ਜਾਂਚ {percent}% ਨਾਲ ਪਾਸ, ਇਸ ਹੁਨਰ ਨਾਲ {jobs} ਤਸਦੀਕਸ਼ੁਦਾ ਕੰਮ ਪੂਰੇ ਕੀਤੇ, ਅਤੇ {raters} ਨਿਯੋਕਤਿਆਂ ਵੱਲੋਂ ਔਸਤ {rating}/5।",
+  "trust.basisVerified":
+    "ਹੁਨਰ ਜਾਂਚ {percent}% ਨਾਲ ਪਾਸ ਅਤੇ ਇਸ ਹੁਨਰ ਨਾਲ {jobs} ਤਸਦੀਕਸ਼ੁਦਾ ਕੰਮ ਪੂਰੇ ਕੀਤੇ।",
+  "trust.basisSkilled":
+    "ਹੁਨਰ ਜਾਂਚ {percent}% ਨਾਲ ਪਾਸ। ਇਸ ਹੁਨਰ ਨਾਲ ਹਾਲੇ ਕੋਈ ਕੰਮ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ।",
+  "trust.basisSkilledSomeJobs":
+    "ਹੁਨਰ ਜਾਂਚ {percent}% ਨਾਲ ਪਾਸ ਅਤੇ ਇਸ ਹੁਨਰ ਨਾਲ {jobs} ਤਸਦੀਕਸ਼ੁਦਾ ਕੰਮ ਪੂਰੇ ਕੀਤੇ।",
+  "trust.basisJobsNoCheck":
+    "ਮਜ਼ਦੂਰ ਵੱਲੋਂ ਜੋੜਿਆ ਗਿਆ। ਇਸ ਹੁਨਰ ਨਾਲ {jobs} ਕੰਮ ਪੂਰੇ ਕੀਤੇ, ਪਰ ਹੁਨਰ ਜਾਂਚ ਨਹੀਂ ਦਿੱਤੀ ਗਈ।",
+  "trust.basisFailed":
+    "ਹੁਨਰ ਜਾਂਚ ਵਿੱਚ {percent}% ਅੰਕ ਮਿਲੇ, ਜੋ {pass}% ਪਾਸ ਅੰਕਾਂ ਤੋਂ ਘੱਟ ਹਨ। ਇਹ ਦੁਬਾਰਾ ਦਿੱਤੀ ਜਾ ਸਕਦੀ ਹੈ।",
+  "trust.basisNone":
+    "ਮਜ਼ਦੂਰ ਵੱਲੋਂ ਜੋੜਿਆ ਗਿਆ। ਨਾ ਕੋਈ ਹੁਨਰ ਜਾਂਚ ਦਿੱਤੀ ਗਈ ਹੈ ਅਤੇ ਨਾ ਇਸ ਹੁਨਰ ਨਾਲ ਕੋਈ ਕੰਮ ਪੂਰਾ ਹੋਇਆ ਹੈ।",
+  "trust.nextExpertJobs":
+    "ਮਾਹਿਰ ਲਈ {jobs} ਹੋਰ ਤਸਦੀਕਸ਼ੁਦਾ ਕੰਮ ਅਤੇ ਨਿਯੋਕਤਿਆਂ ਵੱਲੋਂ {rating}/5 ਦੀ ਔਸਤ।",
+  "trust.nextExpertRating": "ਮਾਹਿਰ ਲਈ ਨਿਯੋਕਤਾ ਰੇਟਿੰਗ {rating}/5 ਜਾਂ ਵੱਧ ਰੱਖੋ।",
+  "trust.nextVerifiedJobs": "ਤਸਦੀਕਸ਼ੁਦਾ ਦਰਜੇ ਲਈ ਇਸ ਹੁਨਰ ਨਾਲ {jobs} ਕੰਮ ਪੂਰੇ ਕਰੋ।",
+  "trust.nextSkilled": "“ਹੁਨਰ ਜਾਂਚ ਪਾਸ” ਲਈ ਜਾਂਚ ਵਿੱਚ {pass}% ਜਾਂ ਵੱਧ ਅੰਕ ਲਿਆਓ।",
+  "trust.disclaimer":
+    "ਇਹ ਪੱਧਰ ਦੱਸਦੇ ਹਨ ਕਿ LYBOR ਕੋਲ ਕਿਹੜੇ ਸਬੂਤ ਹਨ — ਇਹ ਕਿਸੇ ਵਿਅਕਤੀ ਦੀ ਗਾਰੰਟੀ ਨਹੀਂ ਹਨ। ਇੱਕ ਛੋਟੀ ਹੁਨਰ ਜਾਂਚ ਅਤੇ ਕੁਝ ਨਿਯੋਕਤਾ ਰੇਟਿੰਗਾਂ ਸ਼ੁਰੂਆਤ ਹਨ, ਕੋਈ ਕਿੱਤਾ ਸਰਟੀਫਿਕੇਟ ਨਹੀਂ — ਕੰਮ ਉੱਤੇ ਰੱਖਣ ਤੋਂ ਪਹਿਲਾਂ ਆਪ ਵੀ ਪਰਖੋ।",
+  "assess.title": "ਹੁਨਰ ਜਾਂਚ",
+  "assess.intro":
+    "ਹਰ ਕਿੱਤੇ ਲਈ ਕੁਝ ਅਮਲੀ ਸਵਾਲ। ਪਾਸ ਹੋਣ ਉੱਤੇ ਉਹ ਹੁਨਰ ਆਪ-ਐਲਾਨੇ ਤੋਂ “ਹੁਨਰ ਜਾਂਚ ਪਾਸ” ਹੋ ਜਾਂਦਾ ਹੈ।",
+  "assess.chooseSkill": "ਕਿਹੜਾ ਹੁਨਰ?",
+  "assess.passMark": "ਪਾਸ ਅੰਕ {percent}%",
+  "assess.notCertification": "ਇਹ ਇੱਕ ਛੋਟੀ ਜਾਣਕਾਰੀ ਜਾਂਚ ਹੈ — ਕੋਈ ਸਰਟੀਫਿਕੇਟ ਜਾਂ ਕਿੱਤਾ ਲਾਇਸੰਸ ਨਹੀਂ।",
+  "assess.questionNumber": "ਸਵਾਲ {index} / {total}",
+  "assess.submit": "ਜਵਾਬ ਭੇਜੋ",
+  "assess.retake": "ਜਾਂਚ ਦੁਬਾਰਾ ਦਿਓ",
+  "assess.backToProfile": "ਪ੍ਰੋਫਾਈਲ ਉੱਤੇ ਵਾਪਸ",
+  "assess.resultPassed": "ਪਾਸ।",
+  "assess.resultFailed": "ਇਸ ਵਾਰ ਪਾਸ ਨਹੀਂ ਹੋਏ।",
+  "assess.resultScore": "ਤੁਸੀਂ {total} ਵਿੱਚੋਂ {correct} ਜਵਾਬ ਸਹੀ ਦਿੱਤੇ — {percent}%।",
+  "assess.previousResult": "ਤੁਹਾਡੀ ਪਿਛਲੀ ਕੋਸ਼ਿਸ਼ ਵਿੱਚ {percent}% ਅੰਕ ਸਨ। ਦੁਬਾਰਾ ਜਵਾਬ ਦੇਣ ਨਾਲ ਉਹ ਬਦਲ ਜਾਵੇਗਾ।",
+  "assess.unavailableTitle": "ਹਾਲੇ ਕੋਈ ਹੁਨਰ ਜਾਂਚ ਉਪਲਬਧ ਨਹੀਂ",
+  "assess.unavailableBody":
+    "ਤੁਹਾਡੇ ਕਿਸੇ ਹੁਨਰ ਲਈ ਹਾਲੇ ਜਾਂਚ ਨਹੀਂ ਹੈ। ਤੁਹਾਡਾ ਪੱਧਰ ਪੂਰੇ ਕੀਤੇ ਕੰਮਾਂ ਅਤੇ ਨਿਯੋਕਤਾ ਰੇਟਿੰਗਾਂ ਤੋਂ ਬਣਦਾ ਰਹੇਗਾ।",
+  "assess.addSkillsFirst": "ਪਹਿਲਾਂ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਹੁਨਰ ਜੋੜੋ, ਫਿਰ ਉਨ੍ਹਾਂ ਦੀ ਜਾਂਚ ਲਈ ਇੱਥੇ ਆਓ।",
 };
 
 export default pa;
