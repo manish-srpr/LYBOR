@@ -33,6 +33,9 @@ async function tokenFor(userId: string, role: string, fullName = "Ghost") {
 
 /** Follows redirects by hand so a loop shows up as a hop count, not a hang. */
 async function trace(path: string, cookie: string, limit = 12) {
+  // A location grant, so a redirect to /location is not mistaken for the
+  // stale-session loop this suite exists to catch.
+  if (cookie) cookie = `${cookie}; lybor_loc_ok=1`;
   const hops: string[] = [];
   let url = B + path;
   let jar = cookie;
@@ -115,7 +118,7 @@ console.log("\nA real session still works, and costs no extra redirect");
   if (!worker) throw new Error("seed user missing");
   const token = await tokenFor(worker.id, "WORKER", worker.fullName);
   const res = await fetch(`${B}/worker`, {
-    headers: { Cookie: `lybor_session=${token}; lybor_lang=en` },
+    headers: { Cookie: `lybor_session=${token}; lybor_lang=en; lybor_loc_ok=1` },
     redirect: "manual",
   });
   ck(res.status === 200, `a valid worker session renders /worker directly (${res.status})`);

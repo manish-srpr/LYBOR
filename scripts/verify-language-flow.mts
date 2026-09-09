@@ -46,6 +46,9 @@ function get(
   const cookies: string[] = [];
   if (locale) cookies.push(`lybor_lang=${locale}`);
   if (session) cookies.push(`lybor_session=${session}`);
+  // The role layouts now require a location grant for the session before
+  // they will render, so an authenticated request must carry it too.
+  if (session) cookies.push("lybor_loc_ok=1");
   const headers: Record<string, string> = {};
   if (cookies.length) headers.Cookie = cookies.join("; ");
   if (acceptLanguage) headers["Accept-Language"] = acceptLanguage;

@@ -39,7 +39,12 @@ async function token(userId: string, role: string, fullName: string) {
 }
 
 function get(path: string, session?: string) {
-  const cookies = ["lybor_lang=en", ...(session ? [`lybor_session=${session}`] : [])];
+  const cookies = [
+    "lybor_lang=en",
+    // The location step is completed before a dashboard renders, so an
+    // authenticated request in this suite carries the grant.
+    ...(session ? [`lybor_session=${session}`, "lybor_loc_ok=1"] : []),
+  ];
   return fetch(B + path, { headers: { Cookie: cookies.join("; ") }, redirect: "manual" });
 }
 
@@ -65,48 +70,38 @@ const RADIUS = 200;
 let jobId = "";
 
 try {
-  // -- 1 & 2. Login reaches the app, and the gate is present ---------------
-  console.log("1/2. Worker and Employer reach the app, with the location gate mounted");
+  // -- 1-3. Location is established before a dashboard renders -------------
+  // The detail of the login -> location step lives in verify-login-location;
+  // here we only confirm the dashboards render once the grant is present, and
+  // refuse to render without it.
+  console.log("1-3. Location grant is required before a dashboard renders");
   for (const [role, home, tok] of [
     ["Worker", "/worker", workerTok],
     ["Employer", "/employer", employerTok],
   ] as [string, string, string][]) {
-    const res = await get(home, tok);
-    const html = await res.text();
-    ck(res.status === 200, `${role} ${home} renders (${res.status})`);
-    ck(html.includes("location-gate-title"), `${role}: location gate is in the response`);
+    const granted = await get(home, tok);
+    ck(granted.status === 200, `${role} ${home} renders with the grant (${granted.status})`);
+
+    const withoutGrant = await fetch(B + home, {
+      headers: { Cookie: `lybor_lang=en; lybor_session=${tok}` },
+      redirect: "manual",
+    });
     ck(
-      /Location access is required|Checking location/.test(html),
-      `${role}: the gate explains why location is needed`,
+      withoutGrant.status === 307 &&
+        (withoutGrant.headers.get("location") ?? "").startsWith("/location"),
+      `${role} ${home} without the grant redirects to /location`,
     );
+    const body = await withoutGrant.text();
+    ck(!body.includes("dash."), `${role}: no dashboard content is sent while ungranted`);
   }
 
-  // -- 3. Denied location, and the escape hatch ----------------------------
-  console.log("\n3. A blocked visitor is not stranded");
+  console.log("\n   Admin is deliberately not gated on location");
   {
-    const html = await get("/worker", workerTok).then((r) => r.text());
-    ck(html.includes('aria-modal="true"'), "the gate is a modal dialog");
-    ck(html.includes("Sign out"), "a sign-out escape hatch exists on the gate");
-    ck(html.includes("inert") || html.includes("hidden"), "the page beneath is inert while blocked");
-    // The instruction path only renders once denial is known, which is client
-    // state; assert the copy shipped in the bundle instead.
-    const fs = await import("node:fs");
-    const bundle = fs
-      .readdirSync("./.next/static/chunks")
-      .filter((f) => f.endsWith(".js"))
-      .map((f) => fs.readFileSync(`./.next/static/chunks/${f}`, "utf8"))
-      .join("");
-    ck(bundle.includes("Set it to"), "browser-settings instructions ship for the denied case");
-    ck(bundle.includes("PERMISSION_DENIED"), "denial is handled distinctly");
-    ck(bundle.includes("POSITION_UNAVAILABLE"), "unavailable is handled distinctly");
-    ck(bundle.includes("TIMEOUT"), "timeout is handled distinctly");
-    ck(!bundle.includes("watchPosition"), "nothing continuously tracks location");
-  }
-
-  console.log("\n   Admin is deliberately not gated");
-  {
-    const html = await get("/admin", adminTok).then((r) => r.text());
-    ck(!html.includes("location-gate-title"), "Admin has no location gate");
+    const res = await fetch(B + "/admin", {
+      headers: { Cookie: `lybor_lang=en; lybor_session=${adminTok}` },
+      redirect: "manual",
+    });
+    ck(res.status === 200, `Admin reaches /admin with no location grant (${res.status})`);
   }
 
   // -- 4. Employer posts work ---------------------------------------------

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { locationStepPath } from "@/lib/location-session";
 import { createSession, dashboardPathFor, destroySession, getSession, hashPassword, verifyPassword } from "@/lib/auth";
 import { LANG_COOKIE, isSupportedLocale, normaliseLang } from "@/lib/i18n";
 
@@ -62,7 +63,13 @@ export async function loginAction(
     });
   }
 
-  redirect(dashboardPathFor(user.role));
+  // Straight to the location step, not the dashboard. Credentials have just
+  // been verified and a session issued, which is the earliest point at which
+  // asking for location is legitimate - nothing before this line, and nothing
+  // on any public page, touches geolocation. Admin skips it: an administrator
+  // never punches attendance.
+  if (user.role === "ADMIN") redirect(dashboardPathFor(user.role));
+  redirect(locationStepPath(dashboardPathFor(user.role)));
 }
 
 const registerSchema = z.object({
@@ -170,7 +177,13 @@ export async function registerAction(
     store.set(LANG_COOKIE, data.language, { path: "/", maxAge: 60 * 60 * 24 * 365 });
   }
 
-  redirect(dashboardPathFor(user.role));
+  // Straight to the location step, not the dashboard. Credentials have just
+  // been verified and a session issued, which is the earliest point at which
+  // asking for location is legitimate - nothing before this line, and nothing
+  // on any public page, touches geolocation. Admin skips it: an administrator
+  // never punches attendance.
+  if (user.role === "ADMIN") redirect(dashboardPathFor(user.role));
+  redirect(locationStepPath(dashboardPathFor(user.role)));
 }
 
 export async function logoutAction(): Promise<void> {
