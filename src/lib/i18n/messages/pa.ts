@@ -387,6 +387,11 @@ const pa: PartialMessages = {
   "common.continue": "ਜਾਰੀ ਰੱਖੋ",
   "app.languageChangeAnytime": "ਭਾਸ਼ਾ ਬਦਲੋ",
   "app.languageSelected": "ਚੁਣਿਆ ਗਿਆ",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "ਮੇਰਾ ਕੰਮ ਤੇ ਹਾਜ਼ਰੀ",
+  "nav.attendanceApprovals": "ਹਾਜ਼ਰੀ ਤੇ ਮਨਜ਼ੂਰੀਆਂ",
+  "att.todaysShift": "ਅੱਜ ਦੀ ਸ਼ਿਫਟ",
+  "att.viewFullDay": "ਪੂਰਾ ਦਿਨ ਵੇਖੋ",
 };
 
 export default pa;

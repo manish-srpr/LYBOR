@@ -85,37 +85,6 @@ export default async function AssignmentDetail(
         action={<StatusBadge status={assignment.status} lang={lang} />}
       />
 
-      {/* The three things a worker needs before leaving home. */}
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
-          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
-            <Wallet className="size-3.5" aria-hidden />
-            {isHi ? "आपकी दर" : "Your rate"}
-          </p>
-          <p className="mt-1 text-base font-semibold text-[var(--primary)]">
-            {wageLabel(assignment.agreedWageType, assignment.agreedWageRatePaise, lang)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
-          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
-            <Clock className="size-3.5" aria-hidden />
-            {isHi ? "शिफ्ट" : "Shift"}
-          </p>
-          <p className="mt-1 text-base font-semibold">
-            {assignment.job.shiftStart}–{assignment.job.shiftEnd}
-          </p>
-        </div>
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
-          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
-            <MapPin className="size-3.5" aria-hidden />
-            {isHi ? "कहाँ जाना है" : "Where to go"}
-          </p>
-          <p className="mt-1 text-sm font-medium">
-            {assignment.job.addressLine}, {assignment.job.city}
-          </p>
-        </div>
-      </div>
-
       {!isClosed ? (
         <Card>
           <CardHeader>
@@ -181,6 +150,37 @@ export default async function AssignmentDetail(
           </CardContent>
         </Card>
       ) : null}
+
+      {/* The three things a worker needs before leaving home. */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
+          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
+            <Wallet className="size-3.5" aria-hidden />
+            {isHi ? "आपकी दर" : "Your rate"}
+          </p>
+          <p className="mt-1 text-base font-semibold text-[var(--primary)]">
+            {wageLabel(assignment.agreedWageType, assignment.agreedWageRatePaise, lang)}
+          </p>
+        </div>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
+          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
+            <Clock className="size-3.5" aria-hidden />
+            {isHi ? "शिफ्ट" : "Shift"}
+          </p>
+          <p className="mt-1 text-base font-semibold">
+            {assignment.job.shiftStart}–{assignment.job.shiftEnd}
+          </p>
+        </div>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
+          <p className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
+            <MapPin className="size-3.5" aria-hidden />
+            {isHi ? "कहाँ जाना है" : "Where to go"}
+          </p>
+          <p className="mt-1 text-sm font-medium">
+            {assignment.job.addressLine}, {assignment.job.city}
+          </p>
+        </div>
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <DataRowCard

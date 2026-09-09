@@ -389,6 +389,11 @@ const ta: PartialMessages = {
   "common.continue": "தொடரவும்",
   "app.languageChangeAnytime": "மொழியை மாற்று",
   "app.languageSelected": "தேர்ந்தெடுக்கப்பட்டது",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "எனது வேலை & வருகை",
+  "nav.attendanceApprovals": "வருகை & ஒப்புதல்கள்",
+  "att.todaysShift": "இன்றைய பணிமுறை",
+  "att.viewFullDay": "முழு நாளைப் பார்",
 };
 
 export default ta;

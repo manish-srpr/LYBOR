@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Clock, LogIn, LogOut, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Sparkles } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Alert, EmptyState, PageHeader, Stat } from "@/components/ui/misc";
 import { Badge } from "@/components/ui/badge";
+import { GpsPunch } from "@/components/app/gps-punch";
 import { JobCard, wageLabel } from "@/components/app/job-card";
 import { ReliabilityPanel } from "@/components/app/reliability-panel";
 import { StatusBadge } from "@/components/app/status-badge";
@@ -114,7 +115,7 @@ export default async function WorkerDashboard() {
       {activeAssignments.length > 0 ? (
         <section className="space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
-            {t("att.today")}
+            {t("att.todaysShift")}
           </h2>
           {activeAssignments.map((assignment) => {
             const attendance = assignment.attendances[0];
@@ -171,44 +172,62 @@ export default async function WorkerDashboard() {
                   </div>
                 </dl>
 
-                <div className="border-t border-[var(--border)] p-4">
+                {/*
+                  The real punch control, not a link to it. This used to be a
+                  button that navigated to the assignment page, where a second,
+                  identically-labelled button did the actual work - so tapping
+                  "Check in with GPS" appeared to do nothing. The same component
+                  the assignment page uses is mounted here, so the dashboard a
+                  worker lands on is where they can check in.
+                */}
+                <div className="space-y-3 border-t border-[var(--border)] p-4">
                   {state === "TO_CHECK_IN" ? (
-                    <Link
-                      href={`/worker/assignments/${assignment.id}`}
-                      className={buttonVariants({ size: "lg", block: true })}
-                    >
-                      <LogIn aria-hidden />
-                      {t("att.checkInGps")}
-                    </Link>
+                    <GpsPunch
+                      assignmentId={assignment.id}
+                      mode="IN"
+                      site={{
+                        latitude: assignment.job.latitude,
+                        longitude: assignment.job.longitude,
+                      }}
+                      radiusMeters={assignment.job.checkInRadiusMeters}
+                      lang={lang}
+                    />
                   ) : state === "WORKING" ? (
-                    <div className="space-y-2">
+                    <>
                       <p className="text-center text-sm text-[var(--muted-foreground)]">
                         {t("att.checkedInAt")}{" "}
                         <strong className="text-[var(--foreground)]">
                           {formatTime(attendance.checkInTime, lang)}
                         </strong>
                       </p>
-                      <Link
-                        href={`/worker/assignments/${assignment.id}`}
-                        className={buttonVariants({
-                          size: "lg",
-                          block: true,
-                          variant: "success",
-                        })}
-                      >
-                        <LogOut aria-hidden />
-                        {t("att.checkOutGps")}
-                      </Link>
-                    </div>
+                      <GpsPunch
+                        assignmentId={assignment.id}
+                        mode="OUT"
+                        site={{
+                          latitude: assignment.job.latitude,
+                          longitude: assignment.job.longitude,
+                        }}
+                        radiusMeters={assignment.job.checkInRadiusMeters}
+                        lang={lang}
+                      />
+                    </>
                   ) : (
-                    <Link
-                      href={`/worker/assignments/${assignment.id}`}
-                      className={buttonVariants({ size: "lg", block: true, variant: "outline" })}
-                    >
+                    <p className="text-center text-sm">
                       {formatMinutes(attendance.workingMinutes ?? 0)}{" "}
-                      {t("wage.verifiedShort")} · {t("common.viewDetails")}
-                    </Link>
+                      {t("wage.verifiedShort")}
+                    </p>
                   )}
+
+                  <Link
+                    href={`/worker/assignments/${assignment.id}`}
+                    className={buttonVariants({
+                      size: "sm",
+                      block: true,
+                      variant: "ghost",
+                    })}
+                  >
+                    {t("att.viewFullDay")}
+                  </Link>
                 </div>
               </div>
             );

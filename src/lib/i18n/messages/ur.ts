@@ -389,6 +389,11 @@ const ur: PartialMessages = {
   "common.continue": "جاری رکھیں",
   "app.languageChangeAnytime": "زبان بدلیں",
   "app.languageSelected": "منتخب",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "میرا کام اور حاضری",
+  "nav.attendanceApprovals": "حاضری اور منظوریاں",
+  "att.todaysShift": "آج کی شفٹ",
+  "att.viewFullDay": "پورا دن دیکھیں",
 };
 
 export default ur;

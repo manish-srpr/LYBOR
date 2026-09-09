@@ -387,6 +387,11 @@ const hi: PartialMessages = {
   "common.continue": "जारी रखें",
   "app.languageChangeAnytime": "भाषा बदलें",
   "app.languageSelected": "चुना गया",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "मेरा काम और उपस्थिति",
+  "nav.attendanceApprovals": "उपस्थिति और स्वीकृतियाँ",
+  "att.todaysShift": "आज की शिफ्ट",
+  "att.viewFullDay": "पूरा दिन देखें",
 };
 
 export default hi;

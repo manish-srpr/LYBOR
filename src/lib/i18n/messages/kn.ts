@@ -389,6 +389,11 @@ const kn: PartialMessages = {
   "common.continue": "ಮುಂದುವರಿಸಿ",
   "app.languageChangeAnytime": "ಭಾಷೆ ಬದಲಾಯಿಸಿ",
   "app.languageSelected": "ಆಯ್ಕೆಯಾಗಿದೆ",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "ನನ್ನ ಕೆಲಸ ಮತ್ತು ಹಾಜರಾತಿ",
+  "nav.attendanceApprovals": "ಹಾಜರಾತಿ ಮತ್ತು ಅನುಮೋದನೆಗಳು",
+  "att.todaysShift": "ಇಂದಿನ ಶಿಫ್ಟ್",
+  "att.viewFullDay": "ಪೂರ್ಣ ದಿನ ನೋಡಿ",
 };
 
 export default kn;

@@ -389,6 +389,11 @@ const ml: PartialMessages = {
   "common.continue": "തുടരുക",
   "app.languageChangeAnytime": "ഭാഷ മാറ്റുക",
   "app.languageSelected": "തിരഞ്ഞെടുത്തു",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "എന്റെ ജോലിയും ഹാജരും",
+  "nav.attendanceApprovals": "ഹാജരും അനുമതികളും",
+  "att.todaysShift": "ഇന്നത്തെ ഷിഫ്റ്റ്",
+  "att.viewFullDay": "മുഴുവൻ ദിവസം കാണുക",
 };
 
 export default ml;

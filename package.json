@@ -21,7 +21,8 @@
     "setup": "node scripts/setup.mjs",
     "verify:all": "npm run typecheck && npm run lint && npm run check:engines && npm run check:i18n",
     "verify:session": "tsx scripts/verify-stale-session.mts",
-    "verify:gps": "tsx scripts/verify-gps-attendance.mts"
+    "verify:gps": "tsx scripts/verify-gps-attendance.mts",
+    "verify:flow": "tsx scripts/verify-work-flow.mts"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",

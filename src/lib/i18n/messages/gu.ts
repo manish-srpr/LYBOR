@@ -389,6 +389,11 @@ const gu: PartialMessages = {
   "common.continue": "આગળ વધો",
   "app.languageChangeAnytime": "ભાષા બદલો",
   "app.languageSelected": "પસંદ કરેલ",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "મારું કામ અને હાજરી",
+  "nav.attendanceApprovals": "હાજરી અને મંજૂરીઓ",
+  "att.todaysShift": "આજની શિફ્ટ",
+  "att.viewFullDay": "આખો દિવસ જુઓ",
 };
 
 export default gu;

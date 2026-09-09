@@ -389,6 +389,11 @@ const mr: PartialMessages = {
   "common.continue": "पुढे जा",
   "app.languageChangeAnytime": "भाषा बदला",
   "app.languageSelected": "निवडलेली",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "माझे काम व हजेरी",
+  "nav.attendanceApprovals": "हजेरी व मंजुऱ्या",
+  "att.todaysShift": "आजची शिफ्ट",
+  "att.viewFullDay": "संपूर्ण दिवस पहा",
 };
 
 export default mr;

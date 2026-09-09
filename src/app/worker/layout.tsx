@@ -10,6 +10,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { AppShell, type NavItem } from "@/components/app/app-shell";
+import { LocationGate } from "@/components/app/location-gate";
 import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/auth";
 import { getLang } from "@/lib/lang";
@@ -17,7 +18,7 @@ import { getLang } from "@/lib/lang";
 const NAV: NavItem[] = [
   { href: "/worker", labelKey: "nav.dashboard", icon: <LayoutDashboard /> },
   { href: "/worker/jobs", labelKey: "nav.jobs", icon: <Search /> },
-  { href: "/worker/assignments", labelKey: "nav.assignments", icon: <HardHat /> },
+  { href: "/worker/assignments", labelKey: "nav.assignmentsAttendance", icon: <HardHat /> },
   { href: "/worker/earnings", labelKey: "nav.earnings", icon: <Wallet /> },
   { href: "/worker/history", labelKey: "nav.history", icon: <History /> },
   { href: "/worker/applications", labelKey: "nav.applications", icon: <FileText /> },
@@ -41,7 +42,7 @@ export default async function WorkerLayout({ children }: LayoutProps<"/worker">)
       unreadCount={unreadCount}
       nav={NAV}
     >
-      {children}
+      <LocationGate lang={lang}>{children}</LocationGate>
     </AppShell>
   );
 }

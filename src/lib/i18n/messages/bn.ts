@@ -389,6 +389,11 @@ const bn: PartialMessages = {
   "common.continue": "চালিয়ে যান",
   "app.languageChangeAnytime": "ভাষা বদলান",
   "app.languageSelected": "নির্বাচিত",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "আমার কাজ ও হাজিরা",
+  "nav.attendanceApprovals": "হাজিরা ও অনুমোদন",
+  "att.todaysShift": "আজকের শিফট",
+  "att.viewFullDay": "সম্পূর্ণ দিন দেখুন",
 };
 
 export default bn;

@@ -389,6 +389,11 @@ const or: PartialMessages = {
   "common.continue": "ଜାରି ରଖନ୍ତୁ",
   "app.languageChangeAnytime": "ଭାଷା ବଦଳାନ୍ତୁ",
   "app.languageSelected": "ଚୟନ ହୋଇଛି",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "ମୋର କାମ ଓ ଉପସ୍ଥିତି",
+  "nav.attendanceApprovals": "ଉପସ୍ଥିତି ଓ ଅନୁମୋଦନ",
+  "att.todaysShift": "ଆଜିର ସିଫ୍ଟ",
+  "att.viewFullDay": "ସମ୍ପୂର୍ଣ୍ଣ ଦିନ ଦେଖନ୍ତୁ",
 };
 
 export default or;

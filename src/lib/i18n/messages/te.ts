@@ -389,6 +389,11 @@ const te: PartialMessages = {
   "common.continue": "కొనసాగించండి",
   "app.languageChangeAnytime": "భాష మార్చండి",
   "app.languageSelected": "ఎంపిక చేయబడింది",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "నా పని & హాజరు",
+  "nav.attendanceApprovals": "హాజరు & ఆమోదాలు",
+  "att.todaysShift": "ఈ రోజు షిఫ్ట్",
+  "att.viewFullDay": "పూర్తి రోజు చూడండి",
 };
 
 export default te;

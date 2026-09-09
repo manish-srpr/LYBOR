@@ -389,6 +389,11 @@ const as: PartialMessages = {
   "common.continue": "আগবাঢ়ক",
   "app.languageChangeAnytime": "ভাষা সলনি কৰক",
   "app.languageSelected": "নিৰ্বাচিত",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "মোৰ কাম আৰু উপস্থিতি",
+  "nav.attendanceApprovals": "উপস্থিতি আৰু অনুমোদন",
+  "att.todaysShift": "আজিৰ শিফ্ট",
+  "att.viewFullDay": "সম্পূৰ্ণ দিন চাওক",
 };
 
 export default as;

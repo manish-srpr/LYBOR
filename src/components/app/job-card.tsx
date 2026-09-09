@@ -53,10 +53,20 @@ export function JobCard({
   applied?: boolean;
 }) {
   return (
-    <article className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4">
+    <article className="relative rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:border-[var(--primary)]/60">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <Link href={href} className="font-medium hover:underline">
+          {/*
+            The whole card is the target, not just the title. `absolute inset-0`
+            stretches this one anchor over the card, which keeps a single link
+            in the accessibility tree and leaves the match explainer's own
+            button clickable above it - wrapping the card in an anchor would
+            nest a button inside a link, which is invalid.
+          */}
+          <Link
+            href={href}
+            className="font-medium after:absolute after:inset-0 after:rounded-xl hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+          >
             {job.title}
           </Link>
           <p className="truncate text-sm text-[var(--muted-foreground)]">
@@ -112,7 +122,7 @@ export function JobCard({
       ) : null}
 
       {match ? (
-        <div className="mt-3">
+        <div className="relative z-10 mt-3">
           <MatchExplainer
             score={match.score}
             factors={match.factors}

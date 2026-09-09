@@ -411,6 +411,11 @@ const en = {
   "common.continue": "Continue",
   "app.languageChangeAnytime": "Change language",
   "app.languageSelected": "Selected",
+  // --- Attendance surfacing ---
+  "nav.assignmentsAttendance": "My work & attendance",
+  "nav.attendanceApprovals": "Attendance & approvals",
+  "att.todaysShift": "Today's shift",
+  "att.viewFullDay": "View full day",
 } as const;
 
 export default en;
