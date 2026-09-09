@@ -41,6 +41,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local sqlite database
-/dev.db
-/dev.db-journal
+# Local SQLite database. Not anchored to the root: the Prisma CLI and the app
+# agree on <root>/dev.db, but a stray prisma/dev.db has appeared before when
+# the two disagreed, and a root-only rule let it through as untracked - one
+# `git add .` from being committed. Match the database anywhere, along with the
+# journal and WAL sidecars SQLite writes beside it.
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
